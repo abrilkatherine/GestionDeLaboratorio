@@ -3,7 +3,7 @@ package main.uade.edu.ar.dto;
 import main.uade.edu.ar.enums.Genero;
 import main.uade.edu.ar.model.Persona;
 
-// TODO: No extender de persona, completar todos los campos acá
+//TODO: No extender de persona, completar todos los campos acá
 public class PacienteDto extends Persona {
     private int id;
     private int edad;

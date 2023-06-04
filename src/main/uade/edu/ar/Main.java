@@ -1,10 +1,12 @@
 package main.uade.edu.ar;
 
 import main.uade.edu.ar.controller.PacienteController;
-import main.uade.edu.ar.controller.PracticasYPeticionesController;
+import main.uade.edu.ar.controller.PeticionController;
+import main.uade.edu.ar.controller.PracticaController;
 import main.uade.edu.ar.controller.SucursalController;
 import main.uade.edu.ar.dto.PacienteDto;
 import main.uade.edu.ar.dto.PeticionDto;
+import main.uade.edu.ar.dto.PracticaDto;
 import main.uade.edu.ar.dto.SucursalDto;
 import main.uade.edu.ar.enums.Genero;
 import main.uade.edu.ar.enums.Resultado;
@@ -33,15 +35,25 @@ public class Main {
             sucursalController.modificarSucursal(new SucursalDto(1, 555, "calle siempre viva v2"));
             sucursalController.borrarSucursal(1);
 
-            //PRACTICAS Y PETICIONES
-            PracticasYPeticionesController practicasYPeticionesController = PracticasYPeticionesController.getInstance();
+            //PRACTICAS
+            PracticaController practicaController = PracticaController.getInstance();
+
+            practicaController.crearPractica(new PracticaDto(5, "Practica 1", 22, 3, true));
+            practicaController.modificarPractica(new PracticaDto(5, "Practica 2", 23, 3, true));
+            practicaController.borrarPractica(5);
+
+
+            //PETICIONES
+            PeticionController peticionController = PeticionController.getInstance();
 
             //TODO: FECHAS
             SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
             Date fechaPeticion = formatoFecha.parse("2023-06-01");
             Date fechaEntrega = formatoFecha.parse("2023-06-04");
 
-            practicasYPeticionesController.crearPeticion(new PeticionDto(4, "Osde", fechaPeticion, fechaEntrega, Resultado.CRITICO));
+            peticionController.crearPeticion(new PeticionDto(4, "Osde", fechaPeticion, fechaEntrega, Resultado.CRITICO));
+            peticionController.modificarPeticion(new PeticionDto(4, "Osde", fechaPeticion, fechaEntrega, Resultado.RESERVADO));
+            peticionController.borrarPeticion(4);
 
         } catch (Exception e) {
             e.printStackTrace();

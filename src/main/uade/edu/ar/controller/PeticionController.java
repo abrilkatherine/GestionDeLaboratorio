@@ -1,36 +1,37 @@
 package main.uade.edu.ar.controller;
 
 import main.uade.edu.ar.dao.PeticionDao;
+import main.uade.edu.ar.dto.PacienteDto;
 import main.uade.edu.ar.dto.PeticionDto;
+import main.uade.edu.ar.model.Paciente;
 import main.uade.edu.ar.model.Peticion;
 
 import java.util.List;
 
-public class PracticasYPeticionesController {
-
-    private static PracticasYPeticionesController practicasYPeticioneController;
+public class PeticionController {
+    private static PeticionController peticionController;
     private static PeticionDao peticionDao;
 
     private static List<Peticion> peticiones;
 
-    private PracticasYPeticionesController() {
+    private PeticionController() {
     }
 
-    public static synchronized PracticasYPeticionesController getInstance() throws Exception {
-        if (practicasYPeticioneController == null) {
-            practicasYPeticioneController = new PracticasYPeticionesController();
+    public static synchronized PeticionController getInstance() throws Exception {
+        if (peticionController == null) {
+            peticionController = new PeticionController();
             peticionDao = new PeticionDao();
             peticiones = peticionDao.getAll();
         }
 
-        return practicasYPeticioneController;
+        return peticionController;
     }
 
     public PeticionDto getPeticion(int id) {
         return peticiones.stream()
                 .filter(p -> p.getId() == id)
                 .findFirst()
-                .map(PracticasYPeticionesController::toDto)
+                .map(PeticionController::toDto)
                 .orElse(null);
     }
 
@@ -40,6 +41,31 @@ public class PracticasYPeticionesController {
         }
     }
 
+    public void modificarPeticion(PeticionDto peticionDTO) throws Exception {
+        Peticion peticion = peticiones.stream()
+                .filter(p -> p.getId() == peticionDTO.getId())
+                .findFirst()
+                .orElse(null);
+
+        if (peticion != null) {
+            peticion.setObraSocial(peticionDTO.getObraSocial());
+            peticion.setFechaCarga(peticionDTO.getFechaCarga());
+            peticion.setFechaEntrega(peticionDTO.getFechaEntrega());
+            peticion.setResultado(peticionDTO.getResultado());
+            peticionDao.update(peticion);
+        }
+    }
+    public void borrarPeticion(int id) throws Exception {
+        Peticion peticion = peticiones.stream()
+                .filter(p -> p.getId() == id)
+                .findFirst()
+                .orElse(null);
+
+        if (peticion != null) {
+            peticionDao.delete(id);
+            peticiones.remove(peticion);
+        }
+    }
     public static Peticion toModel(PeticionDto peticionDto) {
         return new Peticion(
                 peticionDto.getId(),
@@ -60,6 +86,4 @@ public class PracticasYPeticionesController {
 
         );
     }
-
-
 }

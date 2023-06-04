@@ -5,7 +5,6 @@ import main.uade.edu.ar.enums.Resultado;
 import java.util.Date;
 
 public class Peticion {
-
     private int id;
 
     private String obraSocial;

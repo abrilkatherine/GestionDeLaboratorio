@@ -66,8 +66,6 @@ public class PacienteController {
             pacienteDao.update(paciente);
         }
     }
-
-
     public void borrarPaciente(int id) throws Exception {
         Paciente paciente = pacientes.stream()
                 .filter(p -> p.getId() == id)
