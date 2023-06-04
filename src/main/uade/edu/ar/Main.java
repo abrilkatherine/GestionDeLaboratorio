@@ -11,8 +11,6 @@ import main.uade.edu.ar.enums.Resultado;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-// Press Shift twice to open the Search Everywhere dialog and type `show whitespaces`,
-// then press Enter. You can now see whitespace characters in your code.
 public class Main {
     public static void main(String[] args) {
         try {
@@ -43,9 +41,6 @@ public class Main {
             //PETICIONES
             PeticionController peticionController = PeticionController.getInstance();
 
-            //USUARIOS
-            UsuarioController usuarioController = UsuarioController.getInstance();
-
             //TODO: FECHAS
             SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
             Date fechaPeticion = formatoFecha.parse("2023-06-01");
@@ -54,6 +49,9 @@ public class Main {
             peticionController.crearPeticion(new PeticionDto(4, "Osde", fechaPeticion, fechaEntrega, Resultado.CRITICO));
             peticionController.modificarPeticion(new PeticionDto(4, "Osde", fechaPeticion, fechaEntrega, Resultado.RESERVADO));
             peticionController.borrarPeticion(4);
+
+            //USUARIOS
+            UsuarioController usuarioController = UsuarioController.getInstance();
 
         } catch (Exception e) {
             e.printStackTrace();

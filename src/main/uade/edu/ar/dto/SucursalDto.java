@@ -1,5 +1,4 @@
 package main.uade.edu.ar.dto;
-
 public class SucursalDto {
 
     private int id;

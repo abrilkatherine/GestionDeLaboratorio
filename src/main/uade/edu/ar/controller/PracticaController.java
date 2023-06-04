@@ -1,12 +1,8 @@
 package main.uade.edu.ar.controller;
 
 import main.uade.edu.ar.dao.PracticaDao;
-import main.uade.edu.ar.dto.PeticionDto;
 import main.uade.edu.ar.dto.PracticaDto;
-import main.uade.edu.ar.dto.SucursalDto;
-import main.uade.edu.ar.model.Peticion;
 import main.uade.edu.ar.model.Practica;
-import main.uade.edu.ar.model.Sucursal;
 
 import java.util.List;
 

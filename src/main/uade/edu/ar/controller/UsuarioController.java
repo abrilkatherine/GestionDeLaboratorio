@@ -1,6 +1,7 @@
 package main.uade.edu.ar.controller;
 
 import main.uade.edu.ar.dao.UsuarioDao;
+import main.uade.edu.ar.dto.UsuarioDto;
 import main.uade.edu.ar.model.Usuario;
 
 import java.util.List;
@@ -23,18 +24,38 @@ public class UsuarioController {
         return usuarioController;
     }
 
-    //TODO: UPDATE METODOS
-    public Usuario crearUsuario() {
-        // Lógica para crear un nuevo usuario
-        return null;
-    }
+    //TODO: FIX METODOS; add id in model
+//    public UsuarioDto getUsuario(int id) {
+//        return usuarios.stream()
+//                .filter(u -> u.getId() == id)
+//                .findFirst()
+//                .map(UsuarioController::toDto)
+//                .orElse(null);
+//    }
 
-    public void actualizarRol() {
-        // Lógica para actualizar el rol del usuario
-    }
-
-    public void eliminarUsuario() {
-        // Lógica para eliminar un usuario
-    }
+//    public Usuario crearUsuario(UsuarioDto usuarioDTO) {
+//        if (getUsuario(usuarioDTO.getId()) == null) {
+//            usuarioDao.save(toModel(usuarioDTO));
+//        }
+//        return null;
+//    }
+//
+//    public void actualizarRol(UsuarioDto usuarioDTO) throws Exception {
+//        if (getUsuario(usuarioDTO.getId()) == null) {
+//            usuarioDao.save(toModel(usuarioDTO));
+//        }
+//    }
+//
+//    public void eliminarUsuario() {
+//        Practica usuario = usuarios.stream()
+//                .filter(u -> u.getId() == id)
+//                .findFirst()
+//                .orElse(null);
+//
+//        if (usuario != null) {
+//            usuarioDao.delete(id);
+//            usuarios.remove(usuario);
+//        }
+//    }
 }
 

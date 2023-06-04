@@ -1,6 +1,5 @@
 package main.uade.edu.ar.dao;
 
-import main.uade.edu.ar.model.Sucursal;
 import main.uade.edu.ar.model.Usuario;
 import main.uade.edu.ar.util.GenericDAO;
 
