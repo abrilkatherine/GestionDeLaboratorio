@@ -1,9 +1,6 @@
 package main.uade.edu.ar;
 
-import main.uade.edu.ar.controller.PacienteController;
-import main.uade.edu.ar.controller.PeticionController;
-import main.uade.edu.ar.controller.PracticaController;
-import main.uade.edu.ar.controller.SucursalController;
+import main.uade.edu.ar.controller.*;
 import main.uade.edu.ar.dto.PacienteDto;
 import main.uade.edu.ar.dto.PeticionDto;
 import main.uade.edu.ar.dto.PracticaDto;
@@ -45,6 +42,9 @@ public class Main {
 
             //PETICIONES
             PeticionController peticionController = PeticionController.getInstance();
+
+            //USUARIOS
+            UsuarioController usuarioController = UsuarioController.getInstance();
 
             //TODO: FECHAS
             SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
