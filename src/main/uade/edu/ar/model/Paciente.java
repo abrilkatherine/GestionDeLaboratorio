@@ -1,5 +1,7 @@
 package main.uade.edu.ar.model;
 
+import main.uade.edu.ar.enums.Genero;
+
 public class Paciente extends Persona {
     private int id;
     private int edad;
