@@ -3,7 +3,7 @@ package main.uade.edu.ar.dto;
 public class SucursalDto {
 
     private int id;
-    private int numero; // TODO: id?
+    private int numero;
     private String direccion;
 
     //TODO: Check atribute

@@ -62,7 +62,6 @@ public class SucursalController {
         }
     }
 
-
     public static Sucursal toModel(SucursalDto sucursalDto) {
         return new Sucursal(
                 sucursalDto.getId(),
