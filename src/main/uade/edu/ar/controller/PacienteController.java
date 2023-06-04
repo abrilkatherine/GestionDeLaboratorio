@@ -48,8 +48,25 @@ public class PacienteController {
         }
     }
 
-    public void modificarPaciente() {
+    public void modificarPaciente(PacienteDto pacienteDto) throws Exception {
+        Paciente paciente = pacientes.stream()
+                .filter(p -> p.getId() == pacienteDto.getId())
+                .findFirst()
+                .orElse(null);
+
+        if (paciente != null) {
+            paciente.setNombre(pacienteDto.getNombre());
+            paciente.setDni(pacienteDto.getDni());
+            paciente.setDomicilio(pacienteDto.getDomicilio());
+            paciente.setEmail(pacienteDto.getEmail());
+            paciente.setApellido(pacienteDto.getApellido());
+            paciente.setEdad(pacienteDto.getEdad());
+            paciente.setGenero(pacienteDto.getGenero());
+
+            pacienteDao.update(paciente);
+        }
     }
+
 
     public void borrarPaciente(int id) throws Exception {
         Paciente paciente = pacientes.stream()

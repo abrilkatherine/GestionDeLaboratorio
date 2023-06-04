@@ -9,8 +9,8 @@ public class PacienteDto extends Persona {
     private int edad;
     private Genero genero;
 
-    public PacienteDto(int id, String nombre, int DNI, String domicilio, String email, String apellido, int edad, Genero genero) {
-        super(nombre, DNI, domicilio, email, apellido);
+    public PacienteDto(int id, String nombre, int dni, String domicilio, String email, String apellido, int edad, Genero genero) {
+        super(nombre, dni, domicilio, email, apellido);
         this.id = id;
         this.edad = edad;
         this.genero = genero;

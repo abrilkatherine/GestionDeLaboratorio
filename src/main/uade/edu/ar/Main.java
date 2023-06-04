@@ -14,6 +14,7 @@ public class Main {
             pacienteController.crearPaciente(new PacienteDto(1, "Calabaza", 123, "", "", "pepe", 20, Genero.MASCULINO));
             pacienteController.crearPaciente(new PacienteDto(2, "Calabaza", 123, "", "", "pepe", 20, Genero.MASCULINO));
             pacienteController.borrarPaciente(1);
+            pacienteController.modificarPaciente(new PacienteDto(2, "Calabaza", 123, "", "", "alpaca", 20, Genero.MASCULINO));
 
         } catch (Exception e) {
             e.printStackTrace();

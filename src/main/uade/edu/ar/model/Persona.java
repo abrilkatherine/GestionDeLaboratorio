@@ -7,9 +7,9 @@ public abstract class Persona {
     private String email;
     private String apellido;
 
-    public Persona(String nombre, int DNI, String domicilio, String email, String apellido) {
+    public Persona(String nombre, int dni, String domicilio, String email, String apellido) {
         this.nombre = nombre;
-        this.dni = DNI;
+        this.dni = dni;
         this.domicilio = domicilio;
         this.email = email;
         this.apellido = apellido;
