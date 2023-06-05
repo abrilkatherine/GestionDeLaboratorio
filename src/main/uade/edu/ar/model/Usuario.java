@@ -4,6 +4,7 @@ import main.uade.edu.ar.enums.Roles;
 
 import java.util.Date;
 
+
 public class Usuario {
 
     private int id;

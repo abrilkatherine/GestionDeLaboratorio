@@ -1,5 +1,5 @@
 package main.uade.edu.ar.enums;
 
-public enum Resultado {
+public enum TipoResultado {
     CRITICO, RESERVADO
 }

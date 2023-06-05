@@ -2,18 +2,21 @@ package main.uade.edu.ar.model;
 
 public class Practica {
     private int id;
+    private int codigo;
     private String nombre;
     private int grupo;
     private float horasFaltantes;
-    private boolean PracticaComenzada;
 
+    // private boolean practicaComenzada; // TODO: Deberia ser un Datetime?
+    private Resultado resultado;
 
-    public Practica(int id, String nombre, int grupo, float horasFaltantes, boolean practicaComenzada) {
+    public Practica(int id, int codigo, String nombre, int grupo, float horasFaltantes, Resultado resultado) {
         this.id = id;
+        this.codigo = codigo;
         this.nombre = nombre;
         this.grupo = grupo;
         this.horasFaltantes = horasFaltantes;
-        PracticaComenzada = practicaComenzada;
+        this.resultado = resultado;
     }
 
     public int getId() {
@@ -22,6 +25,14 @@ public class Practica {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(int codigo) {
+        this.codigo = codigo;
     }
 
     public String getNombre() {
@@ -48,11 +59,11 @@ public class Practica {
         this.horasFaltantes = horasFaltantes;
     }
 
-    public boolean isPracticaComenzada() {
-        return PracticaComenzada;
+    public Resultado getResultado() {
+        return resultado;
     }
 
-    public void setPracticaComenzada(boolean practicaComenzada) {
-        PracticaComenzada = practicaComenzada;
+    public void setResultado(Resultado resultado) {
+        this.resultado = resultado;
     }
 }

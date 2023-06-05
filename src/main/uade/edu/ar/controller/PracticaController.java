@@ -2,7 +2,9 @@ package main.uade.edu.ar.controller;
 
 import main.uade.edu.ar.dao.PracticaDao;
 import main.uade.edu.ar.dto.PracticaDto;
+import main.uade.edu.ar.dto.ResultadoDto;
 import main.uade.edu.ar.model.Practica;
+import main.uade.edu.ar.model.Resultado;
 
 import java.util.List;
 
@@ -38,7 +40,7 @@ public class PracticaController {
     }
     public void modificarPractica(PracticaDto practicaDTO) throws Exception {
         Practica practica = practicas.stream()
-                .filter(s -> s.getId() == practicaDTO.getId())
+                .filter(p -> p.getId() == practicaDTO.getId())
                 .findFirst()
                 .orElse(null);
 
@@ -60,20 +62,37 @@ public class PracticaController {
     public static Practica toModel(PracticaDto practicaDto) {
         return new Practica(
                 practicaDto.getId(),
+                practicaDto.getCodigo(),
                 practicaDto.getNombre(),
                 practicaDto.getGrupo(),
                 practicaDto.getHorasFaltantes(),
-                practicaDto.isPracticaComenzada()
+                toModel(practicaDto.getResultado())
         );
     }
+
     public static PracticaDto toDto(Practica practica) {
         return new PracticaDto(
                 practica.getId(),
+                practica.getCodigo(),
                 practica.getNombre(),
                 practica.getGrupo(),
                 practica.getHorasFaltantes(),
-                practica.isPracticaComenzada()
-
+                toDto(practica.getResultado())
         );
     }
+
+    public static ResultadoDto toDto(Resultado resultado) {
+        return new ResultadoDto(
+                resultado.getValor(),
+                resultado.getTipoResultado()
+        );
+    }
+
+    public static Resultado toModel(ResultadoDto resultadoDto) {
+        return new Resultado(
+                resultadoDto.getValor(),
+                resultadoDto.getTipoResultado()
+        );
+    }
+
 }

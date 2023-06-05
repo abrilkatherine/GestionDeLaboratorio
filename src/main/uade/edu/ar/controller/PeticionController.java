@@ -1,9 +1,7 @@
 package main.uade.edu.ar.controller;
 
 import main.uade.edu.ar.dao.PeticionDao;
-import main.uade.edu.ar.dto.PacienteDto;
 import main.uade.edu.ar.dto.PeticionDto;
-import main.uade.edu.ar.model.Paciente;
 import main.uade.edu.ar.model.Peticion;
 
 import java.util.List;
@@ -72,7 +70,9 @@ public class PeticionController {
                 peticionDto.getObraSocial(),
                 peticionDto.getFechaCarga(),
                 peticionDto.getFechaEntrega(),
-                peticionDto.getResultado()
+                peticionDto.getResultado(),
+                peticionDto.getPaciente(),
+                peticionDto.getPracticas()
         );
     }
 
@@ -82,7 +82,9 @@ public class PeticionController {
                 peticion.getObraSocial(),
                 peticion.getFechaCarga(),
                 peticion.getFechaEntrega(),
-                peticion.getResultado()
+                peticion.getResultado(),
+                peticion.getPaciente(),
+                peticion.getPracticas()
 
         );
     }

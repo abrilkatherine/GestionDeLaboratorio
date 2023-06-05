@@ -2,17 +2,23 @@ package main.uade.edu.ar.dto;
 
 public class PracticaDto {
     private int id;
+    private int codigo;
     private String nombre;
     private int grupo;
     private float horasFaltantes;
-    private boolean PracticaComenzada;
 
-    public PracticaDto(int id, String nombre, int grupo, float horasFaltantes, boolean practicaComenzada) {
+    private ResultadoDto resultado;
+
+    //private boolean practicaComenzada;
+
+
+    public PracticaDto(int id, int codigo, String nombre, int grupo, float horasFaltantes, ResultadoDto resultado) {
         this.id = id;
+        this.codigo = codigo;
         this.nombre = nombre;
         this.grupo = grupo;
         this.horasFaltantes = horasFaltantes;
-        PracticaComenzada = practicaComenzada;
+        this.resultado = resultado;
     }
 
     public int getId() {
@@ -21,6 +27,14 @@ public class PracticaDto {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(int codigo) {
+        this.codigo = codigo;
     }
 
     public String getNombre() {
@@ -47,11 +61,11 @@ public class PracticaDto {
         this.horasFaltantes = horasFaltantes;
     }
 
-    public boolean isPracticaComenzada() {
-        return PracticaComenzada;
+    public ResultadoDto getResultado() {
+        return resultado;
     }
 
-    public void setPracticaComenzada(boolean practicaComenzada) {
-        PracticaComenzada = practicaComenzada;
+    public void setResultado(ResultadoDto resultado) {
+        this.resultado = resultado;
     }
 }
