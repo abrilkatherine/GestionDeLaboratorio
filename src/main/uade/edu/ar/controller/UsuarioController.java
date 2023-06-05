@@ -24,38 +24,57 @@ public class UsuarioController {
         return usuarioController;
     }
 
-    //TODO: FIX METODOS; add id in model
-//    public UsuarioDto getUsuario(int id) {
-//        return usuarios.stream()
-//                .filter(u -> u.getId() == id)
-//                .findFirst()
-//                .map(UsuarioController::toDto)
-//                .orElse(null);
-//    }
+    public UsuarioDto getUsuario(int id) {
+        return usuarios.stream()
+                .filter(u -> u.getId() == id)
+                .findFirst()
+                .map(UsuarioController::toDto)
+                .orElse(null);
+    }
 
-//    public Usuario crearUsuario(UsuarioDto usuarioDTO) {
-//        if (getUsuario(usuarioDTO.getId()) == null) {
-//            usuarioDao.save(toModel(usuarioDTO));
-//        }
-//        return null;
-//    }
-//
-//    public void actualizarRol(UsuarioDto usuarioDTO) throws Exception {
-//        if (getUsuario(usuarioDTO.getId()) == null) {
-//            usuarioDao.save(toModel(usuarioDTO));
-//        }
-//    }
-//
-//    public void eliminarUsuario() {
-//        Practica usuario = usuarios.stream()
-//                .filter(u -> u.getId() == id)
-//                .findFirst()
-//                .orElse(null);
-//
-//        if (usuario != null) {
-//            usuarioDao.delete(id);
-//            usuarios.remove(usuario);
-//        }
-//    }
+    public Usuario crearUsuario(UsuarioDto usuarioDTO) throws Exception {
+        if (getUsuario(usuarioDTO.getId()) == null) {
+            usuarioDao.save(toModel(usuarioDTO));
+        }
+        return null;
+    }
+
+    public void actualizarRol(UsuarioDto usuarioDTO) throws Exception {
+        if (getUsuario(usuarioDTO.getId()) == null) {
+            usuarioDao.save(toModel(usuarioDTO));
+        }
+    }
+
+    public void eliminarUsuario(int id) throws Exception {
+        Usuario usuario = usuarios.stream()
+                .filter(u -> u.getId() == id)
+                .findFirst()
+                .orElse(null);
+
+        if (usuario != null) {
+            usuarioDao.delete(id);
+            usuarios.remove(usuario);
+        }
+    }
+
+    public static Usuario toModel(UsuarioDto usuarioDto) {
+        return new Usuario(
+                usuarioDto.getId(),
+                usuarioDto.getNombre(),
+                usuarioDto.getContrasenia(),
+                usuarioDto.getNacimiento(),
+                usuarioDto.getRol()
+        );
+    }
+
+    public static UsuarioDto toDto(Usuario usuario) {
+        return new UsuarioDto(
+                usuario.getId(),
+                usuario.getNombre(),
+                usuario.getContrasenia(),
+                usuario.getNacimiento(),
+                usuario.getRol()
+        );
+    }
 }
 

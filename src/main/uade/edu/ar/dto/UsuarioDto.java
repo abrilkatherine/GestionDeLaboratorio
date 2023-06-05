@@ -6,16 +6,26 @@ import java.util.Date;
 
 public class UsuarioDto {
 
+    private int id;
     private String nombre;
-    private String contraseña;
+    private String contrasenia;
     private Date nacimiento;
     private Roles rol;
 
-    public UsuarioDto(String nombre, String contraseña, Date nacimiento, Roles rol) {
+    public UsuarioDto(int id, String nombre, String contraseña, Date nacimiento, Roles rol) {
+        this.id = id;
         this.nombre = nombre;
-        this.contraseña = contraseña;
+        this.contrasenia = contraseña;
         this.nacimiento = nacimiento;
         this.rol = rol;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getNombre() {
@@ -26,12 +36,12 @@ public class UsuarioDto {
         this.nombre = nombre;
     }
 
-    public String getContraseña() {
-        return contraseña;
+    public String getContrasenia() {
+        return contrasenia;
     }
 
-    public void setContraseña(String contraseña) {
-        this.contraseña = contraseña;
+    public void setContrasenia(String contrasenia) {
+        this.contrasenia = contrasenia;
     }
 
     public Date getNacimiento() {

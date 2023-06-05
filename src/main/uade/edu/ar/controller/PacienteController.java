@@ -94,13 +94,13 @@ public class PacienteController {
     public static PacienteDto toDto(Paciente paciente) {
         return new PacienteDto(
                 paciente.getId(),
+                paciente.getEdad(),
+                paciente.getGenero(),
                 paciente.getNombre(),
                 paciente.getDni(),
                 paciente.getDomicilio(),
                 paciente.getEmail(),
-                paciente.getApellido(),
-                paciente.getEdad(),
-                paciente.getGenero()
+                paciente.getApellido()
         );
     }
 

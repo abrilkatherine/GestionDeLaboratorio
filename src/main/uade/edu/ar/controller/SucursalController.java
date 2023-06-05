@@ -66,7 +66,8 @@ public class SucursalController {
         return new Sucursal(
                 sucursalDto.getId(),
                 sucursalDto.getNumero(),
-                sucursalDto.getDireccion()
+                sucursalDto.getDireccion(),
+                UsuarioController.toModel(sucursalDto.getResponsableTecnico())
         );
     }
 
@@ -74,7 +75,8 @@ public class SucursalController {
         return new SucursalDto(
                 sucursal.getId(),
                 sucursal.getNumero(),
-                sucursal.getDireccion()
+                sucursal.getDireccion(),
+                UsuarioController.toDto(sucursal.getResponsableTecnico())
         );
     }
 

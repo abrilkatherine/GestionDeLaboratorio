@@ -18,16 +18,16 @@ public class Main {
             //PACIENTE
             PacienteController pacienteController = PacienteController.getInstance();
 
-            pacienteController.crearPaciente(new PacienteDto(1, "Calabaza", 123, "", "", "pepe", 20, Genero.MASCULINO));
-            pacienteController.crearPaciente(new PacienteDto(2, "Calabaza", 123, "", "", "pepe", 20, Genero.MASCULINO));
+            pacienteController.crearPaciente(new PacienteDto(1, 20, Genero.MASCULINO, "Calabaza", 123, "", "", "pepe"));
+            pacienteController.crearPaciente(new PacienteDto(1, 20, Genero.MASCULINO, "Calabaza", 123, "", "", "pepe"));
             pacienteController.borrarPaciente(1);
-            pacienteController.modificarPaciente(new PacienteDto(2, "Calabaza", 123, "", "", "alpaca", 20, Genero.MASCULINO));
+            pacienteController.modificarPaciente(new PacienteDto(1, 20, Genero.MASCULINO, "Calabacin", 123, "", "", "pepe"));
 
             //SUCURSAL
             SucursalController sucursalController = SucursalController.getInstance();
 
-            sucursalController.crearSucursal(new SucursalDto(1, 222, "calle siempre viva"));
-            sucursalController.modificarSucursal(new SucursalDto(1, 555, "calle siempre viva v2"));
+            sucursalController.crearSucursal(new SucursalDto(1, 222, "calle siempre viva", null));
+            sucursalController.modificarSucursal(new SucursalDto(1, 555, "calle siempre viva v2", null));
             sucursalController.borrarSucursal(1);
 
             //PRACTICAS
