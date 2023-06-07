@@ -13,8 +13,9 @@ public class Peticion {
     private TipoResultado resultado;
     private Paciente paciente;
     private List<Practica> practicas;
+    private Sucursal sucursal;
 
-    public Peticion(int id, String obraSocial, Date fechaCarga, Date fechaEntrega, TipoResultado resultado, Paciente paciente, List<Practica> practicas) {
+    public Peticion(int id, String obraSocial, Date fechaCarga, Date fechaEntrega, TipoResultado resultado, Paciente paciente, List<Practica> practicas, Sucursal sucursal) {
         this.id = id;
         this.obraSocial = obraSocial;
         this.fechaCarga = fechaCarga;
@@ -22,6 +23,7 @@ public class Peticion {
         this.resultado = resultado;
         this.paciente = paciente;
         this.practicas = practicas;
+        this.sucursal = sucursal;
     }
 
     public int getId() {
@@ -78,5 +80,13 @@ public class Peticion {
 
     public void setPracticas(List<Practica> practicas) {
         this.practicas = practicas;
+    }
+
+    public Sucursal getSucursal() {
+        return sucursal;
+    }
+
+    public void setSucursal(Sucursal sucursal) {
+        this.sucursal = sucursal;
     }
 }

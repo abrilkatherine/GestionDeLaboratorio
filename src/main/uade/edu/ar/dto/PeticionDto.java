@@ -3,6 +3,7 @@ package main.uade.edu.ar.dto;
 import main.uade.edu.ar.enums.TipoResultado;
 import main.uade.edu.ar.model.Paciente;
 import main.uade.edu.ar.model.Practica;
+import main.uade.edu.ar.model.Sucursal;
 
 import java.util.Date;
 
@@ -17,8 +18,9 @@ public class PeticionDto {
     private TipoResultado resultado;
     private Paciente paciente;
     private List<Practica> practicas;
+    private Sucursal sucursal;
 
-    public PeticionDto(int id, String obraSocial, Date fechaCarga, Date fechaEntrega, TipoResultado resultado, Paciente paciente, List<Practica> practicas) {
+    public PeticionDto(int id, String obraSocial, Date fechaCarga, Date fechaEntrega, TipoResultado resultado, Paciente paciente, List<Practica> practicas, Sucursal sucursal) {
         this.id = id;
         this.obraSocial = obraSocial;
         this.fechaCarga = fechaCarga;
@@ -26,6 +28,7 @@ public class PeticionDto {
         this.resultado = resultado;
         this.paciente = paciente;
         this.practicas = practicas;
+        this.sucursal = sucursal;
     }
 
     public int getId() {
@@ -82,5 +85,13 @@ public class PeticionDto {
 
     public void setPracticas(List<Practica> practicas) {
         this.practicas = practicas;
+    }
+
+    public Sucursal getSucursal() {
+        return sucursal;
+    }
+
+    public void setSucursal(Sucursal sucursal) {
+        this.sucursal = sucursal;
     }
 }

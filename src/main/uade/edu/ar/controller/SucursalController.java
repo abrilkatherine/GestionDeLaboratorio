@@ -1,8 +1,11 @@
 package main.uade.edu.ar.controller;
 
 import main.uade.edu.ar.dao.SucursalDao;
+import main.uade.edu.ar.dao.UsuarioDao;
 import main.uade.edu.ar.dto.SucursalDto;
+import main.uade.edu.ar.dto.UsuarioDto;
 import main.uade.edu.ar.model.Sucursal;
+import main.uade.edu.ar.model.Usuario;
 
 import java.util.List;
 
@@ -11,6 +14,8 @@ public class SucursalController {
     private static SucursalController sucursalController;
     private static SucursalDao sucursalDao;
     private static List<Sucursal> sucursales;
+    private static UsuarioDao usuarioDao;
+    private static List<Usuario> usuarios;
 
     private SucursalController() {
     }
@@ -19,12 +24,15 @@ public class SucursalController {
         if (sucursalController == null) {
             sucursalController = new SucursalController();
             sucursalDao = new SucursalDao();
+            usuarioDao = new UsuarioDao();
             sucursales = sucursalDao.getAll();
+            usuarios = usuarioDao.getAll();
         }
 
         return sucursalController;
     }
 
+    //Sucursal
     public SucursalDto getSucursalPorId(int id) {
         return sucursales.stream()
                 .filter(s -> s.getId() == id)
@@ -67,7 +75,7 @@ public class SucursalController {
                 sucursalDto.getId(),
                 sucursalDto.getNumero(),
                 sucursalDto.getDireccion(),
-                UsuarioController.toModel(sucursalDto.getResponsableTecnico())
+                SucursalController.toModel(sucursalDto.getResponsableTecnico())
         );
     }
 
@@ -76,7 +84,62 @@ public class SucursalController {
                 sucursal.getId(),
                 sucursal.getNumero(),
                 sucursal.getDireccion(),
-                UsuarioController.toDto(sucursal.getResponsableTecnico())
+                SucursalController.toDto(sucursal.getResponsableTecnico())
+        );
+    }
+
+    //Usuario
+
+    public UsuarioDto getUsuario(int id) {
+        return usuarios.stream()
+                .filter(u -> u.getId() == id)
+                .findFirst()
+                .map(SucursalController::toDto)
+                .orElse(null);
+    }
+
+    public Usuario crearUsuario(UsuarioDto usuarioDTO) throws Exception {
+        if (getUsuario(usuarioDTO.getId()) == null) {
+            usuarioDao.save(toModel(usuarioDTO));
+        }
+        return null;
+    }
+
+    public void actualizarRol(UsuarioDto usuarioDTO) throws Exception {
+        if (getUsuario(usuarioDTO.getId()) == null) {
+            usuarioDao.save(toModel(usuarioDTO));
+        }
+    }
+
+    public void eliminarUsuario(int id) throws Exception {
+        Usuario usuario = usuarios.stream()
+                .filter(u -> u.getId() == id)
+                .findFirst()
+                .orElse(null);
+
+        if (usuario != null) {
+            usuarioDao.delete(id);
+            usuarios.remove(usuario);
+        }
+    }
+
+    public static Usuario toModel(UsuarioDto usuarioDto) {
+        return new Usuario(
+                usuarioDto.getId(),
+                usuarioDto.getNombre(),
+                usuarioDto.getContrasenia(),
+                usuarioDto.getNacimiento(),
+                usuarioDto.getRol()
+        );
+    }
+
+    public static UsuarioDto toDto(Usuario usuario) {
+        return new UsuarioDto(
+                usuario.getId(),
+                usuario.getNombre(),
+                usuario.getContrasenia(),
+                usuario.getNacimiento(),
+                usuario.getRol()
         );
     }
 

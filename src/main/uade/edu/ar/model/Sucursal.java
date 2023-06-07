@@ -2,6 +2,8 @@ package main.uade.edu.ar.model;
 
 import main.uade.edu.ar.dto.UsuarioDto;
 
+import java.util.List;
+
 public class Sucursal {
     private int id;
     private int numero;

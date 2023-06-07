@@ -2,12 +2,14 @@ package main.uade.edu.ar.controller;
 
 import main.uade.edu.ar.dao.PeticionDao;
 import main.uade.edu.ar.dao.PracticaDao;
+import main.uade.edu.ar.dao.SucursalDao;
 import main.uade.edu.ar.dto.PeticionDto;
 import main.uade.edu.ar.dto.PracticaDto;
 import main.uade.edu.ar.dto.ResultadoDto;
 import main.uade.edu.ar.model.Peticion;
 import main.uade.edu.ar.model.Practica;
 import main.uade.edu.ar.model.Resultado;
+import main.uade.edu.ar.model.Sucursal;
 
 import java.util.List;
 
@@ -17,7 +19,6 @@ public class PeticionYPracticaController {
     private static PracticaDao practicaDao;
     private static List<Peticion> peticiones;
     private static List<Practica> practicas;
-
     private PeticionYPracticaController() {
     }
 
@@ -84,7 +85,8 @@ public class PeticionYPracticaController {
                 peticionDto.getFechaEntrega(),
                 peticionDto.getResultado(),
                 peticionDto.getPaciente(),
-                peticionDto.getPracticas()
+                peticionDto.getPracticas(),
+                peticionDto.getSucursal()
         );
     }
 
@@ -96,7 +98,8 @@ public class PeticionYPracticaController {
                 peticion.getFechaEntrega(),
                 peticion.getResultado(),
                 peticion.getPaciente(),
-                peticion.getPracticas()
+                peticion.getPracticas(),
+                peticion.getSucursal()
 
         );
     }
