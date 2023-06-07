@@ -2,14 +2,10 @@ package main.uade.edu.ar.controller;
 
 import main.uade.edu.ar.dao.PeticionDao;
 import main.uade.edu.ar.dao.PracticaDao;
-import main.uade.edu.ar.dao.SucursalDao;
 import main.uade.edu.ar.dto.PeticionDto;
 import main.uade.edu.ar.dto.PracticaDto;
 import main.uade.edu.ar.dto.ResultadoDto;
-import main.uade.edu.ar.model.Peticion;
-import main.uade.edu.ar.model.Practica;
-import main.uade.edu.ar.model.Resultado;
-import main.uade.edu.ar.model.Sucursal;
+import main.uade.edu.ar.model.*;
 
 import java.util.List;
 
@@ -46,7 +42,9 @@ public class PeticionYPracticaController {
 
     public void crearPeticion(PeticionDto peticionDTO) throws Exception {
         if (getPeticion(peticionDTO.getId()) == null) {
-            peticionDao.save(toModel(peticionDTO));
+            Peticion peticion = toModel(peticionDTO);
+            peticionDao.save(peticion);
+            peticiones.add(peticion);
         }
     }
 
@@ -115,7 +113,9 @@ public class PeticionYPracticaController {
     }
     public void crearPractica(PracticaDto practicaDTO) throws Exception {
         if (getPractica(practicaDTO.getId()) == null) {
+            Practica practica = toModel(practicaDTO);
             practicaDao.save(toModel(practicaDTO));
+            practicas.add(practica);
         }
     }
     public void modificarPractica(PracticaDto practicaDTO) throws Exception {

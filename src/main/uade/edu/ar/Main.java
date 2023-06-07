@@ -26,7 +26,7 @@ public class Main {
             pacienteController.crearPaciente(new PacienteDto(1, 20, Genero.MASCULINO, "Calabaza", 123, "", "", "pepe"));
             pacienteController.crearPaciente(new PacienteDto(2, 25, Genero.MASCULINO, "Calabaza", 123, "", "", "pepe"));
             pacienteController.modificarPaciente(new PacienteDto(1, 20, Genero.MASCULINO, "Test", 123, "", "", "pepe"));
-            pacienteController.borrarPaciente(1);
+            pacienteController.borrarPaciente(2);
 
             //SUCURSAL y USUARIO
             SucursalYUsuarioController sucursalController = SucursalYUsuarioController.getInstance();
@@ -50,10 +50,8 @@ public class Main {
             peticionYPracticaController.modificarPeticion(new PeticionDto(4, "Osde", fechaPeticion, fechaEntrega, TipoResultado.RESERVADO, null, null, new Sucursal(1, 2, "", new Usuario(1, "", "", fechaEntrega, Roles.ADMINISTRADOR))));
             peticionYPracticaController.borrarPeticion(4);
 
-
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 }

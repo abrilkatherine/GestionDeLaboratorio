@@ -4,6 +4,7 @@ import main.uade.edu.ar.dao.SucursalDao;
 import main.uade.edu.ar.dao.UsuarioDao;
 import main.uade.edu.ar.dto.SucursalDto;
 import main.uade.edu.ar.dto.UsuarioDto;
+import main.uade.edu.ar.model.Practica;
 import main.uade.edu.ar.model.Sucursal;
 import main.uade.edu.ar.model.Usuario;
 
@@ -43,7 +44,9 @@ public class SucursalYUsuarioController {
 
     public void crearSucursal(SucursalDto sucursalDTO) throws Exception {
         if (getSucursalPorId(sucursalDTO.getId()) == null) {
+            Sucursal sucursal = toModel(sucursalDTO);
             sucursalDao.save(toModel(sucursalDTO));
+            sucursales.add(sucursal);
         }
     }
 
@@ -100,7 +103,9 @@ public class SucursalYUsuarioController {
 
     public Usuario crearUsuario(UsuarioDto usuarioDTO) throws Exception {
         if (getUsuario(usuarioDTO.getId()) == null) {
-            usuarioDao.save(toModel(usuarioDTO));
+            Usuario usuario = toModel(usuarioDTO);
+            usuarioDao.save(usuario);
+            usuarios.add(usuario);
         }
         return null;
     }

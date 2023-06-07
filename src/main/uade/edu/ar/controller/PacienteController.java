@@ -44,7 +44,9 @@ public class PacienteController {
 
     public void crearPaciente(PacienteDto pacienteDTO) throws Exception {
         if (getPacientePorDni(pacienteDTO.getDni()) == null) {
-            pacienteDao.save(toModel(pacienteDTO));
+            Paciente paciente = toModel(pacienteDTO);
+            pacienteDao.save(paciente);
+            pacientes.add(paciente);
         }
     }
 
