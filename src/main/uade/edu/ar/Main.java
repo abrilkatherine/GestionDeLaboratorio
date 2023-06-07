@@ -47,8 +47,8 @@ public class Main {
             peticionYPracticaController.modificarPractica(new PracticaDto(5, 11, "Practica 2", 23, 3, new ResultadoDto("40", TipoResultado.RESERVADO)));
             peticionYPracticaController.borrarPractica(5);
 
-            peticionYPracticaController.crearPeticion(new PeticionDto(4, "Osde", fechaPeticion, fechaEntrega, TipoResultado.CRITICO, new Paciente(1, "Test", 12345678 ,"Calle siempre viva", "test_tpo@gmail.com", "Garcia", 24, Genero.FEMENINO), null, new Sucursal(1, 2, "Calle siempre viva", new Usuario(1, "Juan", "", fechaEntrega, Roles.LABORTISTA))));
-            peticionYPracticaController.modificarPeticion(new PeticionDto(4, "Swiss Medical", fechaPeticion, fechaEntrega, TipoResultado.RESERVADO, new Paciente(1, "Test", 12345678 ,"Calle siempre viva", "test_tpo@gmail.com", "Garcia", 24, Genero.FEMENINO), null, new Sucursal(1, 2, "Calle siempre viva", new Usuario(1, "Juan", "", fechaEntrega, Roles.ADMINISTRADOR))));
+            peticionYPracticaController.crearPeticion(new PeticionDto(4, "Osde", fechaPeticion, fechaEntrega, TipoResultado.CRITICO, new Paciente(1, "Test", 12345678 ,"Calle siempre viva", "test_tpo@gmail.com", "Garcia", 24, Genero.FEMENINO), null, new Sucursal(1, 2, "Calle siempre viva", new Usuario(1, "Juan", "1234", fechaEntrega, Roles.LABORTISTA))));
+            peticionYPracticaController.modificarPeticion(new PeticionDto(4, "Swiss Medical", fechaPeticion, fechaEntrega, TipoResultado.RESERVADO, new Paciente(1, "Test", 12345678 ,"Calle siempre viva", "test_tpo@gmail.com", "Garcia", 24, Genero.FEMENINO), null, new Sucursal(1, 2, "Calle siempre viva", new Usuario(1, "Juan", "1234", fechaEntrega, Roles.ADMINISTRADOR))));
             peticionYPracticaController.borrarPeticion(4);
 
         } catch (Exception e) {
