@@ -6,8 +6,6 @@ public class Practica {
     private String nombre;
     private int grupo;
     private float horasFaltantes;
-
-    // private boolean practicaComenzada; // TODO: Deberia ser un Datetime?
     private Resultado resultado;
 
     public Practica(int id, int codigo, String nombre, int grupo, float horasFaltantes, Resultado resultado) {
