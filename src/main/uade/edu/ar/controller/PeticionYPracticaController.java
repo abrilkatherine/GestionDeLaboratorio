@@ -111,6 +111,7 @@ public class PeticionYPracticaController {
                 .map(PeticionYPracticaController::toDto)
                 .orElse(null);
     }
+
     public void crearPractica(PracticaDto practicaDTO) throws Exception {
         if (getPractica(practicaDTO.getId()) == null) {
             Practica practica = toModel(practicaDTO);
@@ -128,6 +129,7 @@ public class PeticionYPracticaController {
             practicaDao.update(toModel(practicaDTO));
         }
     }
+
     public void borrarPractica(int id) throws Exception {
         Practica practica = practicas.stream()
                 .filter(p -> p.getId() == id)
@@ -139,6 +141,7 @@ public class PeticionYPracticaController {
             practicas.remove(practica);
         }
     }
+
     public static Practica toModel(PracticaDto practicaDto) {
         return new Practica(
                 practicaDto.getId(),
@@ -174,6 +177,4 @@ public class PeticionYPracticaController {
                 resultadoDto.getTipoResultado()
         );
     }
-
-
 }

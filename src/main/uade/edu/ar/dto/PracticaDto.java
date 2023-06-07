@@ -6,10 +6,7 @@ public class PracticaDto {
     private String nombre;
     private int grupo;
     private float horasFaltantes;
-
     private ResultadoDto resultado;
-
-    //private boolean practicaComenzada;
 
 
     public PracticaDto(int id, int codigo, String nombre, int grupo, float horasFaltantes, ResultadoDto resultado) {

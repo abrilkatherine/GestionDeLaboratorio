@@ -4,7 +4,6 @@ import main.uade.edu.ar.dao.SucursalDao;
 import main.uade.edu.ar.dao.UsuarioDao;
 import main.uade.edu.ar.dto.SucursalDto;
 import main.uade.edu.ar.dto.UsuarioDto;
-import main.uade.edu.ar.model.Practica;
 import main.uade.edu.ar.model.Sucursal;
 import main.uade.edu.ar.model.Usuario;
 
@@ -147,5 +146,4 @@ public class SucursalYUsuarioController {
                 usuario.getRol()
         );
     }
-
 }
