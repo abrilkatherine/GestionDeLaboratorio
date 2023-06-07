@@ -5,6 +5,7 @@ import main.uade.edu.ar.dto.*;
 import main.uade.edu.ar.enums.Genero;
 import main.uade.edu.ar.enums.Roles;
 import main.uade.edu.ar.enums.TipoResultado;
+import main.uade.edu.ar.model.Paciente;
 import main.uade.edu.ar.model.Sucursal;
 import main.uade.edu.ar.model.Usuario;
 
@@ -42,12 +43,12 @@ public class Main {
             //PRACTICAS Y PETICIONES
             PeticionYPracticaController peticionYPracticaController = PeticionYPracticaController.getInstance();
 
-            peticionYPracticaController.crearPractica(new PracticaDto(5, 10, "Practica 1", 22, 3, new ResultadoDto("lalala", TipoResultado.CRITICO)));
-            peticionYPracticaController.modificarPractica(new PracticaDto(5, 11, "Practica 2", 23, 3, new ResultadoDto("lalala", TipoResultado.RESERVADO)));
+            peticionYPracticaController.crearPractica(new PracticaDto(5, 10, "Practica 1", 22, 3, new ResultadoDto("50", TipoResultado.CRITICO)));
+            peticionYPracticaController.modificarPractica(new PracticaDto(5, 11, "Practica 2", 23, 3, new ResultadoDto("40", TipoResultado.RESERVADO)));
             peticionYPracticaController.borrarPractica(5);
 
-            peticionYPracticaController.crearPeticion(new PeticionDto(4, "Osde", fechaPeticion, fechaEntrega, TipoResultado.CRITICO, null, null, new Sucursal(1, 2, "", new Usuario(1, "", "", fechaEntrega, Roles.LABORTISTA))));
-            peticionYPracticaController.modificarPeticion(new PeticionDto(4, "Osde", fechaPeticion, fechaEntrega, TipoResultado.RESERVADO, null, null, new Sucursal(1, 2, "", new Usuario(1, "", "", fechaEntrega, Roles.ADMINISTRADOR))));
+            peticionYPracticaController.crearPeticion(new PeticionDto(4, "Osde", fechaPeticion, fechaEntrega, TipoResultado.CRITICO, new Paciente(1, "Test", 12345678 ,"Calle siempre viva", "test_tpo@gmail.com", "Garcia", 24, Genero.FEMENINO), null, new Sucursal(1, 2, "Calle siempre viva", new Usuario(1, "Juan", "", fechaEntrega, Roles.LABORTISTA))));
+            peticionYPracticaController.modificarPeticion(new PeticionDto(4, "Swiss Medical", fechaPeticion, fechaEntrega, TipoResultado.RESERVADO, new Paciente(1, "Test", 12345678 ,"Calle siempre viva", "test_tpo@gmail.com", "Garcia", 24, Genero.FEMENINO), null, new Sucursal(1, 2, "Calle siempre viva", new Usuario(1, "Juan", "", fechaEntrega, Roles.ADMINISTRADOR))));
             peticionYPracticaController.borrarPeticion(4);
 
         } catch (Exception e) {
