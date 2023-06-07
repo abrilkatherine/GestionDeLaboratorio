@@ -29,7 +29,7 @@ public class Main {
             pacienteController.borrarPaciente(1);
 
             //SUCURSAL y USUARIO
-            SucursalController sucursalController = SucursalController.getInstance();
+            SucursalYUsuarioController sucursalController = SucursalYUsuarioController.getInstance();
 
             sucursalController.crearSucursal(new SucursalDto(1, 222, "calle siempre viva", new UsuarioDto(1, "", "", formatoFecha.parse("2023-06-01"), Roles.LABORTISTA)));
             sucursalController.modificarSucursal(new SucursalDto(1, 555, "calle siempre viva v2", new UsuarioDto(1, "", "", formatoFecha.parse("2023-06-01"), Roles.LABORTISTA)));

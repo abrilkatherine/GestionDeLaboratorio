@@ -9,20 +9,20 @@ import main.uade.edu.ar.model.Usuario;
 
 import java.util.List;
 
-public class SucursalController {
+public class SucursalYUsuarioController {
 
-    private static SucursalController sucursalController;
+    private static SucursalYUsuarioController sucursalController;
     private static SucursalDao sucursalDao;
     private static List<Sucursal> sucursales;
     private static UsuarioDao usuarioDao;
     private static List<Usuario> usuarios;
 
-    private SucursalController() {
+    private SucursalYUsuarioController() {
     }
 
-    public static synchronized SucursalController getInstance() throws Exception {
+    public static synchronized SucursalYUsuarioController getInstance() throws Exception {
         if (sucursalController == null) {
-            sucursalController = new SucursalController();
+            sucursalController = new SucursalYUsuarioController();
             sucursalDao = new SucursalDao();
             usuarioDao = new UsuarioDao();
             sucursales = sucursalDao.getAll();
@@ -37,7 +37,7 @@ public class SucursalController {
         return sucursales.stream()
                 .filter(s -> s.getId() == id)
                 .findFirst()
-                .map(SucursalController::toDto)
+                .map(SucursalYUsuarioController::toDto)
                 .orElse(null);
     }
 
@@ -75,7 +75,7 @@ public class SucursalController {
                 sucursalDto.getId(),
                 sucursalDto.getNumero(),
                 sucursalDto.getDireccion(),
-                SucursalController.toModel(sucursalDto.getResponsableTecnico())
+                SucursalYUsuarioController.toModel(sucursalDto.getResponsableTecnico())
         );
     }
 
@@ -84,7 +84,7 @@ public class SucursalController {
                 sucursal.getId(),
                 sucursal.getNumero(),
                 sucursal.getDireccion(),
-                SucursalController.toDto(sucursal.getResponsableTecnico())
+                SucursalYUsuarioController.toDto(sucursal.getResponsableTecnico())
         );
     }
 
@@ -94,7 +94,7 @@ public class SucursalController {
         return usuarios.stream()
                 .filter(u -> u.getId() == id)
                 .findFirst()
-                .map(SucursalController::toDto)
+                .map(SucursalYUsuarioController::toDto)
                 .orElse(null);
     }
 
