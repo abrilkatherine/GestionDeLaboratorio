@@ -1,7 +1,5 @@
 package main.uade.edu.ar.model;
 
-import main.uade.edu.ar.enums.TipoResultado;
-
 import java.util.Date;
 import java.util.List;
 
@@ -19,7 +17,6 @@ public class Peticion {
         this.fechaCarga = fechaCarga;
         this.fechaEntrega = fechaEntrega;
         this.sucursal = sucursal;
-        this.practicas = practicas;
     }
 
     public Peticion(int id, String obraSocial, Date fechaCarga, Date fechaEntrega, Sucursal sucursal, List<Practica> practicas) {
