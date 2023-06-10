@@ -13,13 +13,22 @@ public class Peticion {
     private List<Practica> practicas;
     private Sucursal sucursal;
 
-    public Peticion(int id, String obraSocial, Date fechaCarga, Date fechaEntrega, List<Practica> practicas, Sucursal sucursal) {
+    public Peticion(int id, String obraSocial, Date fechaCarga, Date fechaEntrega, Sucursal sucursal) {
         this.id = id;
         this.obraSocial = obraSocial;
         this.fechaCarga = fechaCarga;
         this.fechaEntrega = fechaEntrega;
-        this.practicas = practicas;
         this.sucursal = sucursal;
+        this.practicas = practicas;
+    }
+
+    public Peticion(int id, String obraSocial, Date fechaCarga, Date fechaEntrega, Sucursal sucursal, List<Practica> practicas) {
+        this.id = id;
+        this.obraSocial = obraSocial;
+        this.fechaCarga = fechaCarga;
+        this.fechaEntrega = fechaEntrega;
+        this.sucursal = sucursal;
+        this.practicas = practicas;
     }
 
     public int getId() {

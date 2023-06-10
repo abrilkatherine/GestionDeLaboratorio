@@ -6,7 +6,9 @@ import main.uade.edu.ar.dto.PracticaDto;
 import main.uade.edu.ar.dto.ResultadoDto;
 import main.uade.edu.ar.model.*;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class PeticionYPracticaController {
     private static PeticionYPracticaController peticionYPracticaController;
@@ -76,20 +78,19 @@ public class PeticionYPracticaController {
                 peticionDto.getObraSocial(),
                 peticionDto.getFechaCarga(),
                 peticionDto.getFechaEntrega(),
-                peticionDto.getPracticas(),
-                peticionDto.getSucursal()
+                SucursalYUsuarioController.toModel(peticionDto.getSucursal()),
+                toModel(peticionDto.getPracticas())
         );
     }
 
-        public static PeticionDto toDto(Peticion peticion) {
+    public static PeticionDto toDto(Peticion peticion) {
         return new PeticionDto(
                 peticion.getId(),
                 peticion.getObraSocial(),
                 peticion.getFechaCarga(),
                 peticion.getFechaEntrega(),
-                peticion.getPracticas(),
-                peticion.getSucursal()
-
+                SucursalYUsuarioController.toDto(peticion.getSucursal()),
+                toDto(peticion.getPracticas())
         );
     }
 
@@ -155,6 +156,26 @@ public class PeticionYPracticaController {
         );
     }
 
+    private static List<Practica> toModel(List<PracticaDto> practicasDto) {
+        if (practicasDto == null) {
+            return Collections.emptyList();
+        }
+
+        return practicasDto.stream()
+                .map(PeticionYPracticaController::toModel)
+                .collect(Collectors.toList());
+    }
+
+    private static List<PracticaDto> toDto(List<Practica> practicas) {
+        if (practicas == null) {
+            return Collections.emptyList();
+        }
+
+        return practicas.stream()
+                .map(PeticionYPracticaController::toDto)
+                .collect(Collectors.toList());
+    }
+
     public static ResultadoDto toDto(Resultado resultado) {
         return new ResultadoDto(
                 resultado.getValor(),
@@ -163,9 +184,14 @@ public class PeticionYPracticaController {
     }
 
     public static Resultado toModel(ResultadoDto resultadoDto) {
+        if (resultadoDto == null) {
+            return null;
+        }
+
         return new Resultado(
                 resultadoDto.getValor(),
                 resultadoDto.getTipoResultado()
         );
     }
+
 }

@@ -8,6 +8,13 @@ public class PracticaDto {
     private float horasFaltantes;
     private ResultadoDto resultado;
 
+    public PracticaDto(int id, int codigo, String nombre, int grupo, float horasFaltantes) {
+        this.id = id;
+        this.codigo = codigo;
+        this.nombre = nombre;
+        this.grupo = grupo;
+        this.horasFaltantes = horasFaltantes;
+    }
 
     public PracticaDto(int id, int codigo, String nombre, int grupo, float horasFaltantes, ResultadoDto resultado) {
         this.id = id;

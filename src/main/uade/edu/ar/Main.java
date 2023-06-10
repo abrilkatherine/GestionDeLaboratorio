@@ -1,61 +1,35 @@
 package main.uade.edu.ar;
 
 import main.uade.edu.ar.controller.*;
-import main.uade.edu.ar.dto.*;
-import main.uade.edu.ar.enums.Genero;
+import main.uade.edu.ar.dto.PeticionDto;
+import main.uade.edu.ar.dto.PracticaDto;
+import main.uade.edu.ar.dto.SucursalDto;
+import main.uade.edu.ar.dto.UsuarioDto;
 import main.uade.edu.ar.enums.Roles;
-import main.uade.edu.ar.enums.TipoResultado;
-import main.uade.edu.ar.model.Sucursal;
-import main.uade.edu.ar.model.Usuario;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.List;
 
+import static main.uade.edu.ar.util.DateUtil.getFecha;
 
 public class Main {
     public static void main(String[] args) {
         try {
-
             // Controller peticiones, prácticas y resultados
-            PeticionYPracticaController peticionYPracticaController = PeticionYPracticaController.getInstance();
-
-            /*
-            SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
-            Date fechaPeticion = formatoFecha.parse("2023-06-01");
-            Date fechaEntrega = formatoFecha.parse("2023-06-04");
-
-            //PACIENTE
-            PacienteController pacienteController = PacienteController.getInstance();
-
-            pacienteController.crearPaciente(new PacienteDto(1, 20, Genero.MASCULINO, "Calabaza", 123, "", "", "pepe"));
-            pacienteController.crearPaciente(new PacienteDto(2, 25, Genero.MASCULINO, "Calabaza", 123, "", "", "pepe"));
-            pacienteController.modificarPaciente(new PacienteDto(1, 20, Genero.MASCULINO, "Test", 123, "", "", "pepe"));
-            pacienteController.borrarPaciente(2);
-
-            //SUCURSAL y USUARIO
-            SucursalYUsuarioController sucursalController = SucursalYUsuarioController.getInstance();
-
-            sucursalController.crearSucursal(new SucursalDto(1, 222, "calle siempre viva", new UsuarioDto(1, "", "", formatoFecha.parse("2023-06-01"), Roles.LABORTISTA)));
-            sucursalController.modificarSucursal(new SucursalDto(1, 555, "calle siempre viva v2", new UsuarioDto(1, "", "", formatoFecha.parse("2023-06-01"), Roles.LABORTISTA)));
-            sucursalController.borrarSucursal(1);
-
-            sucursalController.crearUsuario(new UsuarioDto(1, "Didy", "1234", fechaEntrega, Roles.LABORTISTA));
-            sucursalController.actualizarRol(new UsuarioDto(1, "Didy", "1234", fechaEntrega, Roles.ADMINISTRADOR));
-            sucursalController.eliminarUsuario(1);
-
-
-
-            peticionYPracticaController.crearPractica(new PracticaDto(5, 10, "Practica 1", 22, 3, new ResultadoDto("50", TipoResultado.CRITICO)));
-            peticionYPracticaController.modificarPractica(new PracticaDto(5, 11, "Practica 2", 23, 3, new ResultadoDto("40", TipoResultado.RESERVADO)));
-            peticionYPracticaController.borrarPractica(5);
-
-            peticionYPracticaController.crearPeticion(new PeticionDto(4, "Osde", fechaPeticion, fechaEntrega, TipoResultado.CRITICO, null, new Sucursal(1, 2, "Calle siempre viva", new Usuario(1, "Juan", "1234", fechaEntrega, Roles.LABORTISTA))));
-            peticionYPracticaController.modificarPeticion(new PeticionDto(4, "Swiss Medical", fechaPeticion, fechaEntrega, TipoResultado.RESERVADO, null, new Sucursal(1, 2, "Calle siempre viva", new Usuario(1, "Juan", "1234", fechaEntrega, Roles.ADMINISTRADOR))));
-            peticionYPracticaController.borrarPeticion(4);
-            */
-
+            PeticionYPracticaController peticionesController = PeticionYPracticaController.getInstance();
+            testPeticiones(peticionesController);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
+    private static void testPeticiones(PeticionYPracticaController peticionesController) throws Exception {
+        UsuarioDto responsable = new UsuarioDto(1, "Hugo", "", getFecha("1990-06-04"), Roles.ADMINISTRADOR);
+        SucursalDto sucursal = new SucursalDto(1, 100, "Av Santa Fe", responsable);
+        PracticaDto practica = new PracticaDto(1, 999, "Análisis de orina", 3, 3);
+
+        // ABM Peticiones
+        peticionesController.crearPeticion(new PeticionDto(1, "Swiss Medical", getFecha("2023-06-01"), getFecha("2023-06-02"), sucursal));
+        peticionesController.crearPeticion(new PeticionDto(2, "Swiss Medical", getFecha("2023-06-01"), getFecha("2023-06-02"), sucursal, List.of(practica)));
+    }
+
 }
