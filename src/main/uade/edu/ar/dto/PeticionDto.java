@@ -15,18 +15,14 @@ public class PeticionDto {
     private String obraSocial;
     private Date fechaCarga;
     private Date fechaEntrega;
-    private TipoResultado resultado;
-    private Paciente paciente;
     private List<Practica> practicas;
     private Sucursal sucursal;
 
-    public PeticionDto(int id, String obraSocial, Date fechaCarga, Date fechaEntrega, TipoResultado resultado, Paciente paciente, List<Practica> practicas, Sucursal sucursal) {
+    public PeticionDto(int id, String obraSocial, Date fechaCarga, Date fechaEntrega, List<Practica> practicas, Sucursal sucursal) {
         this.id = id;
         this.obraSocial = obraSocial;
         this.fechaCarga = fechaCarga;
         this.fechaEntrega = fechaEntrega;
-        this.resultado = resultado;
-        this.paciente = paciente;
         this.practicas = practicas;
         this.sucursal = sucursal;
     }
@@ -61,22 +57,6 @@ public class PeticionDto {
 
     public void setFechaEntrega(Date fechaEntrega) {
         this.fechaEntrega = fechaEntrega;
-    }
-
-    public TipoResultado getResultado() {
-        return resultado;
-    }
-
-    public void setResultado(TipoResultado resultado) {
-        this.resultado = resultado;
-    }
-
-    public Paciente getPaciente() {
-        return paciente;
-    }
-
-    public void setPaciente(Paciente paciente) {
-        this.paciente = paciente;
     }
 
     public List<Practica> getPracticas() {

@@ -1,7 +1,6 @@
 package main.uade.edu.ar.controller;
 
 import main.uade.edu.ar.dao.PeticionDao;
-import main.uade.edu.ar.dao.PracticaDao;
 import main.uade.edu.ar.dto.PeticionDto;
 import main.uade.edu.ar.dto.PracticaDto;
 import main.uade.edu.ar.dto.ResultadoDto;
@@ -12,9 +11,8 @@ import java.util.List;
 public class PeticionYPracticaController {
     private static PeticionYPracticaController peticionYPracticaController;
     private static PeticionDao peticionDao;
-    private static PracticaDao practicaDao;
     private static List<Peticion> peticiones;
-    private static List<Practica> practicas;
+
     private PeticionYPracticaController() {
     }
 
@@ -22,9 +20,7 @@ public class PeticionYPracticaController {
         if (peticionYPracticaController == null) {
             peticionYPracticaController = new PeticionYPracticaController();
             peticionDao = new PeticionDao();
-            practicaDao = new PracticaDao();
             peticiones = peticionDao.getAll();
-            practicas = practicaDao.getAll();
         }
 
         return peticionYPracticaController;
@@ -58,7 +54,6 @@ public class PeticionYPracticaController {
             peticion.setObraSocial(peticionDTO.getObraSocial());
             peticion.setFechaCarga(peticionDTO.getFechaCarga());
             peticion.setFechaEntrega(peticionDTO.getFechaEntrega());
-            peticion.setResultado(peticionDTO.getResultado());
             peticionDao.update(peticion);
         }
     }
@@ -81,8 +76,6 @@ public class PeticionYPracticaController {
                 peticionDto.getObraSocial(),
                 peticionDto.getFechaCarga(),
                 peticionDto.getFechaEntrega(),
-                peticionDto.getResultado(),
-                peticionDto.getPaciente(),
                 peticionDto.getPracticas(),
                 peticionDto.getSucursal()
         );
@@ -94,8 +87,6 @@ public class PeticionYPracticaController {
                 peticion.getObraSocial(),
                 peticion.getFechaCarga(),
                 peticion.getFechaEntrega(),
-                peticion.getResultado(),
-                peticion.getPaciente(),
                 peticion.getPracticas(),
                 peticion.getSucursal()
 
@@ -103,7 +94,7 @@ public class PeticionYPracticaController {
     }
 
     // Practicas
-
+/*
     public PracticaDto getPractica(int id) {
         return practicas.stream()
                 .filter(p -> p.getId() == id)
@@ -141,7 +132,7 @@ public class PeticionYPracticaController {
             practicas.remove(practica);
         }
     }
-
+*/
     public static Practica toModel(PracticaDto practicaDto) {
         return new Practica(
                 practicaDto.getId(),
