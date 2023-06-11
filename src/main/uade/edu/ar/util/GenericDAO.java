@@ -124,7 +124,7 @@ public abstract class GenericDAO<T> {
     }
 
     public boolean update(T obj) throws Exception {
-        Boolean wasUpdate = false;
+        boolean wasUpdate = false;
         try {
             BufferedReader b = new BufferedReader(new FileReader(archivo));
             StringBuffer inputBuffer = new StringBuffer();

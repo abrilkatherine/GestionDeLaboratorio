@@ -3,6 +3,7 @@ package main.uade.edu.ar.controller;
 import main.uade.edu.ar.dao.PeticionDao;
 import main.uade.edu.ar.dto.PeticionDto;
 import main.uade.edu.ar.dto.PracticaDto;
+import main.uade.edu.ar.dto.ResultadoDto;
 import main.uade.edu.ar.mappers.PeticionMapper;
 import main.uade.edu.ar.model.*;
 
@@ -71,15 +72,16 @@ public class PeticionController {
     }
 
     // Practicas
-    public Optional<Practica> getPractica(int id) {
+    public Practica getPractica(int id) {
         return peticiones.stream()
                 .flatMap(peticion -> peticion.getPracticas().stream())
                 .filter(practica -> practica.getId() == id)
-                .findFirst();
+                .findFirst()
+                .orElse(null);
     }
 
     public void crearPractica(int idPeticion, PracticaDto practicaDTO) throws Exception {
-        if (getPractica(practicaDTO.getId()).isPresent()) {
+        if (getPractica(practicaDTO.getId()) != null) {
             System.out.println("La práctica solicitada ya existe");
             return;
         }
@@ -136,6 +138,34 @@ public class PeticionController {
         }
 
         System.out.println("La práctica solicitada no existe");
+    }
+
+    // Resultados
+
+    public void crearResultado(int idPractica, ResultadoDto resultadoDTO) throws Exception {
+        for (Peticion peticion : peticiones) {
+            Optional<Practica> practicaOptional = peticion.getPracticas()
+                    .stream()
+                    .filter(practica -> practica.getId() == idPractica)
+                    .findFirst();
+
+            if (practicaOptional.isPresent()) {
+                Practica practica = practicaOptional.get();
+                practica.setResultado(PeticionMapper.toModel(resultadoDTO));
+                peticionDao.update(peticion);
+                return;
+            }
+        }
+
+        System.out.println("La práctica solicitada no existe");
+    }
+
+    public void modificarResultado(int idPractica, ResultadoDto resultadoDTO) throws Exception {
+        crearResultado(idPractica, resultadoDTO);
+    }
+
+    public void eliminarResultado(int idPractica) throws Exception {
+        crearResultado(idPractica, null);
     }
 
 }

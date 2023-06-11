@@ -109,9 +109,14 @@ public class SucursalYUsuarioController {
         return null;
     }
 
-    public void actualizarRol(UsuarioDto usuarioDTO) throws Exception {
-        if (getUsuario(usuarioDTO.getId()) == null) {
-            usuarioDao.save(toModel(usuarioDTO));
+    public void modificarUsuario(UsuarioDto usuarioDTO) throws Exception {
+        Usuario usuarioExistente = usuarios.stream()
+                .filter(u -> u.getId() == usuarioDTO.getId())
+                .findFirst()
+                .orElse(null);
+
+        if (usuarioExistente != null) {
+            usuarioDao.update(toModel(usuarioDTO));
         }
     }
 
