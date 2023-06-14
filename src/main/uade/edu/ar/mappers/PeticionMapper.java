@@ -24,7 +24,9 @@ public class PeticionMapper {
                 peticionDto.getFechaCarga(),
                 peticionDto.getFechaEntrega(),
                 SucursalYUsuarioController.toModel(peticionDto.getSucursal()),
+                PacienteMapper.toModel(peticionDto.getPaciente()),
                 toModel(peticionDto.getPracticas())
+
         );
     }
 
@@ -35,6 +37,7 @@ public class PeticionMapper {
                 peticion.getFechaCarga(),
                 peticion.getFechaEntrega(),
                 SucursalYUsuarioController.toDto(peticion.getSucursal()),
+                PacienteMapper.toDto(peticion.getPaciente()),
                 toDto(peticion.getPracticas())
         );
     }

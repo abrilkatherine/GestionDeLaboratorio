@@ -1,5 +1,6 @@
 package main.uade.edu.ar.dto;
 
+import main.uade.edu.ar.model.Paciente;
 import main.uade.edu.ar.model.Practica;
 import main.uade.edu.ar.model.Sucursal;
 
@@ -15,22 +16,25 @@ public class PeticionDto {
     private Date fechaEntrega;
     private List<PracticaDto> practicas;
     private SucursalDto sucursal;
+    private PacienteDto paciente;
 
-    public PeticionDto(int id, String obraSocial, Date fechaCarga, Date fechaEntrega, SucursalDto sucursal) {
+    public PeticionDto(int id, String obraSocial, Date fechaCarga, Date fechaEntrega, SucursalDto sucursal, PacienteDto paciente) {
         this.id = id;
         this.obraSocial = obraSocial;
         this.fechaCarga = fechaCarga;
         this.fechaEntrega = fechaEntrega;
         this.sucursal = sucursal;
+        this.paciente = paciente;
     }
 
-    public PeticionDto(int id, String obraSocial, Date fechaCarga, Date fechaEntrega, SucursalDto sucursal, List<PracticaDto> practicas) {
+    public PeticionDto(int id, String obraSocial, Date fechaCarga, Date fechaEntrega, SucursalDto sucursal, PacienteDto paciente, List<PracticaDto> practicas) {
         this.id = id;
         this.obraSocial = obraSocial;
         this.fechaCarga = fechaCarga;
         this.fechaEntrega = fechaEntrega;
         this.sucursal = sucursal;
         this.practicas = practicas;
+        this.paciente = paciente;
     }
 
     public int getId() {
@@ -79,5 +83,13 @@ public class PeticionDto {
 
     public void setSucursal(SucursalDto sucursal) {
         this.sucursal = sucursal;
+    }
+
+    public PacienteDto getPaciente() {
+        return paciente;
+    }
+
+    public void setPaciente(PacienteDto paciente) {
+        this.paciente = paciente;
     }
 }
