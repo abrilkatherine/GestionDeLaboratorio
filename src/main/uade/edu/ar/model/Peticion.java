@@ -12,6 +12,8 @@ public class Peticion {
     private Sucursal sucursal;
     private Paciente paciente;
 
+    private boolean estado;
+
     public Peticion(int id, String obraSocial, Date fechaCarga, Date fechaEntrega, Sucursal sucursal, Paciente paciente) {
         this.id = id;
         this.obraSocial = obraSocial;
@@ -19,6 +21,7 @@ public class Peticion {
         this.fechaEntrega = fechaEntrega;
         this.sucursal = sucursal;
         this.paciente = paciente;
+        this.estado = false;
     }
 
     public Peticion(int id, String obraSocial, Date fechaCarga, Date fechaEntrega, Sucursal sucursal, Paciente paciente, List<Practica> practicas) {

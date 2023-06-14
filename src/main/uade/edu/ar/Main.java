@@ -1,13 +1,13 @@
 package main.uade.edu.ar;
 
 import main.uade.edu.ar.controller.*;
+import main.uade.edu.ar.dao.SucursalDao;
 import main.uade.edu.ar.dto.*;
 import main.uade.edu.ar.enums.Genero;
 import main.uade.edu.ar.enums.Roles;
 import main.uade.edu.ar.enums.TipoResultado;
 
 import java.util.List;
-
 import static main.uade.edu.ar.util.DateUtil.getFecha;
 
 public class Main {
@@ -16,10 +16,9 @@ public class Main {
             PeticionController peticionesController = PeticionController.getInstance();
             SucursalYUsuarioController sucursalYUsuarioController = SucursalYUsuarioController.getInstance();
             PacienteController pacienteController = PacienteController.getInstance();
-
-            testPacientes(pacienteController, peticionesController);
+             //testPacientes(pacienteController, peticionesController);
             //testPeticiones(peticionesController);
-            //testUsuarios(sucursalYUsuarioController, peticionesController);
+            testUsuarios(sucursalYUsuarioController, peticionesController);
             //testPeticionesConValoresCriticos(peticionesController);
 
         } catch (Exception e) {
@@ -31,6 +30,7 @@ public class Main {
     private static void testPacientes(PacienteController pacienteController, PeticionController peticionesController) throws Exception {
         UsuarioDto responsable = new UsuarioDto(1, "Test", "1dh68lpxz*", getFecha("1990-06-04"), Roles.ADMINISTRADOR);
         SucursalDto sucursal = new SucursalDto(1, 100, "Av Santa Fe", responsable);
+        SucursalDto sucursalA = new SucursalDto(2, 100, "Av Santa Fe", responsable);
         PacienteDto paciente = new PacienteDto(1, 22, Genero.MASCULINO, "Test", 1234, "dom", "garciatest@gmail.com", "Garcia");
 
         List<PracticaDto> practicas = List.of(
@@ -81,6 +81,7 @@ public class Main {
     private static void testPeticionesConValoresCriticos(PeticionController peticionesController) throws Exception {
         UsuarioDto responsable = new UsuarioDto(1, "Hugo", "13jfso*jd37", getFecha("1990-06-04"), Roles.ADMINISTRADOR);
         SucursalDto sucursal = new SucursalDto(1, 100, "Av Santa Fe", responsable);
+
         PracticaDto practica = new PracticaDto(1, 999, "Análisis de sangre", 3, 3);
         PacienteDto paciente = new PacienteDto(1, 22, Genero.MASCULINO, "Test", 12345678, "dom", "test@gmail.com", "Gomez");
 
@@ -103,11 +104,12 @@ public class Main {
     private static void testUsuarios(SucursalYUsuarioController sucursalYUsuarioController, PeticionController peticionesController) throws Exception {
         UsuarioDto responsable = new UsuarioDto(1, "Hugo", "", getFecha("1990-06-04"), Roles.ADMINISTRADOR);
         SucursalDto sucursal = new SucursalDto(1, 100, "Av Santa Fe", responsable);
+        SucursalDto sucursalA = new SucursalDto(2, 100, "Av Santa Fe", responsable);
         PacienteDto paciente = new PacienteDto(1, 22, Genero.MASCULINO, "Paciente test", 12349977, "dom", "pereztest@gmail.com", "Perez");
 
         List<PracticaDto> practicas = List.of(
-                new PracticaDto(1, 999, "Análisis de sangre", 3, 3, new ResultadoDto("60", TipoResultado.CRITICO)),
-                new PracticaDto(1, 999, "Análisis de orina", 3, 3, new ResultadoDto("60", TipoResultado.CRITICO))
+                new PracticaDto(1, 999, "Análisis de sangre", 3, 3),
+                new PracticaDto(1, 999, "Análisis de orina", 3, 3)
         );
 
         // ABM Peticiones
@@ -121,7 +123,9 @@ public class Main {
 
         // ABM Sucursales
         sucursalYUsuarioController.crearSucursal(sucursal);
+        sucursalYUsuarioController.crearSucursal(sucursalA);
         sucursalYUsuarioController.modificarSucursal(sucursal);
+        sucursalYUsuarioController.modificarSucursal(sucursalA);
         sucursalYUsuarioController.borrarSucursal(1);
     }
 }
