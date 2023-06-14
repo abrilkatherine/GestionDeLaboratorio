@@ -80,7 +80,7 @@ public class PacienteController {
                 .findFirst()
                 .orElse(null);
 
-        if (esAptoBorrado(paciente)) {
+        if (puedeBorrarse(paciente)) {
             pacienteDao.delete(id);
             pacientes.remove(paciente);
         } else {
@@ -88,17 +88,24 @@ public class PacienteController {
         }
     }
 
-    private boolean esAptoBorrado(Paciente paciente) throws Exception {
+    private boolean puedeBorrarse(Paciente paciente) throws Exception {
         if (paciente == null) {
             return false;
         }
 
-        boolean tienePeticionesFinalizadas = peticionDao.getAll()
+        List<Peticion> peticiones = peticionDao.getAll()
                 .stream()
                 .filter(peticion -> peticion.getPaciente().getId() == paciente.getId())
-                .anyMatch(Peticion::estaCompleta);
+                .toList();
 
-        return !tienePeticionesFinalizadas;
+        for (Peticion peticion : peticiones) {
+            if (peticion.tieneResultado()) {
+                return false;
+            }
+        }
+
+        return true;
     }
+
 
 }

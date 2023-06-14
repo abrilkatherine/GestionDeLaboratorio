@@ -5,7 +5,6 @@ import main.uade.edu.ar.dto.*;
 import main.uade.edu.ar.enums.Genero;
 import main.uade.edu.ar.enums.Roles;
 import main.uade.edu.ar.enums.TipoResultado;
-import main.uade.edu.ar.model.Paciente;
 
 import java.util.List;
 

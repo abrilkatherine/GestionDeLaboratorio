@@ -87,9 +87,9 @@ public class Peticion {
         this.paciente = paciente;
     }
 
-    public boolean estaCompleta() {
+    public boolean tieneResultado() {
         return practicas.stream()
-                .allMatch(practica -> practica.getResultado() != null);
+                .anyMatch(practica -> practica.getResultado() != null);
     }
 
 }
