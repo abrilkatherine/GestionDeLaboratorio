@@ -17,20 +17,21 @@ public class Main {
             SucursalYUsuarioController sucursalYUsuarioController = SucursalYUsuarioController.getInstance();
             PacienteController pacienteController = PacienteController.getInstance();
 
-            testPacientes(pacienteController, peticionesController);
-            testPeticiones(peticionesController);
-            testUsuarios(sucursalYUsuarioController, peticionesController);
-            testPeticionesConValoresCriticos(peticionesController);
+            //testPacientes(pacienteController, peticionesController);
+            //testPeticiones(peticionesController);
+            //testUsuarios(sucursalYUsuarioController, peticionesController);
+            //testPeticionesConValoresCriticos(peticionesController);
 
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
+    //TODO: Pruebas temporales, cuando tengamos la interfaz grafica, se eliminaran estas pruebas y adicionalmente se agregaran test unitarios.
     private static void testPacientes(PacienteController pacienteController, PeticionController peticionesController) throws Exception {
-        UsuarioDto responsable = new UsuarioDto(1, "Test", "", getFecha("1990-06-04"), Roles.ADMINISTRADOR);
+        UsuarioDto responsable = new UsuarioDto(1, "Test", "1dh68lpxz*", getFecha("1990-06-04"), Roles.ADMINISTRADOR);
         SucursalDto sucursal = new SucursalDto(1, 100, "Av Santa Fe", responsable);
-        PacienteDto paciente = new PacienteDto(1, 22, Genero.MASCULINO, "nombre", 1234, "dom", "garciatest@gmail.com", "Garcia");
+        PacienteDto paciente = new PacienteDto(1, 22, Genero.MASCULINO, "Test", 1234, "dom", "garciatest@gmail.com", "Garcia");
 
         List<PracticaDto> practicas = List.of(
                 new PracticaDto(1, 999, "Análisis 2", 3, 3, new ResultadoDto("valor", TipoResultado.CRITICO)),
