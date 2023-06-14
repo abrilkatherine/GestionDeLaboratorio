@@ -1,9 +1,5 @@
 package main.uade.edu.ar.dto;
 
-import main.uade.edu.ar.model.Paciente;
-import main.uade.edu.ar.model.Practica;
-import main.uade.edu.ar.model.Sucursal;
-
 import java.util.Date;
 
 import java.util.List;
