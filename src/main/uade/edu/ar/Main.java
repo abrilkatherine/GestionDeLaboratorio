@@ -17,9 +17,9 @@ public class Main {
             SucursalYUsuarioController sucursalYUsuarioController = SucursalYUsuarioController.getInstance();
             PacienteController pacienteController = PacienteController.getInstance();
 
-            testPacientes(pacienteController, peticionesController);
-//            testPeticiones(peticionesController);
-//            testUsuarios(sucursalYUsuarioController);
+            //testPacientes(pacienteController, peticionesController);
+            //testPeticiones(peticionesController);
+            testUsuarios(sucursalYUsuarioController, peticionesController);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -78,9 +78,19 @@ public class Main {
         peticionesController.eliminarResultado(1);
     }
 
-    private static void testUsuarios(SucursalYUsuarioController sucursalYUsuarioController) throws Exception {
+    private static void testUsuarios(SucursalYUsuarioController sucursalYUsuarioController, PeticionController peticionesController) throws Exception {
         UsuarioDto responsable = new UsuarioDto(1, "Hugo", "", getFecha("1990-06-04"), Roles.ADMINISTRADOR);
         SucursalDto sucursal = new SucursalDto(1, 100, "Av Santa Fe", responsable);
+        PacienteDto paciente = new PacienteDto(1, 22, Genero.MASCULINO, "nombre", 1234, "dom", "@algo", "apellido");
+
+        List<PracticaDto> practicas = List.of(
+                new PracticaDto(1, 999, "Análisis de orina", 3, 3, new ResultadoDto("valor", TipoResultado.CRITICO)),
+                new PracticaDto(1, 999, "Análisis de orina", 3, 3, new ResultadoDto("valor", TipoResultado.CRITICO))
+        );
+
+        // ABM Peticiones
+        peticionesController.borrarPeticion(1);
+        peticionesController.crearPeticion(new PeticionDto(1, "Swiss Medical", getFecha("2023-06-01"), getFecha("2023-06-02"), sucursal, paciente, practicas));
 
         // ABM Usuarios
         sucursalYUsuarioController.crearUsuario(new UsuarioDto(1, "Didy", "", getFecha("1990-06-04"), Roles.LABORTISTA));
@@ -88,6 +98,7 @@ public class Main {
         sucursalYUsuarioController.eliminarUsuario(1);
 
         // ABM Sucursales
+
         sucursalYUsuarioController.crearSucursal(sucursal);
         sucursalYUsuarioController.modificarSucursal(sucursal);
         sucursalYUsuarioController.borrarSucursal(1);

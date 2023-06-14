@@ -1,9 +1,12 @@
 package main.uade.edu.ar.controller;
 
+import main.uade.edu.ar.dao.PeticionDao;
 import main.uade.edu.ar.dao.SucursalDao;
 import main.uade.edu.ar.dao.UsuarioDao;
 import main.uade.edu.ar.dto.SucursalDto;
 import main.uade.edu.ar.dto.UsuarioDto;
+import main.uade.edu.ar.model.Paciente;
+import main.uade.edu.ar.model.Peticion;
 import main.uade.edu.ar.model.Sucursal;
 import main.uade.edu.ar.model.Usuario;
 
@@ -13,6 +16,7 @@ public class SucursalYUsuarioController {
 
     private static SucursalYUsuarioController sucursalController;
     private static SucursalDao sucursalDao;
+    private static PeticionDao peticionDao;
     private static List<Sucursal> sucursales;
     private static UsuarioDao usuarioDao;
     private static List<Usuario> usuarios;
@@ -25,6 +29,7 @@ public class SucursalYUsuarioController {
             sucursalController = new SucursalYUsuarioController();
             sucursalDao = new SucursalDao();
             usuarioDao = new UsuarioDao();
+            peticionDao = new PeticionDao();
             sucursales = sucursalDao.getAll();
             usuarios = usuarioDao.getAll();
         }
@@ -61,15 +66,36 @@ public class SucursalYUsuarioController {
     }
 
     public void borrarSucursal(int id) throws Exception {
-        Sucursal sucursalExistente = sucursales.stream()
+        Sucursal sucursal = sucursales.stream()
                 .filter(s -> s.getId() == id)
                 .findFirst()
                 .orElse(null);
 
-        if (sucursalExistente != null) {
+        if (puedeBorrarse(sucursal)) {
             sucursalDao.delete(id);
-            sucursales.remove(sucursalExistente);
+            sucursales.remove(sucursal);
+        } else {
+            System.out.println("La sucursal no cumple las condiciones para ser borrado");
         }
+    }
+
+    private boolean puedeBorrarse(Sucursal sucursal) throws Exception {
+        if (sucursal == null) {
+            return false;
+        }
+
+        List<Peticion> peticiones = peticionDao.getAll()
+                .stream()
+                .filter(peticion -> peticion.getSucursal().getId() == sucursal.getId())
+                .toList();
+
+        for (Peticion peticion : peticiones) {
+            if (peticion.tieneResultado()) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     public static Sucursal toModel(SucursalDto sucursalDto) {

@@ -106,6 +106,4 @@ public class PacienteController {
 
         return true;
     }
-
-
 }
