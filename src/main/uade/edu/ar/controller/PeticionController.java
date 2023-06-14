@@ -45,7 +45,6 @@ public class PeticionController {
         }
     }
 
-    // TODO: Fix
     public void modificarPeticion(PeticionDto peticionDTO) throws Exception {
         Peticion peticion = peticiones.stream()
                 .filter(p -> p.getId() == peticionDTO.getId())
