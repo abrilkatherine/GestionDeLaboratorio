@@ -7,6 +7,7 @@ import main.uade.edu.ar.dto.ResultadoDto;
 import main.uade.edu.ar.mappers.PeticionMapper;
 import main.uade.edu.ar.model.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -166,6 +167,22 @@ public class PeticionController {
 
     public void eliminarResultado(int idPractica) throws Exception {
         crearResultado(idPractica, null);
+    }
+
+    public List<Peticion> getPeticionesConResultadosCriticos() {
+        List<Peticion> peticionesConResultadosCriticos = new ArrayList<>();
+
+        for (Peticion peticion : peticiones) {
+            boolean tieneResultadosCriticos = peticion.getPracticas()
+                    .stream()
+                    .anyMatch(Practica::esCritica);
+
+            if (tieneResultadosCriticos) {
+                peticionesConResultadosCriticos.add(peticion);
+            }
+        }
+
+        return peticionesConResultadosCriticos;
     }
 
 }

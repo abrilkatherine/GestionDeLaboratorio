@@ -1,5 +1,7 @@
 package main.uade.edu.ar.model;
 
+import main.uade.edu.ar.enums.TipoResultado;
+
 public class Practica {
     private int id;
     private int codigo;
@@ -63,5 +65,9 @@ public class Practica {
 
     public void setResultado(Resultado resultado) {
         this.resultado = resultado;
+    }
+
+    public boolean esCritica() {
+        return TipoResultado.CRITICO.equals(resultado.getTipoResultado());
     }
 }

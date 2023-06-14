@@ -17,9 +17,10 @@ public class Main {
             SucursalYUsuarioController sucursalYUsuarioController = SucursalYUsuarioController.getInstance();
             PacienteController pacienteController = PacienteController.getInstance();
 
-            //testPacientes(pacienteController, peticionesController);
-            //testPeticiones(peticionesController);
+            testPacientes(pacienteController, peticionesController);
+            testPeticiones(peticionesController);
             testUsuarios(sucursalYUsuarioController, peticionesController);
+            testPeticionesConValoresCriticos(peticionesController);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -27,36 +28,34 @@ public class Main {
     }
 
     private static void testPacientes(PacienteController pacienteController, PeticionController peticionesController) throws Exception {
-        UsuarioDto responsable = new UsuarioDto(1, "Hugo", "", getFecha("1990-06-04"), Roles.ADMINISTRADOR);
+        UsuarioDto responsable = new UsuarioDto(1, "Test", "", getFecha("1990-06-04"), Roles.ADMINISTRADOR);
         SucursalDto sucursal = new SucursalDto(1, 100, "Av Santa Fe", responsable);
-        PracticaDto practica = new PracticaDto(1, 999, "Análisis de orina", 3, 3);
-        PacienteDto paciente = new PacienteDto(1, 22, Genero.MASCULINO, "nombre", 1234, "dom", "@algo", "apellido");
+        PacienteDto paciente = new PacienteDto(1, 22, Genero.MASCULINO, "nombre", 1234, "dom", "garciatest@gmail.com", "Garcia");
 
         List<PracticaDto> practicas = List.of(
-                new PracticaDto(1, 999, "Análisis de orina", 3, 3, new ResultadoDto("valor", TipoResultado.CRITICO)),
-                new PracticaDto(1, 999, "Análisis de orina", 3, 3, new ResultadoDto("valor", TipoResultado.CRITICO))
-
-//        new PracticaDto(1, 999, "Análisis de orina", 3, 3),
-//                new PracticaDto(1, 999, "Análisis de orina", 3, 3, new ResultadoDto("valor", TipoResultado.CRITICO))
+                new PracticaDto(1, 999, "Análisis 2", 3, 3, new ResultadoDto("valor", TipoResultado.CRITICO)),
+                new PracticaDto(1, 999, "Análisis 3", 3, 3, new ResultadoDto("valor", TipoResultado.CRITICO))
         );
 
         // ABM Peticiones
         peticionesController.borrarPeticion(1);
         peticionesController.crearPeticion(new PeticionDto(1, "Swiss Medical", getFecha("2023-06-01"), getFecha("2023-06-02"), sucursal, paciente, practicas));
 
+        // ABM Pacientes
         pacienteController.crearPaciente(paciente);
 
-        paciente.setApellido("nuevo apellido");
+        paciente.setApellido("Paez");
 
         pacienteController.modificarPaciente(paciente);
         pacienteController.borrarPaciente(1);
     }
 
+
     private static void testPeticiones(PeticionController peticionesController) throws Exception {
         UsuarioDto responsable = new UsuarioDto(1, "Hugo", "", getFecha("1990-06-04"), Roles.ADMINISTRADOR);
         SucursalDto sucursal = new SucursalDto(1, 100, "Av Santa Fe", responsable);
-        PracticaDto practica = new PracticaDto(1, 999, "Análisis de orina", 3, 3);
-        PacienteDto paciente = new PacienteDto(1, 22, Genero.MASCULINO, "nombre", 1234, "dom", "@algo", "apellido");
+        PracticaDto practica = new PracticaDto(1, 999, "Análisis", 3, 3);
+        PacienteDto paciente = new PacienteDto(1, 22, Genero.MASCULINO, "Test", 1234, "dom", "test@gmail.com", "Testing");
 
         // ABM Peticiones
         peticionesController.crearPeticion(new PeticionDto(1, "Swiss Medical", getFecha("2023-06-01"), getFecha("2023-06-02"), sucursal, paciente));
@@ -73,15 +72,37 @@ public class Main {
 
         // ABM Resultados
 
-        peticionesController.crearResultado(1, new ResultadoDto("valor", TipoResultado.CRITICO));
-        peticionesController.modificarResultado(1, new ResultadoDto("hola", TipoResultado.CRITICO));
+        peticionesController.crearResultado(1, new ResultadoDto("40", TipoResultado.CRITICO));
+        peticionesController.modificarResultado(1, new ResultadoDto("50", TipoResultado.CRITICO));
         peticionesController.eliminarResultado(1);
+    }
+
+    private static void testPeticionesConValoresCriticos(PeticionController peticionesController) throws Exception {
+        UsuarioDto responsable = new UsuarioDto(1, "Hugo", "", getFecha("1990-06-04"), Roles.ADMINISTRADOR);
+        SucursalDto sucursal = new SucursalDto(1, 100, "Av Santa Fe", responsable);
+        PracticaDto practica = new PracticaDto(1, 999, "Análisis de orina", 3, 3);
+        PacienteDto paciente = new PacienteDto(1, 22, Genero.MASCULINO, "Test", 12345678, "dom", "test@gmail.com", "Gomez");
+
+        // ABM Peticiones
+        peticionesController.crearPeticion(new PeticionDto(1, "Swiss Medical", getFecha("2023-06-01"), getFecha("2023-06-02"), sucursal, paciente));
+        peticionesController.crearPeticion(new PeticionDto(2, "Swiss Medical", getFecha("2023-06-01"), getFecha("2023-06-02"), sucursal, paciente, List.of(practica)));
+
+        // ABM Prácticas
+        peticionesController.crearPractica(1, practica);
+        practica.setId(2);
+        peticionesController.crearPractica(2, practica);
+
+        // ABM Resultados
+        peticionesController.crearResultado(1, new ResultadoDto("valor", TipoResultado.RESERVADO));
+        peticionesController.crearResultado(2, new ResultadoDto("hola", TipoResultado.RESERVADO));
+
+        peticionesController.getPeticionesConResultadosCriticos();
     }
 
     private static void testUsuarios(SucursalYUsuarioController sucursalYUsuarioController, PeticionController peticionesController) throws Exception {
         UsuarioDto responsable = new UsuarioDto(1, "Hugo", "", getFecha("1990-06-04"), Roles.ADMINISTRADOR);
         SucursalDto sucursal = new SucursalDto(1, 100, "Av Santa Fe", responsable);
-        PacienteDto paciente = new PacienteDto(1, 22, Genero.MASCULINO, "nombre", 1234, "dom", "@algo", "apellido");
+        PacienteDto paciente = new PacienteDto(1, 22, Genero.MASCULINO, "Paciente test", 12349977, "dom", "pereztest@gmail.com", "Perez");
 
         List<PracticaDto> practicas = List.of(
                 new PracticaDto(1, 999, "Análisis de orina", 3, 3, new ResultadoDto("valor", TipoResultado.CRITICO)),
@@ -98,10 +119,8 @@ public class Main {
         sucursalYUsuarioController.eliminarUsuario(1);
 
         // ABM Sucursales
-
         sucursalYUsuarioController.crearSucursal(sucursal);
         sucursalYUsuarioController.modificarSucursal(sucursal);
         sucursalYUsuarioController.borrarSucursal(1);
     }
-
 }
