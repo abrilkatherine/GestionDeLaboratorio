@@ -1,10 +1,5 @@
 package main.uade.edu.ar.dto;
 
-import main.uade.edu.ar.enums.TipoResultado;
-import main.uade.edu.ar.model.Paciente;
-import main.uade.edu.ar.model.Practica;
-import main.uade.edu.ar.model.Sucursal;
-
 import java.util.Date;
 
 import java.util.List;
@@ -15,20 +10,27 @@ public class PeticionDto {
     private String obraSocial;
     private Date fechaCarga;
     private Date fechaEntrega;
-    private TipoResultado resultado;
-    private Paciente paciente;
-    private List<Practica> practicas;
-    private Sucursal sucursal;
+    private List<PracticaDto> practicas;
+    private SucursalDto sucursal;
+    private PacienteDto paciente;
 
-    public PeticionDto(int id, String obraSocial, Date fechaCarga, Date fechaEntrega, TipoResultado resultado, Paciente paciente, List<Practica> practicas, Sucursal sucursal) {
+    public PeticionDto(int id, String obraSocial, Date fechaCarga, Date fechaEntrega, SucursalDto sucursal, PacienteDto paciente) {
         this.id = id;
         this.obraSocial = obraSocial;
         this.fechaCarga = fechaCarga;
         this.fechaEntrega = fechaEntrega;
-        this.resultado = resultado;
-        this.paciente = paciente;
-        this.practicas = practicas;
         this.sucursal = sucursal;
+        this.paciente = paciente;
+    }
+
+    public PeticionDto(int id, String obraSocial, Date fechaCarga, Date fechaEntrega, SucursalDto sucursal, PacienteDto paciente, List<PracticaDto> practicas) {
+        this.id = id;
+        this.obraSocial = obraSocial;
+        this.fechaCarga = fechaCarga;
+        this.fechaEntrega = fechaEntrega;
+        this.sucursal = sucursal;
+        this.practicas = practicas;
+        this.paciente = paciente;
     }
 
     public int getId() {
@@ -63,35 +65,27 @@ public class PeticionDto {
         this.fechaEntrega = fechaEntrega;
     }
 
-    public TipoResultado getResultado() {
-        return resultado;
-    }
-
-    public void setResultado(TipoResultado resultado) {
-        this.resultado = resultado;
-    }
-
-    public Paciente getPaciente() {
-        return paciente;
-    }
-
-    public void setPaciente(Paciente paciente) {
-        this.paciente = paciente;
-    }
-
-    public List<Practica> getPracticas() {
+    public List<PracticaDto> getPracticas() {
         return practicas;
     }
 
-    public void setPracticas(List<Practica> practicas) {
+    public void setPracticas(List<PracticaDto> practicas) {
         this.practicas = practicas;
     }
 
-    public Sucursal getSucursal() {
+    public SucursalDto getSucursal() {
         return sucursal;
     }
 
-    public void setSucursal(Sucursal sucursal) {
+    public void setSucursal(SucursalDto sucursal) {
         this.sucursal = sucursal;
+    }
+
+    public PacienteDto getPaciente() {
+        return paciente;
+    }
+
+    public void setPaciente(PacienteDto paciente) {
+        this.paciente = paciente;
     }
 }

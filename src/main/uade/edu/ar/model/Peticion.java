@@ -1,7 +1,5 @@
 package main.uade.edu.ar.model;
 
-import main.uade.edu.ar.enums.TipoResultado;
-
 import java.util.Date;
 import java.util.List;
 
@@ -10,20 +8,27 @@ public class Peticion {
     private String obraSocial;
     private Date fechaCarga;
     private Date fechaEntrega;
-    private TipoResultado resultado;
-    private Paciente paciente;
     private List<Practica> practicas;
     private Sucursal sucursal;
+    private Paciente paciente;
 
-    public Peticion(int id, String obraSocial, Date fechaCarga, Date fechaEntrega, TipoResultado resultado, Paciente paciente, List<Practica> practicas, Sucursal sucursal) {
+    public Peticion(int id, String obraSocial, Date fechaCarga, Date fechaEntrega, Sucursal sucursal, Paciente paciente) {
         this.id = id;
         this.obraSocial = obraSocial;
         this.fechaCarga = fechaCarga;
         this.fechaEntrega = fechaEntrega;
-        this.resultado = resultado;
+        this.sucursal = sucursal;
+        this.paciente = paciente;
+    }
+
+    public Peticion(int id, String obraSocial, Date fechaCarga, Date fechaEntrega, Sucursal sucursal, Paciente paciente, List<Practica> practicas) {
+        this.id = id;
+        this.obraSocial = obraSocial;
+        this.fechaCarga = fechaCarga;
+        this.fechaEntrega = fechaEntrega;
+        this.sucursal = sucursal;
         this.paciente = paciente;
         this.practicas = practicas;
-        this.sucursal = sucursal;
     }
 
     public int getId() {
@@ -58,22 +63,6 @@ public class Peticion {
         this.fechaEntrega = fechaEntrega;
     }
 
-    public TipoResultado getResultado() {
-        return resultado;
-    }
-
-    public void setResultado(TipoResultado resultado) {
-        this.resultado = resultado;
-    }
-
-    public Paciente getPaciente() {
-        return paciente;
-    }
-
-    public void setPaciente(Paciente paciente) {
-        this.paciente = paciente;
-    }
-
     public List<Practica> getPracticas() {
         return practicas;
     }
@@ -89,4 +78,18 @@ public class Peticion {
     public void setSucursal(Sucursal sucursal) {
         this.sucursal = sucursal;
     }
+
+    public Paciente getPaciente() {
+        return paciente;
+    }
+
+    public void setPaciente(Paciente paciente) {
+        this.paciente = paciente;
+    }
+
+    public boolean tieneResultado() {
+        return practicas.stream()
+                .anyMatch(practica -> practica.getResultado() != null);
+    }
+
 }
