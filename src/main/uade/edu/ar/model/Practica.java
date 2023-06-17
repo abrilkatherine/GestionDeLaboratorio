@@ -73,4 +73,15 @@ public class Practica {
         }
         return TipoResultado.CRITICO.equals(resultado.getTipoResultado());
     }
+
+    public boolean esReservada() {
+        if (resultado == null) {
+            return false;
+        }
+        return TipoResultado.RESERVADO.equals(resultado.getTipoResultado());
+    }
+
+    public void ocultarResultado() {
+        this.resultado.setValor("Retirar por sucursal");
+    }
 }

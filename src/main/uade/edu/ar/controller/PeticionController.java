@@ -4,12 +4,15 @@ import main.uade.edu.ar.dao.PeticionDao;
 import main.uade.edu.ar.dto.PeticionDto;
 import main.uade.edu.ar.dto.PracticaDto;
 import main.uade.edu.ar.dto.ResultadoDto;
+import main.uade.edu.ar.enums.TipoResultado;
 import main.uade.edu.ar.mappers.PeticionMapper;
 import main.uade.edu.ar.model.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class PeticionController {
     private static PeticionController peticionController;
@@ -184,6 +187,26 @@ public class PeticionController {
         }
 
         return peticionesConResultadosCriticos;
+    }
+
+    public List<Practica> getPracticasConResultadosReservados(int idPeticion) {
+        Peticion peticion = getPeticion(idPeticion).orElse(null);
+
+        if (peticion == null) {
+            System.out.println("La petición solicitada no existe");
+            return new ArrayList<>();
+        }
+
+        List<Practica> practicasConResultadosOcultos = new ArrayList<>();
+
+        for (Practica practica : peticion.getPracticas()) {
+            if (practica.getResultado() != null && practica.esReservada()) {
+                practica.ocultarResultado();
+            }
+            practicasConResultadosOcultos.add(practica);
+        }
+
+        return practicasConResultadosOcultos;
     }
 
 }

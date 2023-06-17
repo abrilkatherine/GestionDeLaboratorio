@@ -18,10 +18,11 @@ public class Main {
             SucursalYUsuarioController sucursalYUsuarioController = SucursalYUsuarioController.getInstance();
             PacienteController pacienteController = PacienteController.getInstance();
 
-            //testPacientes(pacienteController, peticionesController);
+//            testPacientes(pacienteController, peticionesController);
 //            testPeticiones(peticionesController);
 //            testUsuarios(sucursalYUsuarioController, peticionesController);
-            testPeticionesConValoresCriticos(peticionesController);
+//            testPeticionesConValoresCriticos(peticionesController);
+            testPeticionesConValoresReservados(peticionesController);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -80,6 +81,34 @@ public class Main {
         peticionesController.eliminarResultado(1);
     }
 
+    private static void testUsuarios(SucursalYUsuarioController sucursalYUsuarioController, PeticionController peticionesController) throws Exception {
+        UsuarioDto responsable = new UsuarioDto(1, "Hugo", "", getFecha("1990-06-04"), Roles.ADMINISTRADOR);
+        SucursalDto sucursal = new SucursalDto(1, 100, "Av Santa Fe", responsable);
+        SucursalDto sucursalA = new SucursalDto(2, 100, "Av Santa Fe", responsable);
+        PacienteDto paciente = new PacienteDto(1, 22, Genero.MASCULINO, "Paciente test", 12349977, "dom", "pereztest@gmail.com", "Perez");
+
+        List<PracticaDto> practicas = List.of(
+                new PracticaDto(1, 999, "Análisis de sangre", 3, 3),
+                new PracticaDto(2, 999, "Análisis de orina", 3, 3)
+        );
+
+        // ABM Peticiones
+        peticionesController.borrarPeticion(1);
+        peticionesController.crearPeticion(new PeticionDto(1, "Swiss Medical", getFecha("2023-06-01"), getFecha("2023-06-02"), sucursal, paciente, practicas));
+
+        // ABM Usuarios
+        sucursalYUsuarioController.crearUsuario(new UsuarioDto(1, "Didy", "", getFecha("1990-06-04"), Roles.LABORTISTA));
+        sucursalYUsuarioController.modificarUsuario(new UsuarioDto(1, "Didy", "", getFecha("1990-06-04"), Roles.ADMINISTRADOR));
+        sucursalYUsuarioController.eliminarUsuario(1);
+
+        // ABM Sucursales
+        sucursalYUsuarioController.crearSucursal(sucursal);
+        sucursalYUsuarioController.crearSucursal(sucursalA);
+        sucursalYUsuarioController.modificarSucursal(sucursal);
+        sucursalYUsuarioController.modificarSucursal(sucursalA);
+        sucursalYUsuarioController.borrarSucursal(1);
+    }
+
     private static void testPeticionesConValoresCriticos(PeticionController peticionesController) throws Exception {
         UsuarioDto responsable = new UsuarioDto(1, "Hugo", "13jfso*jd37", getFecha("1990-06-04"), Roles.ADMINISTRADOR);
         SucursalDto sucursal = new SucursalDto(1, 100, "Av Santa Fe", responsable);
@@ -104,31 +133,29 @@ public class Main {
         listaValoreCriticos.forEach(peticion -> System.out.println(peticion.getId()));
     }
 
-    private static void testUsuarios(SucursalYUsuarioController sucursalYUsuarioController, PeticionController peticionesController) throws Exception {
-        UsuarioDto responsable = new UsuarioDto(1, "Hugo", "", getFecha("1990-06-04"), Roles.ADMINISTRADOR);
+    private static void testPeticionesConValoresReservados(PeticionController peticionesController) throws Exception {
+        UsuarioDto responsable = new UsuarioDto(1, "Hugo", "13jfso*jd37", getFecha("1990-06-04"), Roles.ADMINISTRADOR);
         SucursalDto sucursal = new SucursalDto(1, 100, "Av Santa Fe", responsable);
-        SucursalDto sucursalA = new SucursalDto(2, 100, "Av Santa Fe", responsable);
-        PacienteDto paciente = new PacienteDto(1, 22, Genero.MASCULINO, "Paciente test", 12349977, "dom", "pereztest@gmail.com", "Perez");
-
-        List<PracticaDto> practicas = List.of(
-                new PracticaDto(1, 999, "Análisis de sangre", 3, 3, new ResultadoDto("60", TipoResultado.CRITICO)),
-                new PracticaDto(2, 999, "Análisis de orina", 3, 3, new ResultadoDto("60", TipoResultado.RESERVADO))
-        );
+        PracticaDto practica1 = new PracticaDto(1, 999, "Análisis de sangre", 3, 3);
+        PracticaDto practica2 = new PracticaDto(2, 999, "Análisis de sangre", 3, 3);
+        PracticaDto practica3 = new PracticaDto(3, 999, "Análisis de sangre", 3, 3, new ResultadoDto("No debe mostrarse", TipoResultado.RESERVADO));
+        PacienteDto paciente = new PacienteDto(1, 22, Genero.MASCULINO, "Test", 12345678, "dom", "test@gmail.com", "Gomez");
+        ResultadoDto resultado1 = new ResultadoDto("40", TipoResultado.CRITICO);
+        ResultadoDto resultado2 = new ResultadoDto("40", TipoResultado.RESERVADO);
 
         // ABM Peticiones
-        peticionesController.borrarPeticion(1);
-        peticionesController.crearPeticion(new PeticionDto(1, "Swiss Medical", getFecha("2023-06-01"), getFecha("2023-06-02"), sucursal, paciente, practicas));
+        peticionesController.crearPeticion(new PeticionDto(1, "Swiss Medical", getFecha("2023-06-01"), getFecha("2023-06-02"), sucursal, paciente));
+        peticionesController.crearPeticion(new PeticionDto(2, "Swiss Medical", getFecha("2023-06-01"), getFecha("2023-06-02"), sucursal, paciente, List.of(practica2)));
 
-        // ABM Usuarios
-        sucursalYUsuarioController.crearUsuario(new UsuarioDto(1, "Didy", "", getFecha("1990-06-04"), Roles.LABORTISTA));
-        sucursalYUsuarioController.modificarUsuario(new UsuarioDto(1, "Didy", "", getFecha("1990-06-04"), Roles.ADMINISTRADOR));
-        sucursalYUsuarioController.eliminarUsuario(1);
+        // ABM Prácticas
+        peticionesController.crearPractica(1, practica1);
+        peticionesController.crearPractica(1, practica3);
 
-        // ABM Sucursales
-        sucursalYUsuarioController.crearSucursal(sucursal);
-        sucursalYUsuarioController.crearSucursal(sucursalA);
-        sucursalYUsuarioController.modificarSucursal(sucursal);
-        sucursalYUsuarioController.modificarSucursal(sucursalA);
-        sucursalYUsuarioController.borrarSucursal(1);
+        // ABM Resultados
+        peticionesController.crearResultado(1, resultado1);
+        peticionesController.crearResultado(2, resultado2);
+
+        peticionesController.getPracticasConResultadosReservados(1).forEach(p -> System.out.println("Resultado práctica " + p.getId() + " = " + p.getResultado().getValor()));
     }
+
 }
