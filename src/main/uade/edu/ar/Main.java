@@ -32,6 +32,7 @@ public class Main {
     private static void testPacientes(PacienteController pacienteController, PeticionController peticionesController) throws Exception {
         UsuarioDto responsable = new UsuarioDto(1, "Test", "1dh68lpxz*", getFecha("1990-06-04"), Roles.ADMINISTRADOR);
         SucursalDto sucursal = new SucursalDto(1, 100, "Av Santa Fe", responsable);
+        SucursalDto sucursalA = new SucursalDto(2, 100, "Av Santa Fe", responsable);
         PacienteDto paciente = new PacienteDto(1, 22, Genero.MASCULINO, "Test", 1234, "dom", "garciatest@gmail.com", "Garcia");
 
         List<PracticaDto> practicas = List.of(
@@ -106,6 +107,7 @@ public class Main {
     private static void testUsuarios(SucursalYUsuarioController sucursalYUsuarioController, PeticionController peticionesController) throws Exception {
         UsuarioDto responsable = new UsuarioDto(1, "Hugo", "", getFecha("1990-06-04"), Roles.ADMINISTRADOR);
         SucursalDto sucursal = new SucursalDto(1, 100, "Av Santa Fe", responsable);
+        SucursalDto sucursalA = new SucursalDto(2, 100, "Av Santa Fe", responsable);
         PacienteDto paciente = new PacienteDto(1, 22, Genero.MASCULINO, "Paciente test", 12349977, "dom", "pereztest@gmail.com", "Perez");
 
         List<PracticaDto> practicas = List.of(
@@ -124,7 +126,9 @@ public class Main {
 
         // ABM Sucursales
         sucursalYUsuarioController.crearSucursal(sucursal);
+        sucursalYUsuarioController.crearSucursal(sucursalA);
         sucursalYUsuarioController.modificarSucursal(sucursal);
+        sucursalYUsuarioController.modificarSucursal(sucursalA);
         sucursalYUsuarioController.borrarSucursal(1);
     }
 }
