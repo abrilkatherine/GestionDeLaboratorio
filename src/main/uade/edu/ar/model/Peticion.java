@@ -2,6 +2,7 @@ package main.uade.edu.ar.model;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 public class Peticion {
     private int id;
@@ -92,4 +93,16 @@ public class Peticion {
                 .anyMatch(practica -> practica.getResultado() != null);
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Peticion peticion = (Peticion) o;
+        return id == peticion.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }

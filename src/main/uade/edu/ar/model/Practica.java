@@ -68,6 +68,9 @@ public class Practica {
     }
 
     public boolean esCritica() {
+        if (resultado == null) {
+            return false;
+        }
         return TipoResultado.CRITICO.equals(resultado.getTipoResultado());
     }
 }

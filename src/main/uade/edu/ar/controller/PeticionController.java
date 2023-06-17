@@ -42,6 +42,7 @@ public class PeticionController {
             Peticion peticion = PeticionMapper.toModel(peticionDTO);
             peticionDao.save(peticion);
             peticiones.add(peticion);
+            System.out.println("Se creó la petición con id: " + peticion.getId());
         }
     }
 
@@ -97,6 +98,7 @@ public class PeticionController {
         Practica practica = PeticionMapper.toModel(practicaDTO);
         peticion.getPracticas().add(practica);
         peticionDao.update(peticion);
+        System.out.println("Se creó la práctica con id " + practica.getId() + " para la petición " + peticion.getId());
     }
 
     public void modificarPractica(PracticaDto practicaDTO) throws Exception {

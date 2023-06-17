@@ -5,6 +5,7 @@ import main.uade.edu.ar.dto.*;
 import main.uade.edu.ar.enums.Genero;
 import main.uade.edu.ar.enums.Roles;
 import main.uade.edu.ar.enums.TipoResultado;
+import main.uade.edu.ar.model.Peticion;
 
 import java.util.List;
 
@@ -17,10 +18,10 @@ public class Main {
             SucursalYUsuarioController sucursalYUsuarioController = SucursalYUsuarioController.getInstance();
             PacienteController pacienteController = PacienteController.getInstance();
 
-            testPacientes(pacienteController, peticionesController);
-            //testPeticiones(peticionesController);
-            //testUsuarios(sucursalYUsuarioController, peticionesController);
-            //testPeticionesConValoresCriticos(peticionesController);
+            //testPacientes(pacienteController, peticionesController);
+//            testPeticiones(peticionesController);
+//            testUsuarios(sucursalYUsuarioController, peticionesController);
+            testPeticionesConValoresCriticos(peticionesController);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -81,23 +82,25 @@ public class Main {
     private static void testPeticionesConValoresCriticos(PeticionController peticionesController) throws Exception {
         UsuarioDto responsable = new UsuarioDto(1, "Hugo", "13jfso*jd37", getFecha("1990-06-04"), Roles.ADMINISTRADOR);
         SucursalDto sucursal = new SucursalDto(1, 100, "Av Santa Fe", responsable);
-        PracticaDto practica = new PracticaDto(1, 999, "Análisis de sangre", 3, 3);
+        PracticaDto practica1 = new PracticaDto(1, 999, "Análisis de sangre", 3, 3);
+        PracticaDto practica2 = new PracticaDto(2, 999, "Análisis de sangre", 3, 3);
         PacienteDto paciente = new PacienteDto(1, 22, Genero.MASCULINO, "Test", 12345678, "dom", "test@gmail.com", "Gomez");
 
         // ABM Peticiones
         peticionesController.crearPeticion(new PeticionDto(1, "Swiss Medical", getFecha("2023-06-01"), getFecha("2023-06-02"), sucursal, paciente));
-        peticionesController.crearPeticion(new PeticionDto(2, "Swiss Medical", getFecha("2023-06-01"), getFecha("2023-06-02"), sucursal, paciente, List.of(practica)));
+        peticionesController.crearPeticion(new PeticionDto(2, "Swiss Medical", getFecha("2023-06-01"), getFecha("2023-06-02"), sucursal, paciente, List.of(practica2)));
 
         // ABM Prácticas
-        peticionesController.crearPractica(1, practica);
-        practica.setId(2);
-        peticionesController.crearPractica(2, practica);
+        peticionesController.crearPractica(1, practica1);
 
         // ABM Resultados
-        peticionesController.crearResultado(1, new ResultadoDto("40", TipoResultado.RESERVADO));
+        peticionesController.crearResultado(1, new ResultadoDto("40", TipoResultado.CRITICO));
         peticionesController.crearResultado(2, new ResultadoDto("40", TipoResultado.RESERVADO));
 
-        peticionesController.getPeticionesConResultadosCriticos();
+        List<Peticion> listaValoreCriticos = peticionesController.getPeticionesConResultadosCriticos();
+
+        System.out.println("Peticiones con valores críticos:");
+        listaValoreCriticos.forEach(peticion -> System.out.println(peticion.getId()));
     }
 
     private static void testUsuarios(SucursalYUsuarioController sucursalYUsuarioController, PeticionController peticionesController) throws Exception {
@@ -107,7 +110,7 @@ public class Main {
 
         List<PracticaDto> practicas = List.of(
                 new PracticaDto(1, 999, "Análisis de sangre", 3, 3, new ResultadoDto("60", TipoResultado.CRITICO)),
-                new PracticaDto(1, 999, "Análisis de orina", 3, 3, new ResultadoDto("60", TipoResultado.CRITICO))
+                new PracticaDto(2, 999, "Análisis de orina", 3, 3, new ResultadoDto("60", TipoResultado.RESERVADO))
         );
 
         // ABM Peticiones

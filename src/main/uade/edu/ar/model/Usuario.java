@@ -3,6 +3,7 @@ package main.uade.edu.ar.model;
 import main.uade.edu.ar.enums.Roles;
 
 import java.util.Date;
+import java.util.Objects;
 
 
 public class Usuario {
@@ -59,5 +60,18 @@ public class Usuario {
 
     public void setRol(Roles rol) {
         this.rol = rol;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Usuario usuario = (Usuario) o;
+        return id == usuario.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }
