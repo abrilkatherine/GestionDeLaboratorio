@@ -79,7 +79,9 @@ public class SucursalYUsuarioController {
                 .filter(s -> s.getId() == id)
                 .findFirst()
                 .orElse(null);
+
         System.out.print(sucursalDao.getAll());
+
         if (puedeBorrarse(sucursal)) {
             List<Peticion> peticiones = peticionDao.getAll()
                     .stream()
@@ -92,6 +94,7 @@ public class SucursalYUsuarioController {
                 peticion.setSucursal(sucursalADerivar);
                 peticionDao.update(peticion);
             }
+
             sucursalDao.delete(id);
             sucursales.remove(sucursal);
         } else {

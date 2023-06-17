@@ -7,7 +7,6 @@ import main.uade.edu.ar.dto.ResultadoDto;
 import main.uade.edu.ar.mappers.PeticionMapper;
 import main.uade.edu.ar.model.*;
 
-//import java.util.ArrayList;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -17,7 +16,7 @@ public class PeticionController {
     private static PeticionDao peticionDao;
     private static List<Peticion> peticiones;
 
-    PeticionController() {
+    private PeticionController() {
     }
 
     public static synchronized PeticionController getInstance() throws Exception {
