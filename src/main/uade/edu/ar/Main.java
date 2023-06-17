@@ -64,13 +64,11 @@ public class Main {
         // ABM Peticiones
         peticionesController.crearPeticion(new PeticionDto(1, "Swiss Medical", getFecha("2023-06-01"), getFecha("2023-06-02"), sucursal, paciente));
         peticionesController.crearPeticion(new PeticionDto(2, "Swiss Medical", getFecha("2023-06-01"), getFecha("2023-06-02"), sucursal, paciente, List.of(practica)));
-        // TODO: Revisar update de la libreria
         peticionesController.modificarPeticion(new PeticionDto(2, "OSDE", getFecha("2023-05-01"), getFecha("2023-05-02"), sucursal, paciente, List.of(practica)));
         peticionesController.borrarPeticion(2);
 
         // ABM Prácticas
         peticionesController.crearPractica(1, practica);
-        // TODO: Revisar registros duplicados
         peticionesController.modificarPractica(new PracticaDto(1, 111, "Practica 1", 60, 10));
         peticionesController.borrarPractica(1);
 
