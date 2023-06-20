@@ -8,7 +8,7 @@ import main.uade.edu.ar.model.Peticion;
 import main.uade.edu.ar.model.Practica;
 import main.uade.edu.ar.model.Resultado;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,7 +26,6 @@ public class PeticionMapper {
                 SucursalYUsuarioController.toModel(peticionDto.getSucursal()),
                 PacienteMapper.toModel(peticionDto.getPaciente()),
                 toModel(peticionDto.getPracticas())
-
         );
     }
 
@@ -66,7 +65,7 @@ public class PeticionMapper {
 
     private static List<Practica> toModel(List<PracticaDto> practicasDto) {
         if (practicasDto == null) {
-            return Collections.emptyList();
+            return new ArrayList<>();
         }
 
         return practicasDto.stream()
@@ -76,7 +75,7 @@ public class PeticionMapper {
 
     private static List<PracticaDto> toDto(List<Practica> practicas) {
         if (practicas == null) {
-            return Collections.emptyList();
+            return new ArrayList<>();
         }
 
         return practicas.stream()

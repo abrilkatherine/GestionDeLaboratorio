@@ -1,8 +1,6 @@
 package main.uade.edu.ar.model;
 
-import main.uade.edu.ar.dto.UsuarioDto;
-
-import java.util.List;
+import java.util.Objects;
 
 public class Sucursal {
     private int id;
@@ -46,5 +44,18 @@ public class Sucursal {
 
     public void setResponsableTecnico(Usuario responsableTecnico) {
         this.responsableTecnico = responsableTecnico;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Sucursal sucursal = (Sucursal) o;
+        return id == sucursal.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

@@ -5,10 +5,10 @@ import main.uade.edu.ar.dao.SucursalDao;
 import main.uade.edu.ar.dao.UsuarioDao;
 import main.uade.edu.ar.dto.SucursalDto;
 import main.uade.edu.ar.dto.UsuarioDto;
-import main.uade.edu.ar.model.Paciente;
 import main.uade.edu.ar.model.Peticion;
 import main.uade.edu.ar.model.Sucursal;
 import main.uade.edu.ar.model.Usuario;
+
 
 import java.util.List;
 
@@ -54,6 +54,15 @@ public class SucursalYUsuarioController {
         }
     }
 
+    public Sucursal getSucursalRandom(int sucursalEliminadaId) throws Exception {
+
+        return sucursalDao.getAll()
+                .stream()
+                .filter(s -> s.getId() != sucursalEliminadaId)
+                .findFirst()
+                .orElse(null);
+    }
+
     public void modificarSucursal(SucursalDto sucursalDTO) throws Exception {
         Sucursal sucursalExistente = sucursales.stream()
                 .filter(s -> s.getId() == sucursalDTO.getId())
@@ -71,7 +80,21 @@ public class SucursalYUsuarioController {
                 .findFirst()
                 .orElse(null);
 
+        System.out.print(sucursalDao.getAll());
+
         if (puedeBorrarse(sucursal)) {
+            List<Peticion> peticiones = peticionDao.getAll()
+                    .stream()
+                    .filter(peticion -> peticion.getSucursal().getId() == sucursal.getId())
+                    .toList();
+
+            Sucursal sucursalADerivar = getSucursalRandom(id);
+
+            for(Peticion peticion : peticiones){
+                peticion.setSucursal(sucursalADerivar);
+                peticionDao.update(peticion);
+            }
+
             sucursalDao.delete(id);
             sucursales.remove(sucursal);
         } else {

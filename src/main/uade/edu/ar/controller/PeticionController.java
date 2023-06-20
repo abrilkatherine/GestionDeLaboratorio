@@ -4,12 +4,15 @@ import main.uade.edu.ar.dao.PeticionDao;
 import main.uade.edu.ar.dto.PeticionDto;
 import main.uade.edu.ar.dto.PracticaDto;
 import main.uade.edu.ar.dto.ResultadoDto;
+import main.uade.edu.ar.enums.TipoResultado;
 import main.uade.edu.ar.mappers.PeticionMapper;
 import main.uade.edu.ar.model.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class PeticionController {
     private static PeticionController peticionController;
@@ -42,10 +45,10 @@ public class PeticionController {
             Peticion peticion = PeticionMapper.toModel(peticionDTO);
             peticionDao.save(peticion);
             peticiones.add(peticion);
+            System.out.println("Se creó la petición con id: " + peticion.getId());
         }
     }
 
-    // TODO: Fix
     public void modificarPeticion(PeticionDto peticionDTO) throws Exception {
         Peticion peticion = peticiones.stream()
                 .filter(p -> p.getId() == peticionDTO.getId())
@@ -98,6 +101,7 @@ public class PeticionController {
         Practica practica = PeticionMapper.toModel(practicaDTO);
         peticion.getPracticas().add(practica);
         peticionDao.update(peticion);
+        System.out.println("Se creó la práctica con id " + practica.getId() + " para la petición " + peticion.getId());
     }
 
     public void modificarPractica(PracticaDto practicaDTO) throws Exception {
@@ -183,6 +187,26 @@ public class PeticionController {
         }
 
         return peticionesConResultadosCriticos;
+    }
+
+    public List<Practica> getPracticasConResultadosReservados(int idPeticion) {
+        Peticion peticion = getPeticion(idPeticion).orElse(null);
+
+        if (peticion == null) {
+            System.out.println("La petición solicitada no existe");
+            return new ArrayList<>();
+        }
+
+        List<Practica> practicasConResultadosOcultos = new ArrayList<>();
+
+        for (Practica practica : peticion.getPracticas()) {
+            if (practica.getResultado() != null && practica.esReservada()) {
+                practica.ocultarResultado();
+            }
+            practicasConResultadosOcultos.add(practica);
+        }
+
+        return practicasConResultadosOcultos;
     }
 
 }

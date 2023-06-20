@@ -73,7 +73,6 @@ public class PacienteController {
         }
     }
 
-    // TODO: AAA - No se puede dar de baja si tiene alguna peticion con resultado
     public void borrarPaciente(int id) throws Exception {
         Paciente paciente = pacientes.stream()
                 .filter(p -> p.getId() == id)
@@ -93,7 +92,7 @@ public class PacienteController {
             return false;
         }
 
-        List<Peticion> peticiones = peticionDao.getAll()
+        List<Peticion> peticiones = peticionDao.getAll() //Nos traemos las peticiones guardas en el JSON
                 .stream()
                 .filter(peticion -> peticion.getPaciente().getId() == paciente.getId())
                 .toList();

@@ -134,7 +134,7 @@ public abstract class GenericDAO<T> {
 
             while ((line = b.readLine()) != null) {
                 JsonObject jsonObject = parser.parse(line).getAsJsonObject();
-                if (!g.fromJson(jsonObject, clase).equals(obj)) {
+                if (g.fromJson(jsonObject, clase).equals(obj)) {
                     line = g.toJson(obj);
                     wasUpdate = true;
                 }
