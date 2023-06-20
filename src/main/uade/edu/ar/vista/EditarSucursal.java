@@ -3,6 +3,7 @@ package main.uade.edu.ar.vista;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import main.uade.edu.ar.model.Sucursal;
 
 public class EditarSucursal extends JDialog {
     private JPanel contentPane;
@@ -12,7 +13,10 @@ public class EditarSucursal extends JDialog {
     private JButton guardarButton;
     private JButton cancelarCambiosButton;
 
-    public EditarSucursal() {
+    private Sucursal sucursal;
+
+    public EditarSucursal(Sucursal sucursal) {
+        this.sucursal = sucursal;
         initializeUI();
         setListeners();
         cargarDatos();
@@ -116,9 +120,9 @@ public class EditarSucursal extends JDialog {
 
     private void cargarDatos() {
         // Cargar los datos pre-cargados
-        numeroSucursalTextField.setText("123");
-        direccionTextField.setText("Calle 123");
-        responsableTextField.setText("Juan Pérez");
+        numeroSucursalTextField.setText(String.valueOf(sucursal.getNumero()));
+        direccionTextField.setText(sucursal.getDireccion());
+        // responsableTextField.setText(sucursal.getResponsableTecnico());
     }
 
     private void onGuardar() {
@@ -130,12 +134,5 @@ public class EditarSucursal extends JDialog {
         dispose();
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                EditarSucursal dialog = new EditarSucursal();
-                dialog.setVisible(true);
-            }
-        });
-    }
+
 }

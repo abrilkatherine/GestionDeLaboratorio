@@ -6,6 +6,10 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import main.uade.edu.ar.dao.SucursalDao;
+import java.util.List;
+import main.uade.edu.ar.model.Sucursal;
+
 
 public class SucursalTodas {
 
@@ -62,14 +66,24 @@ public class SucursalTodas {
                 return false;
             }
         };
-        model.addColumn("Nombre");
+        model.addColumn("Numero");
         model.addColumn("Editar");
         model.addColumn("Eliminar");
 
-        // Agregar filas de ejemplo a la tabla
-        model.addRow(new Object[]{"Sucursal 1", "Info", "Eliminar"});
-        model.addRow(new Object[]{"Sucursal 2", "Info", "Eliminar"});
-        model.addRow(new Object[]{"Sucursal 3", "Info", "Eliminar"});
+        // Crear la instancia del SucursalDao
+
+        SucursalDao sucursalDao;
+        try {
+            sucursalDao = new SucursalDao();
+            List<Sucursal> sucursales = sucursalDao.getAll();
+            for (Sucursal sucursal : sucursales) {
+                model.addRow(new Object[]{sucursal.getNumero(), "Info", "Eliminar"});
+            }
+        } catch (Exception e) {
+            // Manejo de excepciones
+            e.printStackTrace(); // Retornar la tabla vacía en caso de error
+        }
+
 
         // Crear la tabla y configurar el modelo
         JTable table = new JTable(model);
@@ -86,11 +100,32 @@ public class SucursalTodas {
                 // Verificar si se hizo clic en la columna "Editar"
                 if (column == 1 && row < table.getRowCount()) {
                     // Obtener la información de la sucursal
-                    String sucursal = (String) model.getValueAt(row, 0);
+                    int numero = (int) model.getValueAt(row, 0);
+
+                    List<Sucursal> sucursales;
+                    try {
+                        SucursalDao sucursalDao = new SucursalDao();
+                        sucursales = sucursalDao.getAll();
+                    } catch (Exception exception) {
+                        // Manejo de excepciones
+                        exception.printStackTrace();
+                        return; // Salir del método si ocurre un error
+                    }
+
+                    Sucursal sucursal = null;
+                    for (Sucursal s : sucursales) {
+                        if (s.getNumero() == numero) {
+                            sucursal = s;
+                            break;
+                        }
+                    }
 
                     // Crear y mostrar el diálogo de editar sucursal
-                    EditarSucursal editarSucursal = new EditarSucursal();
-                    editarSucursal.setVisible(true);
+                    if (sucursal != null) {
+                        // Crear y mostrar el diálogo de editar sucursal, pasando la sucursal correspondiente
+                        EditarSucursal editarSucursal = new EditarSucursal(sucursal);
+                        editarSucursal.setVisible(true);
+                    }
                 }
 
                 // Verificar si se hizo clic en la columna "Eliminar"
