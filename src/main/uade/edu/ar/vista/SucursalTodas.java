@@ -79,15 +79,13 @@ public class SucursalTodas {
         // Agregar MouseListener a la tabla para detectar clics en las columnas "Editar" y "Eliminar"
         table.addMouseListener(new MouseAdapter() {
             @Override
-            public void mouseClicked(MouseEvent e) {
+            public void mouseClicked(MouseEvent e) {;
                 int column = table.getColumnModel().getColumnIndexAtX(e.getX());
                 int row = e.getY() / table.getRowHeight();
 
                 // Verificar si se hizo clic en la columna "Editar"
                 if (column == 1 && row < table.getRowCount()) {
                     // Obtener la información de la sucursal
-                    String sucursal = (String) model.getValueAt(row, 0);
-
                     // Crear y mostrar el diálogo de editar sucursal
                     EditarSucursal editarSucursal = new EditarSucursal();
                     editarSucursal.setVisible(true);

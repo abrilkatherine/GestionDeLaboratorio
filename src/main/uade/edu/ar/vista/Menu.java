@@ -1,3 +1,4 @@
+// Clase Menu
 package main.uade.edu.ar.vista;
 
 import javax.swing.*;
@@ -6,6 +7,7 @@ import java.awt.*;
 public class Menu {
     private static BarraNavegacion barraNavegacion;
     private static SucursalTodas sucursalTodas;
+    private static PacientesTodas pacienteTodas;
     private static JPanel cardPanel;
     private static CardLayout cardLayout;
 
@@ -40,10 +42,15 @@ public class Menu {
         // Crear una instancia de SucursalTodas y obtener su panel
         sucursalTodas = new SucursalTodas();
         JPanel sucursalTodasPanel = sucursalTodas.createPanel();
-        cardPanel.add(sucursalTodasPanel, "sucursalTodas");
+        cardPanel.add(sucursalTodasPanel, "SucursalTodas");
+
+        // Crear una instancia de PacientesTodas y obtener su panel
+        pacienteTodas = new PacientesTodas();
+        JPanel pacientesTodasPanel = pacienteTodas.createPanel();
+        cardPanel.add(pacientesTodasPanel, "PacientesTodas");
 
         // Mostrar el panel inicial
-        cardLayout.show(cardPanel, "sucursalTodas");
+        cardLayout.show(cardPanel, "SucursalTodas");
 
         // Mostrar la ventana
         frame.setSize(400, 300);

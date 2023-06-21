@@ -22,18 +22,18 @@ public class BarraNavegacion {
 
         // Usar FlowLayout con alineación izquierda para el primer botón
         buttonPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
-        JButton homeButton = createButton("Sucursal", Color.WHITE);
+        JButton homeButton = createButton("Pacientes", Color.WHITE);
         buttonPanel.add(homeButton);
 
         // Usar BoxLayout con alineación derecha para los otros tres botones
         buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.LINE_AXIS));
-        JButton aboutButton = createButton("Pacientes", Color.WHITE);
-        JButton contactButton = createButton("Practicas", Color.WHITE);
-        JButton extraButton = createButton("Peticiones", Color.WHITE);
+        JButton sucursalesButton = createButton("Sucursales", Color.WHITE);
+        JButton practicasButton = createButton("Prácticas", Color.WHITE);
+        JButton peticionesButton = createButton("Peticiones", Color.WHITE);
         buttonPanel.add(Box.createHorizontalGlue());
-        buttonPanel.add(aboutButton);
-        buttonPanel.add(contactButton);
-        buttonPanel.add(extraButton);
+        buttonPanel.add(sucursalesButton);
+        buttonPanel.add(practicasButton);
+        buttonPanel.add(peticionesButton);
 
         // Agregar el panel de botones al panel del menú
         menuPanel.add(buttonPanel);
@@ -41,6 +41,12 @@ public class BarraNavegacion {
         // Crear un panel con CardLayout para contener las diferentes vistas
         cardLayout = new CardLayout();
         cardPanel = new JPanel(cardLayout);
+
+        // Agregar los paneles de vistas al cardPanel
+        cardPanel.add(new PacientesTodas().createPanel(), "pacientesTodas");
+        cardPanel.add(new SucursalTodas().createPanel(), "sucursalesTodas");
+        //cardPanel.add(new PracticasTodas().createPanel(), "practicasTodas");
+        //cardPanel.add(new PeticionesTodas().createPanel(), "peticionesTodas");
 
         // Agregar el panel del menú y el panel con CardLayout al panel principal
         JPanel mainPanel = new JPanel(new BorderLayout());
@@ -60,14 +66,14 @@ public class BarraNavegacion {
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (text.equals("Sucursal")) {
-                    cardLayout.show(cardPanel, "sucursalTodas");
-                } else if (text.equals("Pacientes")) {
-                    // Lógica para mostrar el panel de "Pacientes"
-                } else if (text.equals("Practicas")) {
-                    // Lógica para mostrar el panel de "Practicas"
+                if (text.equals("Pacientes")) {
+                    cardLayout.show(cardPanel, "pacientesTodas");
+                } else if (text.equals("Sucursales")) {
+                    cardLayout.show(cardPanel, "sucursalesTodas");
+                } else if (text.equals("Prácticas")) {
+                    cardLayout.show(cardPanel, "practicasTodas");
                 } else if (text.equals("Peticiones")) {
-                    // Lógica para mostrar el panel de "Peticiones"
+                    cardLayout.show(cardPanel, "peticionesTodas");
                 }
             }
         });
