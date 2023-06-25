@@ -1,19 +1,35 @@
 package main.uade.edu.ar.vista;
 
+import main.uade.edu.ar.model.Usuario;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.List;
+import main.uade.edu.ar.dao.UsuarioDao;
+import main.uade.edu.ar.model.Usuario;
 
 public class AgregarSucursal extends JDialog {
     private JPanel contentPane;
     private JTextField numeroSucursalTextField;
     private JTextField direccionTextField;
-    private JTextField responsableTextField;
+    private JComboBox<String> responsableComboBox;
+    private List<Usuario> usuarios;
     private JButton guardarButton;
 
     public AgregarSucursal() {
+        cargarUsuarios(); // Inicializar la lista de usuarios
         initializeUI();
         setListeners();
+    }
+
+    private void cargarUsuarios() {
+        try {
+            UsuarioDao usuarioDao = new UsuarioDao();
+            usuarios = usuarioDao.getAll(); // Obtener la lista de usuarios existentes
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void initializeUI() {
@@ -57,11 +73,15 @@ public class AgregarSucursal extends JDialog {
         gbc.weightx = 0.0;
         contentPane.add(responsableLabel, gbc);
 
-        responsableTextField = createPlaceholderTextField("Ingrese el responsable");
+        responsableComboBox = new JComboBox<>();
+        for (Usuario usuario : usuarios) {
+            String displayText = usuario.getNombre() + " - " + usuario.getRol();
+            responsableComboBox.addItem(displayText);
+        }
         gbc.gridx = 1;
         gbc.gridy = 2;
         gbc.weightx = 1.0;
-        contentPane.add(responsableTextField, gbc);
+        contentPane.add(responsableComboBox, gbc);
 
         // Botón Guardar
         guardarButton = new JButton("Guardar");

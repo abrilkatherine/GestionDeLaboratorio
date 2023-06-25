@@ -3,23 +3,38 @@ package main.uade.edu.ar.vista;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.List;
+
+import main.uade.edu.ar.dao.UsuarioDao;
 import main.uade.edu.ar.model.Sucursal;
+import main.uade.edu.ar.model.Usuario;
 
 public class EditarSucursal extends JDialog {
     private JPanel contentPane;
     private JTextField numeroSucursalTextField;
     private JTextField direccionTextField;
-    private JTextField responsableTextField;
+    private JComboBox<String> responsableComboBox;
     private JButton guardarButton;
     private JButton cancelarCambiosButton;
 
     private Sucursal sucursal;
+    private List<Usuario> usuarios; // Lista de usuarios existentes
 
     public EditarSucursal(Sucursal sucursal) {
         this.sucursal = sucursal;
+        cargarUsuarios(); // Obtener la lista de usuarios existentes
         initializeUI();
         setListeners();
         cargarDatos();
+    }
+
+    private void cargarUsuarios() {
+        try {
+            UsuarioDao usuarioDao = new UsuarioDao();
+            usuarios = usuarioDao.getAll(); // Obtener la lista de usuarios existentes
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void initializeUI() {
@@ -63,11 +78,18 @@ public class EditarSucursal extends JDialog {
         gbc.weightx = 0.0;
         contentPane.add(responsableLabel, gbc);
 
-        responsableTextField = new JTextField();
+        responsableComboBox = new JComboBox<>();
+        for (Usuario usuario : usuarios) {
+            String displayText = usuario.getNombre() + " - " + usuario.getRol();
+            responsableComboBox.addItem(displayText);
+            if (usuario.equals(sucursal.getResponsableTecnico())) {
+                responsableComboBox.setSelectedItem(usuario);
+            }
+        }
         gbc.gridx = 1;
         gbc.gridy = 2;
         gbc.weightx = 1.0;
-        contentPane.add(responsableTextField, gbc);
+        contentPane.add(responsableComboBox, gbc);
 
         // Botones
         guardarButton = new JButton("Guardar");
@@ -101,7 +123,7 @@ public class EditarSucursal extends JDialog {
             }
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 
-        setSize(400, 300); // Establecer el tamaño personalizado aquí
+        setSize(400, 300);
     }
 
     private void setListeners() {
@@ -119,20 +141,20 @@ public class EditarSucursal extends JDialog {
     }
 
     private void cargarDatos() {
-        // Cargar los datos pre-cargados
         numeroSucursalTextField.setText(String.valueOf(sucursal.getNumero()));
         direccionTextField.setText(sucursal.getDireccion());
-        // responsableTextField.setText(sucursal.getResponsableTecnico());
+        responsableComboBox.setSelectedItem(getDisplayText(sucursal.getResponsableTecnico()));
+    }
+
+    private String getDisplayText(Usuario usuario) {
+        return usuario.getNombre() + " - " + usuario.getRol();
     }
 
     private void onGuardar() {
-        // Acciones de guardar
         dispose();
     }
 
     private void onCancel() {
         dispose();
     }
-
-
 }
