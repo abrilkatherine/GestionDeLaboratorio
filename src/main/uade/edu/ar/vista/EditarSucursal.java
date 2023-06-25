@@ -8,8 +8,6 @@ import java.util.List;
 import main.uade.edu.ar.controller.SucursalYUsuarioController;
 import main.uade.edu.ar.dto.SucursalDto;
 import main.uade.edu.ar.dto.UsuarioDto;
-import main.uade.edu.ar.model.Sucursal;
-import main.uade.edu.ar.model.Usuario;
 
 public class EditarSucursal extends JDialog {
     private JPanel contentPane;
@@ -18,22 +16,22 @@ public class EditarSucursal extends JDialog {
     private JComboBox<String> responsableComboBox;
     private JButton guardarButton;
     private JButton cancelarCambiosButton;
-    private SucursalDto sucursal; // Entiendo debería trabajarse con los dtos
-    private List<UsuarioDto> usuarios; // Lista de usuarios existentes
+    private SucursalDto sucursal;
+    private List<UsuarioDto> usuarios;
     private SucursalYUsuarioController sucursalYUsuarioController;
 
     public EditarSucursal(SucursalDto sucursal, SucursalYUsuarioController sucursalYUsuarioController) {
         this.sucursalYUsuarioController = sucursalYUsuarioController;
         this.sucursal = sucursal;
 
-        cargarUsuarios(); // Obtener la lista de usuarios existentes
+        cargarUsuarios();
         initializeUI();
         setListeners();
         cargarDatos();
     }
 
     private void cargarUsuarios() {
-            usuarios = sucursalYUsuarioController.getAllUsuarios(); // Obtener la lista de usuarios existentes
+        usuarios = sucursalYUsuarioController.getAllUsuarios();
     }
 
     private void initializeUI() {
@@ -82,7 +80,7 @@ public class EditarSucursal extends JDialog {
             String displayText = usuario.getNombre() + " - " + usuario.getRol();
             responsableComboBox.addItem(displayText);
             if (usuario.equals(sucursal.getResponsableTecnico())) {
-                responsableComboBox.setSelectedItem(usuario);
+                responsableComboBox.setSelectedItem(displayText);
             }
         }
         gbc.gridx = 1;
@@ -142,15 +140,37 @@ public class EditarSucursal extends JDialog {
     private void cargarDatos() {
         numeroSucursalTextField.setText(String.valueOf(sucursal.getNumero()));
         direccionTextField.setText(sucursal.getDireccion());
-        responsableComboBox.setSelectedItem(getDisplayText(sucursal.getResponsableTecnico())); // Modificar para usar sucursal dto
+        responsableComboBox.setSelectedItem(getDisplayText(sucursal.getResponsableTecnico()));
     }
 
-    private String getDisplayText(Usuario usuario) {
+    private String getDisplayText(UsuarioDto usuario) {
         return usuario.getNombre() + " - " + usuario.getRol();
+    }
+    private UsuarioDto findUsuarioByDisplayText(String displayText) {
+        for (UsuarioDto usuario : usuarios) {
+            String usuarioDisplayText = usuario.getNombre() + " - " + usuario.getRol();
+            if (usuarioDisplayText.equals(displayText)) {
+                return usuario;
+            }
+        }
+        return null;
     }
 
     private void onGuardar() {
-        dispose();
+        String numeroSucursal = numeroSucursalTextField.getText();
+        String direccion = direccionTextField.getText();
+        String responsableText = (String) responsableComboBox.getSelectedItem();
+        UsuarioDto responsable = findUsuarioByDisplayText(responsableText);
+        SucursalDto sucursalEditada = new SucursalDto(sucursal.getId(), Integer.parseInt(numeroSucursal), direccion, responsable);
+        try {
+            sucursalYUsuarioController.modificarSucursal(sucursalEditada);
+            dispose();
+        } catch (Exception e) {
+            // Manejo de la excepción
+            e.printStackTrace(); // Imprimir información de la excepción
+            // Opcional: Mostrar un mensaje de error al usuario
+            JOptionPane.showMessageDialog(this, "Error al crear la sucursal", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     private void onCancel() {

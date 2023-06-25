@@ -39,6 +39,11 @@ public class SucursalYUsuarioController {
     }
 
     //Sucursal
+    public List<SucursalDto> getAllSucursales() {
+        return sucursales.stream()
+                .map(SucursalYUsuarioController::toDto)
+                .collect(Collectors.toList());
+    }
     public SucursalDto getSucursalPorId(int id) {
         return sucursales.stream()
                 .filter(s -> s.getId() == id)

@@ -6,12 +6,11 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.List;
 
 import main.uade.edu.ar.controller.SucursalYUsuarioController;
+import main.uade.edu.ar.dto.SucursalDto;
 import main.uade.edu.ar.dao.SucursalDao;
-import java.util.List;
-import main.uade.edu.ar.model.Sucursal;
-
 
 public class SucursalTodas {
 
@@ -48,7 +47,7 @@ public class SucursalTodas {
 
         // Agregar ActionListener al botón "Agregar"
         addButton.addActionListener(e -> {
-            AgregarSucursal agregarSucursal = new AgregarSucursal();
+            AgregarSucursal agregarSucursal = new AgregarSucursal(sucursalYUsuarioController);
             agregarSucursal.setVisible(true);
         });
 
@@ -78,20 +77,13 @@ public class SucursalTodas {
         model.addColumn("Editar");
         model.addColumn("Eliminar");
 
-        // Crear la instancia del SucursalDao
+        // Obtener la lista de sucursales mediante el controlador
+        List<SucursalDto> sucursales = sucursalYUsuarioController.getAllSucursales();
 
-        SucursalDao sucursalDao;
-        try {
-            sucursalDao = new SucursalDao();
-            List<Sucursal> sucursales = sucursalDao.getAll();
-            for (Sucursal sucursal : sucursales) {
-                model.addRow(new Object[]{sucursal.getNumero(), "Info", "Eliminar"});
-            }
-        } catch (Exception e) {
-            // Manejo de excepciones
-            e.printStackTrace(); // Retornar la tabla vacía en caso de error
+        // Llenar el modelo con los datos de las sucursales
+        for (SucursalDto sucursal : sucursales) {
+            model.addRow(new Object[]{sucursal.getNumero(), "Info", "Eliminar"});
         }
-
 
         // Crear la tabla y configurar el modelo
         JTable table = new JTable(model);
@@ -110,18 +102,8 @@ public class SucursalTodas {
                     // Obtener la información de la sucursal
                     int numero = (int) model.getValueAt(row, 0);
 
-                    List<Sucursal> sucursales;
-                    try {
-                        SucursalDao sucursalDao = new SucursalDao();
-                        sucursales = sucursalDao.getAll();
-                    } catch (Exception exception) {
-                        // Manejo de excepciones
-                        exception.printStackTrace();
-                        return; // Salir del método si ocurre un error
-                    }
-
-                    Sucursal sucursal = null;
-                    for (Sucursal s : sucursales) {
+                    SucursalDto sucursal = null;
+                    for (SucursalDto s : sucursales) {
                         if (s.getNumero() == numero) {
                             sucursal = s;
                             break;
@@ -130,8 +112,7 @@ public class SucursalTodas {
 
                     // Crear y mostrar el diálogo de editar sucursal
                     if (sucursal != null) {
-                        // Crear y mostrar el diálogo de editar sucursal, pasando la sucursal correspondiente
-                        EditarSucursal editarSucursal = new EditarSucursal(sucursal, sucursalYUsuarioController); //modificar por sucursalDto
+                        EditarSucursal editarSucursal = new EditarSucursal(sucursal, sucursalYUsuarioController);
                         editarSucursal.setVisible(true);
                     }
                 }
