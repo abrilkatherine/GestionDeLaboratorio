@@ -6,12 +6,20 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+
+import main.uade.edu.ar.controller.SucursalYUsuarioController;
 import main.uade.edu.ar.dao.SucursalDao;
 import java.util.List;
 import main.uade.edu.ar.model.Sucursal;
 
 
 public class SucursalTodas {
+
+    private SucursalYUsuarioController sucursalYUsuarioController;
+
+    public SucursalTodas(SucursalYUsuarioController sucursalYUsuarioController) {
+        this.sucursalYUsuarioController = sucursalYUsuarioController;
+    }
 
     public JPanel createPanel() {
         // Crear un JPanel para contener todos los componentes
@@ -123,7 +131,7 @@ public class SucursalTodas {
                     // Crear y mostrar el diálogo de editar sucursal
                     if (sucursal != null) {
                         // Crear y mostrar el diálogo de editar sucursal, pasando la sucursal correspondiente
-                        EditarSucursal editarSucursal = new EditarSucursal(sucursal);
+                        EditarSucursal editarSucursal = new EditarSucursal(sucursal, sucursalYUsuarioController); //modificar por sucursalDto
                         editarSucursal.setVisible(true);
                     }
                 }

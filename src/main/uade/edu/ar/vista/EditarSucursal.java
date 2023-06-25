@@ -5,7 +5,9 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.List;
 
-import main.uade.edu.ar.dao.UsuarioDao;
+import main.uade.edu.ar.controller.SucursalYUsuarioController;
+import main.uade.edu.ar.dto.SucursalDto;
+import main.uade.edu.ar.dto.UsuarioDto;
 import main.uade.edu.ar.model.Sucursal;
 import main.uade.edu.ar.model.Usuario;
 
@@ -16,12 +18,14 @@ public class EditarSucursal extends JDialog {
     private JComboBox<String> responsableComboBox;
     private JButton guardarButton;
     private JButton cancelarCambiosButton;
+    private SucursalDto sucursal; // Entiendo debería trabajarse con los dtos
+    private List<UsuarioDto> usuarios; // Lista de usuarios existentes
+    private SucursalYUsuarioController sucursalYUsuarioController;
 
-    private Sucursal sucursal;
-    private List<Usuario> usuarios; // Lista de usuarios existentes
-
-    public EditarSucursal(Sucursal sucursal) {
+    public EditarSucursal(SucursalDto sucursal, SucursalYUsuarioController sucursalYUsuarioController) {
+        this.sucursalYUsuarioController = sucursalYUsuarioController;
         this.sucursal = sucursal;
+
         cargarUsuarios(); // Obtener la lista de usuarios existentes
         initializeUI();
         setListeners();
@@ -29,12 +33,7 @@ public class EditarSucursal extends JDialog {
     }
 
     private void cargarUsuarios() {
-        try {
-            UsuarioDao usuarioDao = new UsuarioDao();
-            usuarios = usuarioDao.getAll(); // Obtener la lista de usuarios existentes
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+            usuarios = sucursalYUsuarioController.getAllUsuarios(); // Obtener la lista de usuarios existentes
     }
 
     private void initializeUI() {
@@ -79,7 +78,7 @@ public class EditarSucursal extends JDialog {
         contentPane.add(responsableLabel, gbc);
 
         responsableComboBox = new JComboBox<>();
-        for (Usuario usuario : usuarios) {
+        for (UsuarioDto usuario : usuarios) {
             String displayText = usuario.getNombre() + " - " + usuario.getRol();
             responsableComboBox.addItem(displayText);
             if (usuario.equals(sucursal.getResponsableTecnico())) {
@@ -143,7 +142,7 @@ public class EditarSucursal extends JDialog {
     private void cargarDatos() {
         numeroSucursalTextField.setText(String.valueOf(sucursal.getNumero()));
         direccionTextField.setText(sucursal.getDireccion());
-        responsableComboBox.setSelectedItem(getDisplayText(sucursal.getResponsableTecnico()));
+        responsableComboBox.setSelectedItem(getDisplayText(sucursal.getResponsableTecnico())); // Modificar para usar sucursal dto
     }
 
     private String getDisplayText(Usuario usuario) {

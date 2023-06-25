@@ -11,6 +11,7 @@ import main.uade.edu.ar.model.Usuario;
 
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class SucursalYUsuarioController {
 
@@ -90,7 +91,7 @@ public class SucursalYUsuarioController {
 
             Sucursal sucursalADerivar = getSucursalRandom(id);
 
-            for(Peticion peticion : peticiones){
+            for (Peticion peticion : peticiones) {
                 peticion.setSucursal(sucursalADerivar);
                 peticionDao.update(peticion);
             }
@@ -147,6 +148,12 @@ public class SucursalYUsuarioController {
                 .findFirst()
                 .map(SucursalYUsuarioController::toDto)
                 .orElse(null);
+    }
+
+    public List<UsuarioDto> getAllUsuarios() {
+        return usuarios.stream()
+                .map(SucursalYUsuarioController::toDto)
+                .collect(Collectors.toList());
     }
 
     public Usuario crearUsuario(UsuarioDto usuarioDTO) throws Exception {

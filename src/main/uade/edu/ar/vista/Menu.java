@@ -1,5 +1,9 @@
 package main.uade.edu.ar.vista;
 
+import main.uade.edu.ar.controller.PacienteController;
+import main.uade.edu.ar.controller.PeticionController;
+import main.uade.edu.ar.controller.SucursalYUsuarioController;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -8,8 +12,17 @@ public class Menu {
     private static SucursalTodas sucursalTodas;
     private static JPanel cardPanel;
     private static CardLayout cardLayout;
+    private static SucursalYUsuarioController sucursalYUsuarioController;
+    //TODO: AGREGAR LAS INSTANCIAS A LOS OTROS CONTROLLERS TAMBIEN ACA
 
     public static void main(String[] args) {
+        try {
+            sucursalYUsuarioController = SucursalYUsuarioController.getInstance(); //Obtenemos la instancia del controller
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 createAndShowMenu();
@@ -38,7 +51,7 @@ public class Menu {
         frame.add(cardPanel, BorderLayout.CENTER);
 
         // Crear una instancia de SucursalTodas y obtener su panel
-        sucursalTodas = new SucursalTodas();
+        sucursalTodas = new SucursalTodas(sucursalYUsuarioController);
         JPanel sucursalTodasPanel = sucursalTodas.createPanel();
         cardPanel.add(sucursalTodasPanel, "sucursalTodas");
 
