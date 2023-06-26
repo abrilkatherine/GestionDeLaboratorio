@@ -3,23 +3,35 @@ package main.uade.edu.ar.vista;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import main.uade.edu.ar.model.Sucursal;
+import java.util.List;
+
+import main.uade.edu.ar.controller.SucursalYUsuarioController;
+import main.uade.edu.ar.dto.SucursalDto;
+import main.uade.edu.ar.dto.UsuarioDto;
 
 public class EditarSucursal extends JDialog {
     private JPanel contentPane;
     private JTextField numeroSucursalTextField;
     private JTextField direccionTextField;
-    private JTextField responsableTextField;
+    private JComboBox<String> responsableComboBox;
     private JButton guardarButton;
     private JButton cancelarCambiosButton;
+    private SucursalDto sucursal;
+    private List<UsuarioDto> usuarios;
+    private SucursalYUsuarioController sucursalYUsuarioController;
 
-    private Sucursal sucursal;
-
-    public EditarSucursal(Sucursal sucursal) {
+    public EditarSucursal(SucursalDto sucursal, SucursalYUsuarioController sucursalYUsuarioController) {
+        this.sucursalYUsuarioController = sucursalYUsuarioController;
         this.sucursal = sucursal;
+
+        cargarUsuarios();
         initializeUI();
         setListeners();
         cargarDatos();
+    }
+
+    private void cargarUsuarios() {
+        usuarios = sucursalYUsuarioController.getAllUsuarios();
     }
 
     private void initializeUI() {
@@ -63,11 +75,18 @@ public class EditarSucursal extends JDialog {
         gbc.weightx = 0.0;
         contentPane.add(responsableLabel, gbc);
 
-        responsableTextField = new JTextField();
+        responsableComboBox = new JComboBox<>();
+        for (UsuarioDto usuario : usuarios) {
+            String displayText = usuario.getNombre() + " - " + usuario.getRol();
+            responsableComboBox.addItem(displayText);
+            if (usuario.equals(sucursal.getResponsableTecnico())) {
+                responsableComboBox.setSelectedItem(displayText);
+            }
+        }
         gbc.gridx = 1;
         gbc.gridy = 2;
         gbc.weightx = 1.0;
-        contentPane.add(responsableTextField, gbc);
+        contentPane.add(responsableComboBox, gbc);
 
         // Botones
         guardarButton = new JButton("Guardar");
@@ -101,7 +120,7 @@ public class EditarSucursal extends JDialog {
             }
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 
-        setSize(400, 300); // Establecer el tamaño personalizado aquí
+        setSize(400, 300);
     }
 
     private void setListeners() {
@@ -119,20 +138,42 @@ public class EditarSucursal extends JDialog {
     }
 
     private void cargarDatos() {
-        // Cargar los datos pre-cargados
         numeroSucursalTextField.setText(String.valueOf(sucursal.getNumero()));
         direccionTextField.setText(sucursal.getDireccion());
-        // responsableTextField.setText(sucursal.getResponsableTecnico());
+        responsableComboBox.setSelectedItem(getDisplayText(sucursal.getResponsableTecnico()));
+    }
+
+    private String getDisplayText(UsuarioDto usuario) {
+        return usuario.getNombre() + " - " + usuario.getRol();
+    }
+    private UsuarioDto findUsuarioByDisplayText(String displayText) {
+        for (UsuarioDto usuario : usuarios) {
+            String usuarioDisplayText = usuario.getNombre() + " - " + usuario.getRol();
+            if (usuarioDisplayText.equals(displayText)) {
+                return usuario;
+            }
+        }
+        return null;
     }
 
     private void onGuardar() {
-        // Acciones de guardar
-        dispose();
+        String numeroSucursal = numeroSucursalTextField.getText();
+        String direccion = direccionTextField.getText();
+        String responsableText = (String) responsableComboBox.getSelectedItem();
+        UsuarioDto responsable = findUsuarioByDisplayText(responsableText);
+        SucursalDto sucursalEditada = new SucursalDto(sucursal.getId(), Integer.parseInt(numeroSucursal), direccion, responsable);
+        try {
+            sucursalYUsuarioController.modificarSucursal(sucursalEditada);
+            dispose();
+        } catch (Exception e) {
+            // Manejo de la excepción
+            e.printStackTrace(); // Imprimir información de la excepción
+            // Opcional: Mostrar un mensaje de error al usuario
+            JOptionPane.showMessageDialog(this, "Error al crear la sucursal", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     private void onCancel() {
         dispose();
     }
-
-
 }

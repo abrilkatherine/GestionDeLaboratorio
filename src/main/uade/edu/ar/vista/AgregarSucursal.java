@@ -1,19 +1,32 @@
 package main.uade.edu.ar.vista;
 
+import main.uade.edu.ar.controller.SucursalYUsuarioController;
+import main.uade.edu.ar.dto.UsuarioDto;
+import main.uade.edu.ar.dto.SucursalDto;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.List;
 
 public class AgregarSucursal extends JDialog {
     private JPanel contentPane;
     private JTextField numeroSucursalTextField;
     private JTextField direccionTextField;
-    private JTextField responsableTextField;
+    private JComboBox<String> responsableComboBox;
+    private List<UsuarioDto> usuarios;
     private JButton guardarButton;
+    private SucursalYUsuarioController sucursalYUsuarioController;
 
-    public AgregarSucursal() {
+    public AgregarSucursal(SucursalYUsuarioController sucursalYUsuarioController) {
+        this.sucursalYUsuarioController = sucursalYUsuarioController;
+        cargarUsuarios();
         initializeUI();
         setListeners();
+    }
+
+    private void cargarUsuarios() {
+        usuarios = sucursalYUsuarioController.getAllUsuarios();
     }
 
     private void initializeUI() {
@@ -57,14 +70,18 @@ public class AgregarSucursal extends JDialog {
         gbc.weightx = 0.0;
         contentPane.add(responsableLabel, gbc);
 
-        responsableTextField = createPlaceholderTextField("Ingrese el responsable");
+        responsableComboBox = new JComboBox<>();
+        for (UsuarioDto usuario : usuarios) {
+            String displayText = usuario.getNombre() + " - " + usuario.getRol();
+            responsableComboBox.addItem(displayText);
+        }
         gbc.gridx = 1;
         gbc.gridy = 2;
         gbc.weightx = 1.0;
-        contentPane.add(responsableTextField, gbc);
+        contentPane.add(responsableComboBox, gbc);
 
-        // Botón Guardar
-        guardarButton = new JButton("Guardar");
+        // Botón Guardar/Agregar
+        guardarButton = new JButton("Agregar");
         gbc.gridx = 1;
         gbc.gridy = 3;
         gbc.weightx = 0.0;
@@ -88,7 +105,7 @@ public class AgregarSucursal extends JDialog {
             }
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 
-        setSize(400, 300); // Establecer el tamaño personalizado aquí
+        setSize(400, 300);
     }
 
     private JTextField createPlaceholderTextField(String placeholderText) {
@@ -127,20 +144,33 @@ public class AgregarSucursal extends JDialog {
     }
 
     private void onGuardar() {
-        // Acciones de guardar
-        dispose();
+        String numeroSucursal = numeroSucursalTextField.getText();
+        String direccion = direccionTextField.getText();
+        String responsableText = (String) responsableComboBox.getSelectedItem();
+        UsuarioDto responsable = findUsuarioByDisplayText(responsableText);
+        SucursalDto nuevaSucursal = new SucursalDto(2, Integer.parseInt(numeroSucursal), direccion, responsable);
+        try {
+            sucursalYUsuarioController.crearSucursal(nuevaSucursal);
+            dispose();
+        } catch (Exception e) {
+            // Manejo de la excepción
+            e.printStackTrace(); // Imprimir información de la excepción
+            // Opcional: Mostrar un mensaje de error al usuario
+            JOptionPane.showMessageDialog(this, "Error al crear la sucursal", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private UsuarioDto findUsuarioByDisplayText(String displayText) {
+        for (UsuarioDto usuario : usuarios) {
+            String usuarioDisplayText = usuario.getNombre() + " - " + usuario.getRol();
+            if (usuarioDisplayText.equals(displayText)) {
+                return usuario;
+            }
+        }
+        return null;
     }
 
     private void onCancel() {
         dispose();
-    }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                AgregarSucursal dialog = new AgregarSucursal();
-                dialog.setVisible(true);
-            }
-        });
     }
 }
