@@ -8,6 +8,8 @@ public class Menu {
     private static BarraNavegacion barraNavegacion;
     private static SucursalTodas sucursalTodas;
     private static PacientesTodas pacienteTodas;
+
+    private static PeticionesTodas peticionesTodas;
     private static JPanel cardPanel;
     private static CardLayout cardLayout;
 
@@ -49,6 +51,9 @@ public class Menu {
         JPanel pacientesTodasPanel = pacienteTodas.createPanel();
         cardPanel.add(pacientesTodasPanel, "PacientesTodas");
 
+        peticionesTodas = new PeticionesTodas();
+        JPanel peticionesTodasPanel = peticionesTodas.createPanel();
+        cardPanel.add(peticionesTodasPanel, "PeticionesTodas");
         // Mostrar el panel inicial
         cardLayout.show(cardPanel, "SucursalTodas");
 

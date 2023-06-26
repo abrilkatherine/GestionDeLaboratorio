@@ -1,26 +1,24 @@
 package main.uade.edu.ar.vista;
 
-import main.uade.edu.ar.model.Paciente;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.List;
 
-public class EditarPaciente extends JDialog {
+import main.uade.edu.ar.model.Practica;
+
+public class PracticasXPeticion extends JDialog {
     private JPanel contentPane;
-    private JTextField nombrePacienteTextField;
-    private JTextField dniTextField;
-    private JTextField emailTextField;
-    private JTextField apellidoTextField;
-    private JTextField edadTextField;
-    private JTextField generoTextField;
+    private JTextField numeroSucursalTextField;
+    private JTextField direccionTextField;
+    private JTextField responsableTextField;
     private JButton guardarButton;
     private JButton cancelarCambiosButton;
 
-    private Paciente paciente;
+    private List<Practica> practicas;
 
-    public EditarPaciente(Paciente paciente) {
-        this.paciente = paciente;
+    public  PracticasXPeticion(List<Practica> practicas) {
+        this.practicas = practicas;
         initializeUI();
         setListeners();
         cargarDatos();
@@ -34,92 +32,56 @@ public class EditarPaciente extends JDialog {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(5, 5, 5, 5);
 
-        JLabel nombrePaciente = new JLabel("Nombre de Paciente:");
+        // Numero de Sucursal
+        JLabel numeroSucursalLabel = new JLabel("Número de Sucursal:");
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.anchor = GridBagConstraints.WEST;
-        contentPane.add(nombrePaciente, gbc);
+        contentPane.add(numeroSucursalLabel, gbc);
 
-        nombrePacienteTextField = new JTextField();
+        numeroSucursalTextField = new JTextField();
         gbc.gridx = 1;
         gbc.gridy = 0;
         gbc.weightx = 1.0;
-        contentPane.add(nombrePacienteTextField, gbc);
+        contentPane.add(numeroSucursalTextField, gbc);
 
-        JLabel apellidoPaciente = new JLabel("Apellido de Paciente:");
-
+        // Dirección
+        JLabel direccionLabel = new JLabel("Dirección:");
         gbc.gridx = 0;
         gbc.gridy = 1;
-        gbc.anchor = GridBagConstraints.WEST;
-        contentPane.add(apellidoPaciente, gbc);
+        gbc.weightx = 0.0;
+        contentPane.add(direccionLabel, gbc);
 
-        apellidoTextField = new JTextField();
+        direccionTextField = new JTextField();
         gbc.gridx = 1;
         gbc.gridy = 1;
         gbc.weightx = 1.0;
-        contentPane.add(apellidoTextField, gbc);
+        contentPane.add(direccionTextField, gbc);
 
-        JLabel dniLabel = new JLabel("DNI:");
+        // Responsable
+        JLabel responsableLabel = new JLabel("Responsable:");
         gbc.gridx = 0;
         gbc.gridy = 2;
         gbc.weightx = 0.0;
-        contentPane.add(dniLabel, gbc);
+        contentPane.add(responsableLabel, gbc);
 
-        dniTextField = new JTextField();
+        responsableTextField = new JTextField();
         gbc.gridx = 1;
         gbc.gridy = 2;
         gbc.weightx = 1.0;
-        contentPane.add(dniTextField, gbc);
-
-        JLabel emailLabel = new JLabel("Email:");
-        gbc.gridx = 0;
-        gbc.gridy = 3;
-        gbc.weightx = 0.0;
-        contentPane.add(emailLabel, gbc);
-
-        emailTextField = new JTextField();
-        gbc.gridx = 1;
-        gbc.gridy = 3;
-        gbc.weightx = 1.0;
-        contentPane.add(emailTextField, gbc);
-
-        JLabel generoLabel = new JLabel("genero:");
-        gbc.gridx = 0;
-        gbc.gridy = 4;
-        gbc.weightx = 0.0;
-        contentPane.add(generoLabel, gbc);
-
-        generoTextField = new JTextField();
-        gbc.gridx = 1;
-        gbc.gridy = 4;
-        gbc.weightx = 1.0;
-        contentPane.add(generoTextField, gbc);
-
-
-        JLabel edadLabel = new JLabel("Edad:");
-        gbc.gridx = 0;
-        gbc.gridy = 5;
-        gbc.weightx = 0.0;
-        contentPane.add(edadLabel, gbc);
-
-        edadTextField = new JTextField();
-        gbc.gridx = 1;
-        gbc.gridy = 5;
-        gbc.weightx = 1.0;
-        contentPane.add(edadTextField, gbc);
-
+        contentPane.add(responsableTextField, gbc);
 
         // Botones
         guardarButton = new JButton("Guardar");
         gbc.gridx = 0;
-        gbc.gridy = 6;
+        gbc.gridy = 3;
         gbc.weightx = 0.0;
         gbc.anchor = GridBagConstraints.EAST;
         contentPane.add(guardarButton, gbc);
 
         cancelarCambiosButton = new JButton("Cancelar Cambios");
         gbc.gridx = 1;
-        gbc.gridy = 6;
+        gbc.gridy = 3;
         gbc.weightx = 0.0;
         gbc.anchor = GridBagConstraints.EAST;
         contentPane.add(cancelarCambiosButton, gbc);
@@ -159,14 +121,7 @@ public class EditarPaciente extends JDialog {
     }
 
     private void cargarDatos() {
-        // Cargar los datos pre-cargados
-        nombrePacienteTextField.setText(paciente.getNombre());
-        dniTextField.setText(String.valueOf(paciente.getDni()));
-        apellidoTextField.setText(paciente.getApellido());
-        emailTextField.setText(paciente.getEmail());
-        generoTextField.setText(String.valueOf(paciente.getGenero()));
-        edadTextField.setText(String.valueOf(paciente.getEdad()));
-
+        System.out.print(this.practicas);
     }
 
     private void onGuardar() {
@@ -177,5 +132,6 @@ public class EditarPaciente extends JDialog {
     private void onCancel() {
         dispose();
     }
+
 
 }

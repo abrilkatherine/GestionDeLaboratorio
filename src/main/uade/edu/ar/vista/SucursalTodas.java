@@ -114,6 +114,7 @@ public class SucursalTodas {
 
                     Sucursal sucursal = null;
                     for (Sucursal s : sucursales) {
+                        System.out.print(s.getNumero() + "AAAA" + numero);
                         if (s.getNumero() == numero) {
                             sucursal = s;
                             break;

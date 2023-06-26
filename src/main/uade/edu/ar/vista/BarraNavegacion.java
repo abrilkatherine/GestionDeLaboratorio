@@ -28,11 +28,9 @@ public class BarraNavegacion {
         // Usar BoxLayout con alineación derecha para los otros tres botones
         buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.LINE_AXIS));
         JButton sucursalesButton = createButton("Sucursales", Color.WHITE);
-        JButton practicasButton = createButton("Prácticas", Color.WHITE);
         JButton peticionesButton = createButton("Peticiones", Color.WHITE);
         buttonPanel.add(Box.createHorizontalGlue());
         buttonPanel.add(sucursalesButton);
-        buttonPanel.add(practicasButton);
         buttonPanel.add(peticionesButton);
 
         // Agregar el panel de botones al panel del menú
@@ -45,8 +43,7 @@ public class BarraNavegacion {
         // Agregar los paneles de vistas al cardPanel
         cardPanel.add(new PacientesTodas().createPanel(), "pacientesTodas");
         cardPanel.add(new SucursalTodas().createPanel(), "sucursalesTodas");
-        //cardPanel.add(new PracticasTodas().createPanel(), "practicasTodas");
-        //cardPanel.add(new PeticionesTodas().createPanel(), "peticionesTodas");
+        cardPanel.add(new PeticionesTodas().createPanel(), "peticionesTodas");
 
         // Agregar el panel del menú y el panel con CardLayout al panel principal
         JPanel mainPanel = new JPanel(new BorderLayout());

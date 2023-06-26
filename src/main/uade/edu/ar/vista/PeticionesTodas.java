@@ -6,12 +6,12 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import main.uade.edu.ar.model.Paciente;
+import main.uade.edu.ar.model.Peticion;
 import java.lang.reflect.Type;
 import java.util.List;
-import main.uade.edu.ar.dao.PacienteDao;
+import main.uade.edu.ar.dao.PeticionDao;
 
-public class PacientesTodas {
+public class PeticionesTodas {
 
     public JPanel createPanel() {
         // Crear un JPanel para contener todos los componentes
@@ -25,7 +25,7 @@ public class PacientesTodas {
         headerPanel.setLayout(new BorderLayout());
 
         // Crear el título "Sucursales" a la izquierda
-        JLabel titleLabel = new JLabel("Pacientes");
+        JLabel titleLabel = new JLabel("Peticiones");
         titleLabel.setHorizontalAlignment(SwingConstants.LEFT);
         titleLabel.setFont(titleLabel.getFont().deriveFont(Font.BOLD, 20));
         headerPanel.add(titleLabel, BorderLayout.WEST);
@@ -40,8 +40,8 @@ public class PacientesTodas {
 
         // Agregar ActionListener al botón "Agregar"
         addButton.addActionListener(e -> {
-            AgregarPaciente agregarPaciente = new AgregarPaciente();
-            agregarPaciente.setVisible(true);
+            //AgregarPaciente agregarPaciente = new AgregarPaciente();
+            //agregarPaciente.setVisible(true);
         });
 
         // Agregar el botón "Agregar" al JPanel del encabezado
@@ -66,18 +66,18 @@ public class PacientesTodas {
                 return false;
             }
         };
-        model.addColumn("Nombre");
-        model.addColumn("DNI");
+        model.addColumn("ID");
+        model.addColumn("Practicas");
         model.addColumn("Editar");
         model.addColumn("Eliminar");
 
         // Agregar filas de ejemplo a la tabla
-        PacienteDao pacienteDao;
+        PeticionDao peticionDao;
         try {
-            pacienteDao = new PacienteDao();
-            List<Paciente> pacientes = pacienteDao.getAll();
-            for (Paciente paciente : pacientes) {
-                model.addRow(new Object[]{paciente.getNombre(),paciente.getDni(), "Info", "Eliminar"});
+            peticionDao = new PeticionDao();
+            List<Peticion> peticiones = peticionDao.getAll();
+            for (Peticion peticion : peticiones) {
+                model.addRow(new Object[]{peticion.getId(),"Ver", "Info", "Eliminar"});
             }
         } catch (Exception e) {
             // Manejo de excepciones
@@ -87,7 +87,7 @@ public class PacientesTodas {
         // Crear la tabla y configurar el modelo
         JTable table = new JTable(model);
         table.getColumnModel().getColumn(2).setPreferredWidth(50); // Ancho de la columna "Editar"
-        table.getColumnModel().getColumn(3).setPreferredWidth(70); // Ancho de la columna "Eliminar"
+        //table.getColumnModel().getColumn(3).setPreferredWidth(70); // Ancho de la columna "Eliminar"
 
         // Agregar MouseListener a la tabla para detectar clics en las columnas "Editar" y "Eliminar"
         table.addMouseListener(new MouseAdapter() {
@@ -100,29 +100,57 @@ public class PacientesTodas {
                 if (column == 2 && row < table.getRowCount()) {
                     int valorColumnaDNI = (int) model.getValueAt(row, 1);
 
-                    List<Paciente> pacientes;
+                    List<Peticion> peticiones;
                     try {
-                        PacienteDao pacienteDao = new PacienteDao();
-                        pacientes = pacienteDao.getAll();
+                        PeticionDao pacienteDao = new PeticionDao();
+                        peticiones = pacienteDao.getAll();
                     } catch (Exception exception) {
                         // Manejo de excepciones
                         exception.printStackTrace();
                         return; // Salir del método si ocurre un error
                     }
-                    Paciente paciente = null;
-                    for (Paciente p : pacientes) {
-                        if (p.getDni() == valorColumnaDNI) {
-                            paciente = p;
+                    Peticion peticion = null;
+                    for (Peticion p : peticiones) {
+                        if (p.getId() == valorColumnaDNI) {
+                            peticion = p;
                             break;
                         }
                     }
                     // Crear y mostrar el diálogo de editar sucursal
-                    if (paciente != null) {
+                    if (peticion != null) {
                         // Crear y mostrar el diálogo de editar sucursal, pasando la sucursal correspondiente
-                        EditarPaciente editarPaciente = new EditarPaciente(paciente);
-                        editarPaciente.setVisible(true);
+                        //EditarPaciente editarPaciente = new EditarPaciente(peticion);
+                        //editarPaciente.setVisible(true);
                     }
                 }
+
+                if(column == 1 && row < table.getRowCount()){
+                    int valorColumnaId = (int) model.getValueAt(row, 0);
+
+                    List<Peticion> peticiones;
+                    try {
+                        PeticionDao pacienteDao = new PeticionDao();
+                        peticiones = pacienteDao.getAll();
+                    } catch (Exception exception) {
+                        // Manejo de excepciones
+                        exception.printStackTrace();
+                        return; // Salir del método si ocurre un error
+                    }
+                    Peticion peticion = null;
+                    for (Peticion p : peticiones) {
+                        if (p.getId() == valorColumnaId) {
+                            peticion = p;
+                            break;
+                        }
+                    }
+                    // Crear y mostrar el diálogo de editar sucursal
+                    if (peticion != null) {
+                        // Crear y mostrar el diálogo de editar sucursal, pasando la sucursal correspondiente
+                        PracticasXPeticion vistaPracticas = new PracticasXPeticion(peticion.getPracticas());
+                        vistaPracticas.setVisible(true);
+                    }
+                }
+
 
                 // Verificar si se hizo clic en la columna "Eliminar"
                 if (column == 3 && row < table.getRowCount()) {
@@ -132,6 +160,7 @@ public class PacientesTodas {
                         model.removeRow(row);
                     }
                 }
+
             }
         });
 
