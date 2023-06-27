@@ -1,137 +1,63 @@
 package main.uade.edu.ar.vista;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.List;
 
-import main.uade.edu.ar.model.Practica;
+import main.uade.edu.ar.dto.PracticaDto;
 
 public class PracticasXPeticion extends JDialog {
     private JPanel contentPane;
-    private JTextField numeroSucursalTextField;
-    private JTextField direccionTextField;
-    private JTextField responsableTextField;
-    private JButton guardarButton;
-    private JButton cancelarCambiosButton;
+    private JTable practicasTable;
+    private JButton agregarButton;
 
-    private List<Practica> practicas;
+    private List<PracticaDto> practicas;
 
-    public  PracticasXPeticion(List<Practica> practicas) {
+    public PracticasXPeticion(List<PracticaDto> practicas) {
         this.practicas = practicas;
         initializeUI();
-        setListeners();
         cargarDatos();
     }
 
     private void initializeUI() {
         contentPane = new JPanel();
-        contentPane.setLayout(new GridBagLayout());
+        contentPane.setLayout(new BorderLayout());
 
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.insets = new Insets(5, 5, 5, 5);
+        // Panel de título
+        JLabel tituloLabel = new JLabel("Prácticas");
+        tituloLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        JPanel tituloPanel = new JPanel();
+        tituloPanel.add(tituloLabel);
+        contentPane.add(tituloPanel, BorderLayout.NORTH);
 
-        // Numero de Sucursal
-        JLabel numeroSucursalLabel = new JLabel("Número de Sucursal:");
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.anchor = GridBagConstraints.WEST;
-        contentPane.add(numeroSucursalLabel, gbc);
+        // Modelo de la tabla
+        DefaultTableModel tableModel = new DefaultTableModel(new Object[]{"Id", "Nombre", "Info", "Eliminar"}, 0);
+        practicasTable = new JTable(tableModel);
+        JScrollPane scrollPane = new JScrollPane(practicasTable);
+        contentPane.add(scrollPane, BorderLayout.CENTER);
 
-        numeroSucursalTextField = new JTextField();
-        gbc.gridx = 1;
-        gbc.gridy = 0;
-        gbc.weightx = 1.0;
-        contentPane.add(numeroSucursalTextField, gbc);
-
-        // Dirección
-        JLabel direccionLabel = new JLabel("Dirección:");
-        gbc.gridx = 0;
-        gbc.gridy = 1;
-        gbc.weightx = 0.0;
-        contentPane.add(direccionLabel, gbc);
-
-        direccionTextField = new JTextField();
-        gbc.gridx = 1;
-        gbc.gridy = 1;
-        gbc.weightx = 1.0;
-        contentPane.add(direccionTextField, gbc);
-
-        // Responsable
-        JLabel responsableLabel = new JLabel("Responsable:");
-        gbc.gridx = 0;
-        gbc.gridy = 2;
-        gbc.weightx = 0.0;
-        contentPane.add(responsableLabel, gbc);
-
-        responsableTextField = new JTextField();
-        gbc.gridx = 1;
-        gbc.gridy = 2;
-        gbc.weightx = 1.0;
-        contentPane.add(responsableTextField, gbc);
-
-        // Botones
-        guardarButton = new JButton("Guardar");
-        gbc.gridx = 0;
-        gbc.gridy = 3;
-        gbc.weightx = 0.0;
-        gbc.anchor = GridBagConstraints.EAST;
-        contentPane.add(guardarButton, gbc);
-
-        cancelarCambiosButton = new JButton("Cancelar Cambios");
-        gbc.gridx = 1;
-        gbc.gridy = 3;
-        gbc.weightx = 0.0;
-        gbc.anchor = GridBagConstraints.EAST;
-        contentPane.add(cancelarCambiosButton, gbc);
+        // Botón Agregar
+        agregarButton = new JButton("Agregar");
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.add(agregarButton);
+        contentPane.add(buttonPanel, BorderLayout.EAST);
 
         setContentPane(contentPane);
         setModal(true);
-        getRootPane().setDefaultButton(guardarButton);
 
-        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-        addWindowListener(new WindowAdapter() {
-            public void windowClosing(WindowEvent e) {
-                onCancel();
-            }
-        });
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
-        contentPane.registerKeyboardAction(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onCancel();
-            }
-        }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-
-        setSize(400, 300); // Establecer el tamaño personalizado aquí
-    }
-
-    private void setListeners() {
-        guardarButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onGuardar();
-            }
-        });
-
-        cancelarCambiosButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onCancel();
-            }
-        });
+        setSize(600, 400);
     }
 
     private void cargarDatos() {
-        System.out.print(this.practicas);
+        DefaultTableModel tableModel = (DefaultTableModel) practicasTable.getModel();
+        for (PracticaDto practica : practicas) {
+            Object[] row = {practica.getId(), practica.getNombre(), "info", "Eliminar"};
+            tableModel.addRow(row);
+        }
     }
-
-    private void onGuardar() {
-        // Acciones de guardar
-        dispose();
-    }
-
-    private void onCancel() {
-        dispose();
-    }
-
-
 }

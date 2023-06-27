@@ -5,7 +5,16 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import main.uade.edu.ar.controller.PacienteController;
+import main.uade.edu.ar.controller.PeticionController;
+import main.uade.edu.ar.controller.SucursalYUsuarioController;
+
 public class BarraNavegacion {
+
+    private static SucursalYUsuarioController sucursalYUsuarioController;
+    private static PacienteController pacienteController;
+    private static PeticionController peticionController;
+
     private JPanel menuPanel;
     private JPanel buttonPanel;
     private CardLayout cardLayout;
@@ -40,10 +49,19 @@ public class BarraNavegacion {
         cardLayout = new CardLayout();
         cardPanel = new JPanel(cardLayout);
 
+        try{
+            sucursalYUsuarioController = SucursalYUsuarioController.getInstance();
+            peticionController = PeticionController.getInstance();
+            pacienteController = PacienteController.getInstance();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
+
         // Agregar los paneles de vistas al cardPanel
-        cardPanel.add(new PacientesTodas().createPanel(), "pacientesTodas");
-        cardPanel.add(new SucursalTodas().createPanel(), "sucursalesTodas");
-        cardPanel.add(new PeticionesTodas().createPanel(), "peticionesTodas");
+        cardPanel.add(new PacientesTodas(pacienteController).createPanel(), "pacientesTodas");
+        cardPanel.add(new SucursalTodas(sucursalYUsuarioController).createPanel(), "sucursalesTodas");
+        cardPanel.add(new PeticionesTodas(peticionController).createPanel(), "peticionesTodas");
 
         // Agregar el panel del menú y el panel con CardLayout al panel principal
         JPanel mainPanel = new JPanel(new BorderLayout());

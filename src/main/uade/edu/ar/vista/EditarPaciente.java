@@ -1,6 +1,8 @@
 package main.uade.edu.ar.vista;
 
-import main.uade.edu.ar.model.Paciente;
+import main.uade.edu.ar.controller.PacienteController;
+import main.uade.edu.ar.dto.PacienteDto;
+import main.uade.edu.ar.enums.Genero;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,14 +15,19 @@ public class EditarPaciente extends JDialog {
     private JTextField emailTextField;
     private JTextField apellidoTextField;
     private JTextField edadTextField;
-    private JTextField generoTextField;
+    private JRadioButton generoRadioButtonFemenino;
+    private JRadioButton generoRadioButtonMasculino;
+    private JTextField domicilioTextField;
     private JButton guardarButton;
     private JButton cancelarCambiosButton;
 
-    private Paciente paciente;
+    private PacienteDto paciente;
 
-    public EditarPaciente(Paciente paciente) {
+    private PacienteController pacienteController;
+
+    public EditarPaciente(PacienteDto paciente,PacienteController pacienteController) {
         this.paciente = paciente;
+        this.pacienteController = pacienteController;
         initializeUI();
         setListeners();
         cargarDatos();
@@ -47,7 +54,6 @@ public class EditarPaciente extends JDialog {
         contentPane.add(nombrePacienteTextField, gbc);
 
         JLabel apellidoPaciente = new JLabel("Apellido de Paciente:");
-
         gbc.gridx = 0;
         gbc.gridy = 1;
         gbc.anchor = GridBagConstraints.WEST;
@@ -83,18 +89,27 @@ public class EditarPaciente extends JDialog {
         gbc.weightx = 1.0;
         contentPane.add(emailTextField, gbc);
 
-        JLabel generoLabel = new JLabel("genero:");
+        JLabel generoLabel = new JLabel("Género:");
         gbc.gridx = 0;
         gbc.gridy = 4;
         gbc.weightx = 0.0;
         contentPane.add(generoLabel, gbc);
 
-        generoTextField = new JTextField();
+        ButtonGroup generoButtonGroup = new ButtonGroup();
+
+        generoRadioButtonFemenino = new JRadioButton("Femenino");
         gbc.gridx = 1;
         gbc.gridy = 4;
         gbc.weightx = 1.0;
-        contentPane.add(generoTextField, gbc);
+        contentPane.add(generoRadioButtonFemenino, gbc);
+        generoButtonGroup.add(generoRadioButtonFemenino);
 
+        generoRadioButtonMasculino = new JRadioButton("Masculino");
+        gbc.gridx = 2;
+        gbc.gridy = 4;
+        gbc.weightx = 1.0;
+        contentPane.add(generoRadioButtonMasculino, gbc);
+        generoButtonGroup.add(generoRadioButtonMasculino);
 
         JLabel edadLabel = new JLabel("Edad:");
         gbc.gridx = 0;
@@ -108,18 +123,28 @@ public class EditarPaciente extends JDialog {
         gbc.weightx = 1.0;
         contentPane.add(edadTextField, gbc);
 
-
-        // Botones
-        guardarButton = new JButton("Guardar");
+        JLabel domicilioLabel = new JLabel("Domicilio:");
         gbc.gridx = 0;
         gbc.gridy = 6;
+        gbc.weightx = 0.0;
+        contentPane.add(domicilioLabel, gbc);
+
+        domicilioTextField = new JTextField();
+        gbc.gridx = 1;
+        gbc.gridy = 6;
+        gbc.weightx = 1.0;
+        contentPane.add(domicilioTextField, gbc);
+
+        guardarButton = new JButton("Guardar");
+        gbc.gridx = 0;
+        gbc.gridy = 7;
         gbc.weightx = 0.0;
         gbc.anchor = GridBagConstraints.EAST;
         contentPane.add(guardarButton, gbc);
 
         cancelarCambiosButton = new JButton("Cancelar Cambios");
         gbc.gridx = 1;
-        gbc.gridy = 6;
+        gbc.gridy = 7;
         gbc.weightx = 0.0;
         gbc.anchor = GridBagConstraints.EAST;
         contentPane.add(cancelarCambiosButton, gbc);
@@ -141,7 +166,7 @@ public class EditarPaciente extends JDialog {
             }
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 
-        setSize(400, 300); // Establecer el tamaño personalizado aquí
+        setSize(400, 300);
     }
 
     private void setListeners() {
@@ -159,23 +184,46 @@ public class EditarPaciente extends JDialog {
     }
 
     private void cargarDatos() {
-        // Cargar los datos pre-cargados
         nombrePacienteTextField.setText(paciente.getNombre());
         dniTextField.setText(String.valueOf(paciente.getDni()));
         apellidoTextField.setText(paciente.getApellido());
         emailTextField.setText(paciente.getEmail());
-        generoTextField.setText(String.valueOf(paciente.getGenero()));
         edadTextField.setText(String.valueOf(paciente.getEdad()));
-
+        domicilioTextField.setText(paciente.getDomicilio());
+        if (paciente.getGenero() == Genero.FEMENINO) {
+            System.out.print(paciente.getGenero());
+            generoRadioButtonFemenino.setSelected(true);
+        } else if (paciente.getGenero() == Genero.MASCULINO) {
+            generoRadioButtonMasculino.setSelected(true);
+        }
     }
 
     private void onGuardar() {
-        // Acciones de guardar
-        dispose();
+        String nombrePaciente = nombrePacienteTextField.getText();
+        String apellidoPaciente = apellidoTextField.getText();
+        String emailPaciente = emailTextField.getText();
+        String dniPaciente = dniTextField.getText();
+        String edadPaciente = edadTextField.getText();
+        String domicilioPaciente = domicilioTextField.getText();
+        Genero generoPaciente;
+        if(generoRadioButtonMasculino.isSelected()){
+            generoPaciente = Genero.MASCULINO;
+        } else {
+            generoPaciente = Genero.FEMENINO;
+        }
+        PacienteDto pacienteEditado = new PacienteDto(paciente.getId(), Integer.parseInt(edadPaciente), generoPaciente, nombrePaciente, Integer.parseInt(dniPaciente), domicilioPaciente, emailPaciente, apellidoPaciente);
+        try {
+            pacienteController.modificarPaciente(pacienteEditado);
+            dispose();
+        } catch (Exception e) {
+            // Manejo de la excepción
+            e.printStackTrace(); // Imprimir información de la excepción
+            // Opcional: Mostrar un mensaje de error al usuario
+            JOptionPane.showMessageDialog(this, "Error al crear el paciente", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     private void onCancel() {
         dispose();
     }
-
 }

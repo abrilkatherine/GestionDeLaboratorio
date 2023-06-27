@@ -10,7 +10,7 @@ import java.util.List;
 
 import main.uade.edu.ar.controller.SucursalYUsuarioController;
 import main.uade.edu.ar.dto.SucursalDto;
-import main.uade.edu.ar.dao.SucursalDao;
+
 
 public class SucursalTodas {
 
@@ -102,18 +102,8 @@ public class SucursalTodas {
                     // Obtener la información de la sucursal
                     int numero = (int) model.getValueAt(row, 0);
 
-                    List<Sucursal> sucursales;
-                    try {
-                        SucursalDao sucursalDao = new SucursalDao();
-                        sucursales = sucursalDao.getAll();
-                    } catch (Exception exception) {
-                        // Manejo de excepciones
-                        exception.printStackTrace();
-                        return; // Salir del método si ocurre un error
-                    }
-
-                    Sucursal sucursal = null;
-                    for (Sucursal s : sucursales) {
+                    SucursalDto sucursal = null;
+                    for (SucursalDto s : sucursales) {
                         System.out.print(s.getNumero() + "AAAA" + numero);
                         if (s.getNumero() == numero) {
                             sucursal = s;
@@ -133,7 +123,27 @@ public class SucursalTodas {
                     int confirm = JOptionPane.showConfirmDialog(table, "¿Estás seguro?", "Confirmación", JOptionPane.YES_NO_OPTION);
                     if (confirm == JOptionPane.YES_OPTION) {
                         // Eliminar la fila correspondiente
-                        model.removeRow(row);
+                        int numero = (int) model.getValueAt(row, 0);
+                        SucursalDto sucursal = null;
+                        for (SucursalDto s : sucursales) {
+                            System.out.print(s.getNumero() + "AAAA" + numero);
+                            if (s.getNumero() == numero) {
+                                sucursal = s;
+                                break;
+                            }
+                        }
+                        if (sucursal != null) {
+                            try {
+                                sucursalYUsuarioController.borrarSucursal(sucursal.getId());
+                                model.removeRow(row);
+                            } catch (Exception exception){
+                                exception.printStackTrace(); // Imprimir información de la excepción
+                                // Opcional: Mostrar un mensaje de error al usuario
+                                // JOptionPane.showMessageDialog(, "Error al eliminar el paciente", "Error", JOptionPane.ERROR_MESSAGE);
+                            }
+
+                        }
+
                     }
                 }
             }

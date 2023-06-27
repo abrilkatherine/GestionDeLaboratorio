@@ -148,6 +148,7 @@ public class AgregarSucursal extends JDialog {
         String direccion = direccionTextField.getText();
         String responsableText = (String) responsableComboBox.getSelectedItem();
         UsuarioDto responsable = findUsuarioByDisplayText(responsableText);
+        // CHECKEAR ESTO
         SucursalDto nuevaSucursal = new SucursalDto(2, Integer.parseInt(numeroSucursal), direccion, responsable);
         try {
             sucursalYUsuarioController.crearSucursal(nuevaSucursal);

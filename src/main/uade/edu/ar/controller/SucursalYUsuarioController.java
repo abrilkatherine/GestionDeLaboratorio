@@ -104,7 +104,7 @@ public class SucursalYUsuarioController {
             sucursalDao.delete(id);
             sucursales.remove(sucursal);
         } else {
-            System.out.println("La sucursal no cumple las condiciones para ser borrado");
+            throw new Exception("La sucursal no cumple las condiciones para ser borrada");
         }
     }
 

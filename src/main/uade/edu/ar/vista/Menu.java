@@ -17,11 +17,14 @@ public class Menu {
     private static JPanel cardPanel;
     private static CardLayout cardLayout;
     private static SucursalYUsuarioController sucursalYUsuarioController;
-    //TODO: AGREGAR LAS INSTANCIAS A LOS OTROS CONTROLLERS TAMBIEN ACA
+    private static PacienteController pacienteController;
+    private static PeticionController peticionController;
 
     public static void main(String[] args) {
         try {
             sucursalYUsuarioController = SucursalYUsuarioController.getInstance(); //Obtenemos la instancia del controller
+            pacienteController = PacienteController.getInstance();
+            peticionController = PeticionController.getInstance();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -60,11 +63,13 @@ public class Menu {
         cardPanel.add(sucursalTodasPanel, "SucursalTodas");
 
         // Crear una instancia de PacientesTodas y obtener su panel
-        pacienteTodas = new PacientesTodas();
+        pacienteTodas = new PacientesTodas(pacienteController);
         JPanel pacientesTodasPanel = pacienteTodas.createPanel();
         cardPanel.add(pacientesTodasPanel, "PacientesTodas");
 
-        peticionesTodas = new PeticionesTodas();
+
+        // Crear una instancia de PeticionesTodas y obtener su panel
+        peticionesTodas = new PeticionesTodas(peticionController);
         JPanel peticionesTodasPanel = peticionesTodas.createPanel();
         cardPanel.add(peticionesTodasPanel, "PeticionesTodas");
         // Mostrar el panel inicial

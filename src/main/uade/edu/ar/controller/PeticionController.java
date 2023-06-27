@@ -34,6 +34,12 @@ public class PeticionController {
 
     // Peticiones
 
+    public List<PeticionDto> getAllPeticiones(){
+        return peticiones.stream()
+                .map(PeticionMapper::toDto)
+                .collect(Collectors.toList());
+    }
+
     public Optional<Peticion> getPeticion(int id) {
         return peticiones.stream()
                 .filter(p -> p.getId() == id)

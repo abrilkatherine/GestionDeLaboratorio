@@ -6,12 +6,19 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import main.uade.edu.ar.model.Paciente;
+
+import main.uade.edu.ar.controller.PacienteController;
+import main.uade.edu.ar.dto.PacienteDto;
 import java.lang.reflect.Type;
 import java.util.List;
-import main.uade.edu.ar.dao.PacienteDao;
 
 public class PacientesTodas {
+
+    private PacienteController pacienteController;
+
+    public PacientesTodas(PacienteController pacienteController){
+        this.pacienteController = pacienteController;
+    }
 
     public JPanel createPanel() {
         // Crear un JPanel para contener todos los componentes
@@ -40,7 +47,7 @@ public class PacientesTodas {
 
         // Agregar ActionListener al botón "Agregar"
         addButton.addActionListener(e -> {
-            AgregarPaciente agregarPaciente = new AgregarPaciente();
+            AgregarPaciente agregarPaciente = new AgregarPaciente(pacienteController);
             agregarPaciente.setVisible(true);
         });
 
@@ -72,16 +79,9 @@ public class PacientesTodas {
         model.addColumn("Eliminar");
 
         // Agregar filas de ejemplo a la tabla
-        PacienteDao pacienteDao;
-        try {
-            pacienteDao = new PacienteDao();
-            List<Paciente> pacientes = pacienteDao.getAll();
-            for (Paciente paciente : pacientes) {
-                model.addRow(new Object[]{paciente.getNombre(),paciente.getDni(), "Info", "Eliminar"});
-            }
-        } catch (Exception e) {
-            // Manejo de excepciones
-            e.printStackTrace(); // Retornar la tabla vacía en caso de error
+        List<PacienteDto> pacientes = pacienteController.getAllPacientes();
+        for (PacienteDto paciente : pacientes) {
+            model.addRow(new Object[]{paciente.getNombre(),paciente.getDni(), "Info", "Eliminar"});
         }
 
         // Crear la tabla y configurar el modelo
@@ -100,17 +100,9 @@ public class PacientesTodas {
                 if (column == 2 && row < table.getRowCount()) {
                     int valorColumnaDNI = (int) model.getValueAt(row, 1);
 
-                    List<Paciente> pacientes;
-                    try {
-                        PacienteDao pacienteDao = new PacienteDao();
-                        pacientes = pacienteDao.getAll();
-                    } catch (Exception exception) {
-                        // Manejo de excepciones
-                        exception.printStackTrace();
-                        return; // Salir del método si ocurre un error
-                    }
-                    Paciente paciente = null;
-                    for (Paciente p : pacientes) {
+
+                    PacienteDto paciente = null;
+                    for (PacienteDto p : pacientes) {
                         if (p.getDni() == valorColumnaDNI) {
                             paciente = p;
                             break;
@@ -119,7 +111,7 @@ public class PacientesTodas {
                     // Crear y mostrar el diálogo de editar sucursal
                     if (paciente != null) {
                         // Crear y mostrar el diálogo de editar sucursal, pasando la sucursal correspondiente
-                        EditarPaciente editarPaciente = new EditarPaciente(paciente);
+                        EditarPaciente editarPaciente = new EditarPaciente(paciente, pacienteController);
                         editarPaciente.setVisible(true);
                     }
                 }

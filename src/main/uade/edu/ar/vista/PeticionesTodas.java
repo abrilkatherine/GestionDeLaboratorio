@@ -6,12 +6,21 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+
+import main.uade.edu.ar.controller.PeticionController;
+import main.uade.edu.ar.dto.PeticionDto;
 import main.uade.edu.ar.model.Peticion;
 import java.lang.reflect.Type;
 import java.util.List;
 import main.uade.edu.ar.dao.PeticionDao;
 
 public class PeticionesTodas {
+
+    private  PeticionController peticionController;
+
+    public  PeticionesTodas(PeticionController peticionController){
+        this.peticionController = peticionController;
+    }
 
     public JPanel createPanel() {
         // Crear un JPanel para contener todos los componentes
@@ -72,17 +81,11 @@ public class PeticionesTodas {
         model.addColumn("Eliminar");
 
         // Agregar filas de ejemplo a la tabla
-        PeticionDao peticionDao;
-        try {
-            peticionDao = new PeticionDao();
-            List<Peticion> peticiones = peticionDao.getAll();
-            for (Peticion peticion : peticiones) {
+            List<PeticionDto> peticiones = peticionController.getAllPeticiones();
+
+            for (PeticionDto peticion : peticiones) {
                 model.addRow(new Object[]{peticion.getId(),"Ver", "Info", "Eliminar"});
             }
-        } catch (Exception e) {
-            // Manejo de excepciones
-            e.printStackTrace(); // Retornar la tabla vacía en caso de error
-        }
 
         // Crear la tabla y configurar el modelo
         JTable table = new JTable(model);
@@ -100,17 +103,9 @@ public class PeticionesTodas {
                 if (column == 2 && row < table.getRowCount()) {
                     int valorColumnaDNI = (int) model.getValueAt(row, 1);
 
-                    List<Peticion> peticiones;
-                    try {
-                        PeticionDao pacienteDao = new PeticionDao();
-                        peticiones = pacienteDao.getAll();
-                    } catch (Exception exception) {
-                        // Manejo de excepciones
-                        exception.printStackTrace();
-                        return; // Salir del método si ocurre un error
-                    }
-                    Peticion peticion = null;
-                    for (Peticion p : peticiones) {
+
+                    PeticionDto peticion = null;
+                    for (PeticionDto p : peticiones) {
                         if (p.getId() == valorColumnaDNI) {
                             peticion = p;
                             break;
@@ -127,17 +122,8 @@ public class PeticionesTodas {
                 if(column == 1 && row < table.getRowCount()){
                     int valorColumnaId = (int) model.getValueAt(row, 0);
 
-                    List<Peticion> peticiones;
-                    try {
-                        PeticionDao pacienteDao = new PeticionDao();
-                        peticiones = pacienteDao.getAll();
-                    } catch (Exception exception) {
-                        // Manejo de excepciones
-                        exception.printStackTrace();
-                        return; // Salir del método si ocurre un error
-                    }
-                    Peticion peticion = null;
-                    for (Peticion p : peticiones) {
+                    PeticionDto peticion = null;
+                    for (PeticionDto p : peticiones) {
                         if (p.getId() == valorColumnaId) {
                             peticion = p;
                             break;

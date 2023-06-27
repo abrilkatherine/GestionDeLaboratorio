@@ -3,11 +3,13 @@ package main.uade.edu.ar.controller;
 import main.uade.edu.ar.dao.PacienteDao;
 import main.uade.edu.ar.dao.PeticionDao;
 import main.uade.edu.ar.dto.PacienteDto;
+import main.uade.edu.ar.dto.SucursalDto;
 import main.uade.edu.ar.mappers.PacienteMapper;
 import main.uade.edu.ar.model.Paciente;
 import main.uade.edu.ar.model.Peticion;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class PacienteController {
 
@@ -28,6 +30,12 @@ public class PacienteController {
         }
 
         return pacienteController;
+    }
+
+    public List<PacienteDto> getAllPacientes() {
+        return pacientes.stream()
+                .map(PacienteMapper::toDto)
+                .collect(Collectors.toList());
     }
 
     public PacienteDto getPaciente(int id) {
