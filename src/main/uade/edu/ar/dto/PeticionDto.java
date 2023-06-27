@@ -12,25 +12,22 @@ public class PeticionDto {
     private Date fechaEntrega;
     private List<PracticaDto> practicas;
     private SucursalDto sucursal;
-    private PacienteDto paciente;
 
-    public PeticionDto(int id, String obraSocial, Date fechaCarga, Date fechaEntrega, SucursalDto sucursal, PacienteDto paciente) {
+    public PeticionDto(int id, String obraSocial, Date fechaCarga, Date fechaEntrega, SucursalDto sucursal) {
         this.id = id;
         this.obraSocial = obraSocial;
         this.fechaCarga = fechaCarga;
         this.fechaEntrega = fechaEntrega;
         this.sucursal = sucursal;
-        this.paciente = paciente;
     }
 
-    public PeticionDto(int id, String obraSocial, Date fechaCarga, Date fechaEntrega, SucursalDto sucursal, PacienteDto paciente, List<PracticaDto> practicas) {
+    public PeticionDto(int id, String obraSocial, Date fechaCarga, Date fechaEntrega, SucursalDto sucursal, List<PracticaDto> practicas) {
         this.id = id;
         this.obraSocial = obraSocial;
         this.fechaCarga = fechaCarga;
         this.fechaEntrega = fechaEntrega;
         this.sucursal = sucursal;
         this.practicas = practicas;
-        this.paciente = paciente;
     }
 
     public int getId() {
@@ -81,11 +78,4 @@ public class PeticionDto {
         this.sucursal = sucursal;
     }
 
-    public PacienteDto getPaciente() {
-        return paciente;
-    }
-
-    public void setPaciente(PacienteDto paciente) {
-        this.paciente = paciente;
-    }
 }

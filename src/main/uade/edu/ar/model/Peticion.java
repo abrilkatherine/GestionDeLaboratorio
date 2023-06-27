@@ -11,27 +11,23 @@ public class Peticion {
     private Date fechaEntrega;
     private List<Practica> practicas;
     private Sucursal sucursal;
-    private Paciente paciente;
-
     private boolean estado;
 
-    public Peticion(int id, String obraSocial, Date fechaCarga, Date fechaEntrega, Sucursal sucursal, Paciente paciente) {
+    public Peticion(int id, String obraSocial, Date fechaCarga, Date fechaEntrega, Sucursal sucursal) {
         this.id = id;
         this.obraSocial = obraSocial;
         this.fechaCarga = fechaCarga;
         this.fechaEntrega = fechaEntrega;
         this.sucursal = sucursal;
-        this.paciente = paciente;
         this.estado = false;
     }
 
-    public Peticion(int id, String obraSocial, Date fechaCarga, Date fechaEntrega, Sucursal sucursal, Paciente paciente, List<Practica> practicas) {
+    public Peticion(int id, String obraSocial, Date fechaCarga, Date fechaEntrega, Sucursal sucursal, List<Practica> practicas) {
         this.id = id;
         this.obraSocial = obraSocial;
         this.fechaCarga = fechaCarga;
         this.fechaEntrega = fechaEntrega;
         this.sucursal = sucursal;
-        this.paciente = paciente;
         this.practicas = practicas;
     }
 
@@ -81,14 +77,6 @@ public class Peticion {
 
     public void setSucursal(Sucursal sucursal) {
         this.sucursal = sucursal;
-    }
-
-    public Paciente getPaciente() {
-        return paciente;
-    }
-
-    public void setPaciente(Paciente paciente) {
-        this.paciente = paciente;
     }
 
     public boolean tieneResultado() {

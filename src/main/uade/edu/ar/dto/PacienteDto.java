@@ -1,6 +1,9 @@
 package main.uade.edu.ar.dto;
 
 import main.uade.edu.ar.enums.Genero;
+import main.uade.edu.ar.model.Peticion;
+
+import java.util.List;
 
 public class PacienteDto {
     private int id;
@@ -11,6 +14,19 @@ public class PacienteDto {
     private String domicilio;
     private String email;
     private String apellido;
+    private List<PeticionDto> peticiones;
+
+    public PacienteDto(int id, int edad, Genero genero, String nombre, int dni, String domicilio, String email, String apellido, List<PeticionDto> peticiones) {
+        this.id = id;
+        this.edad = edad;
+        this.genero = genero;
+        this.nombre = nombre;
+        this.dni = dni;
+        this.domicilio = domicilio;
+        this.email = email;
+        this.apellido = apellido;
+        this.peticiones = peticiones;
+    }
 
     public PacienteDto(int id, int edad, Genero genero, String nombre, int dni, String domicilio, String email, String apellido) {
         this.id = id;
@@ -85,6 +101,14 @@ public class PacienteDto {
 
     public void setApellido(String apellido) {
         this.apellido = apellido;
+    }
+
+    public List<PeticionDto> getPeticiones() {
+        return peticiones;
+    }
+
+    public void setPeticiones(List<PeticionDto> peticiones) {
+        this.peticiones = peticiones;
     }
 
     @Override

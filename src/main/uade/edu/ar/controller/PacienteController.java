@@ -1,19 +1,20 @@
 package main.uade.edu.ar.controller;
 
 import main.uade.edu.ar.dao.PacienteDao;
-import main.uade.edu.ar.dao.PeticionDao;
 import main.uade.edu.ar.dto.PacienteDto;
+import main.uade.edu.ar.dto.PeticionDto;
 import main.uade.edu.ar.mappers.PacienteMapper;
+import main.uade.edu.ar.mappers.PeticionMapper;
 import main.uade.edu.ar.model.Paciente;
 import main.uade.edu.ar.model.Peticion;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PacienteController {
 
     private static PacienteController pacienteController;
     private static PacienteDao pacienteDao;
-    private static PeticionDao peticionDao;
     private static List<Paciente> pacientes;
 
     private PacienteController() {
@@ -23,7 +24,6 @@ public class PacienteController {
         if (pacienteController == null) {
             pacienteController = new PacienteController();
             pacienteDao = new PacienteDao();
-            peticionDao = new PeticionDao();
             pacientes = pacienteDao.getAll();
         }
 
@@ -47,11 +47,28 @@ public class PacienteController {
     }
 
     public void crearPaciente(PacienteDto pacienteDTO) throws Exception {
-        if (getPacientePorDni(pacienteDTO.getDni()) == null) {
+        if (getPaciente(pacienteDTO.getId()) == null) {
             Paciente paciente = PacienteMapper.toModel(pacienteDTO);
             pacienteDao.save(paciente);
             pacientes.add(paciente);
         }
+    }
+
+    public void agregarPeticion(int idPaciente, PeticionDto peticionDto) throws Exception {
+        PacienteDto pacienteDto = getPaciente(idPaciente);
+
+        if (pacienteDto != null) {
+            if (pacienteDto.getPeticiones() != null) {
+                pacienteDto.getPeticiones().add(peticionDto);
+            } else {
+                List<PeticionDto> peticionesPaciente = new ArrayList<>();
+                peticionesPaciente.add(peticionDto);
+                pacienteDto.setPeticiones(peticionesPaciente);
+            }
+
+            modificarPaciente(pacienteDto);
+        }
+
     }
 
     public void modificarPaciente(PacienteDto pacienteDto) throws Exception {
@@ -68,6 +85,7 @@ public class PacienteController {
             paciente.setApellido(pacienteDto.getApellido());
             paciente.setEdad(pacienteDto.getEdad());
             paciente.setGenero(pacienteDto.getGenero());
+            paciente.setPeticiones(PeticionMapper.toModel(pacienteDto.getPeticiones()));
 
             pacienteDao.update(paciente);
         }
@@ -92,12 +110,7 @@ public class PacienteController {
             return false;
         }
 
-        List<Peticion> peticiones = peticionDao.getAll() //Nos traemos las peticiones guardas en el JSON
-                .stream()
-                .filter(peticion -> peticion.getPaciente().getId() == paciente.getId())
-                .toList();
-
-        for (Peticion peticion : peticiones) {
+        for (Peticion peticion : paciente.getPeticiones()) {
             if (peticion.tieneResultado()) {
                 return false;
             }

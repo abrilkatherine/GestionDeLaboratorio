@@ -18,11 +18,11 @@ public class Main {
             SucursalYUsuarioController sucursalYUsuarioController = SucursalYUsuarioController.getInstance();
             PacienteController pacienteController = PacienteController.getInstance();
 
-//            testPacientes(pacienteController, peticionesController);
-//            testPeticiones(peticionesController);
+            testPacientes(pacienteController, peticionesController);
+            testPeticiones(peticionesController);
 //            testUsuarios(sucursalYUsuarioController, peticionesController);
 //            testPeticionesConValoresCriticos(peticionesController);
-            testPeticionesConValoresReservados(peticionesController);
+//            testPeticionesConValoresReservados(peticionesController);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -41,17 +41,19 @@ public class Main {
                 new PracticaDto(1, 999, "Análisis 3", 3, 3, new ResultadoDto("60", TipoResultado.CRITICO))
         );
 
-        // ABM Peticiones
-        peticionesController.borrarPeticion(1);
-        peticionesController.crearPeticion(new PeticionDto(1, "Swiss Medical", getFecha("2023-06-01"), getFecha("2023-06-02"), sucursal, paciente, practicas));
-
         // ABM Pacientes
         pacienteController.crearPaciente(paciente);
 
+        // ABM Peticiones
+        peticionesController.borrarPeticion(1);
+        peticionesController.crearPeticion(new PeticionDto(1, "Swiss Medical", getFecha("2023-06-01"), getFecha("2023-06-02"), sucursal, practicas), paciente.getId());
+
+
+
         paciente.setApellido("Paez");
 
-        pacienteController.modificarPaciente(paciente);
-        pacienteController.borrarPaciente(1);
+//        pacienteController.modificarPaciente(paciente);
+//        pacienteController.borrarPaciente(1);
     }
 
 
@@ -62,9 +64,9 @@ public class Main {
         PacienteDto paciente = new PacienteDto(1, 22, Genero.MASCULINO, "Test", 1234, "dom", "test@gmail.com", "Testing");
 
         // ABM Peticiones
-        peticionesController.crearPeticion(new PeticionDto(1, "Swiss Medical", getFecha("2023-06-01"), getFecha("2023-06-02"), sucursal, paciente));
-        peticionesController.crearPeticion(new PeticionDto(2, "Swiss Medical", getFecha("2023-06-01"), getFecha("2023-06-02"), sucursal, paciente, List.of(practica)));
-        peticionesController.modificarPeticion(new PeticionDto(2, "OSDE", getFecha("2023-05-01"), getFecha("2023-05-02"), sucursal, paciente, List.of(practica)));
+        peticionesController.crearPeticion(new PeticionDto(1, "Swiss Medical", getFecha("2023-06-01"), getFecha("2023-06-02"), sucursal), 1);
+        peticionesController.crearPeticion(new PeticionDto(2, "Swiss Medical", getFecha("2023-06-01"), getFecha("2023-06-02"), sucursal, List.of(practica)), 1);
+        peticionesController.modificarPeticion(new PeticionDto(2, "OSDE", getFecha("2023-05-01"), getFecha("2023-05-02"), sucursal, List.of(practica)));
         peticionesController.borrarPeticion(2);
 
         // ABM Prácticas
@@ -92,7 +94,7 @@ public class Main {
 
         // ABM Peticiones
         peticionesController.borrarPeticion(1);
-        peticionesController.crearPeticion(new PeticionDto(1, "Swiss Medical", getFecha("2023-06-01"), getFecha("2023-06-02"), sucursal, paciente, practicas));
+        peticionesController.crearPeticion(new PeticionDto(1, "Swiss Medical", getFecha("2023-06-01"), getFecha("2023-06-02"), sucursal, practicas), 1);
 
         // ABM Usuarios
         sucursalYUsuarioController.crearUsuario(new UsuarioDto(1, "Didy", "", getFecha("1990-06-04"), Roles.LABORTISTA));
@@ -115,8 +117,8 @@ public class Main {
         PacienteDto paciente = new PacienteDto(1, 22, Genero.MASCULINO, "Test", 12345678, "dom", "test@gmail.com", "Gomez");
 
         // ABM Peticiones
-        peticionesController.crearPeticion(new PeticionDto(1, "Swiss Medical", getFecha("2023-06-01"), getFecha("2023-06-02"), sucursal, paciente));
-        peticionesController.crearPeticion(new PeticionDto(2, "Swiss Medical", getFecha("2023-06-01"), getFecha("2023-06-02"), sucursal, paciente, List.of(practica2)));
+        peticionesController.crearPeticion(new PeticionDto(1, "Swiss Medical", getFecha("2023-06-01"), getFecha("2023-06-02"), sucursal), 1);
+        peticionesController.crearPeticion(new PeticionDto(2, "Swiss Medical", getFecha("2023-06-01"), getFecha("2023-06-02"), sucursal, List.of(practica2)), 1);
 
         // ABM Prácticas
         peticionesController.crearPractica(1, practica1);
@@ -142,8 +144,8 @@ public class Main {
         ResultadoDto resultado2 = new ResultadoDto("40", TipoResultado.RESERVADO);
 
         // ABM Peticiones
-        peticionesController.crearPeticion(new PeticionDto(1, "Swiss Medical", getFecha("2023-06-01"), getFecha("2023-06-02"), sucursal, paciente));
-        peticionesController.crearPeticion(new PeticionDto(2, "Swiss Medical", getFecha("2023-06-01"), getFecha("2023-06-02"), sucursal, paciente, List.of(practica2)));
+        peticionesController.crearPeticion(new PeticionDto(1, "Swiss Medical", getFecha("2023-06-01"), getFecha("2023-06-02"), sucursal), 1);
+        peticionesController.crearPeticion(new PeticionDto(2, "Swiss Medical", getFecha("2023-06-01"), getFecha("2023-06-02"), sucursal,  List.of(practica2)), 1);
 
         // ABM Prácticas
         peticionesController.crearPractica(1, practica1);

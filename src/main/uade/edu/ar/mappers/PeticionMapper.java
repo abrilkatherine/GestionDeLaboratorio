@@ -24,8 +24,7 @@ public class PeticionMapper {
                 peticionDto.getFechaCarga(),
                 peticionDto.getFechaEntrega(),
                 SucursalYUsuarioController.toModel(peticionDto.getSucursal()),
-                PacienteMapper.toModel(peticionDto.getPaciente()),
-                toModel(peticionDto.getPracticas())
+                practicaDTOtoModel(peticionDto.getPracticas())
         );
     }
 
@@ -36,8 +35,7 @@ public class PeticionMapper {
                 peticion.getFechaCarga(),
                 peticion.getFechaEntrega(),
                 SucursalYUsuarioController.toDto(peticion.getSucursal()),
-                PacienteMapper.toDto(peticion.getPaciente()),
-                toDto(peticion.getPracticas())
+                practicaModeltoDto(peticion.getPracticas())
         );
     }
 
@@ -63,7 +61,7 @@ public class PeticionMapper {
         );
     }
 
-    private static List<Practica> toModel(List<PracticaDto> practicasDto) {
+    public static List<Practica> practicaDTOtoModel(List<PracticaDto> practicasDto) {
         if (practicasDto == null) {
             return new ArrayList<>();
         }
@@ -73,7 +71,7 @@ public class PeticionMapper {
                 .collect(Collectors.toList());
     }
 
-    private static List<PracticaDto> toDto(List<Practica> practicas) {
+    public static List<PracticaDto> practicaModeltoDto(List<Practica> practicas) {
         if (practicas == null) {
             return new ArrayList<>();
         }
@@ -103,6 +101,26 @@ public class PeticionMapper {
                 resultadoDto.getValor(),
                 resultadoDto.getTipoResultado()
         );
+    }
+
+    public static List<Peticion> toModel(List<PeticionDto> peticionesDto) {
+        if (peticionesDto == null) {
+            return new ArrayList<>();
+        }
+
+        return peticionesDto.stream()
+                .map(PeticionMapper::toModel)
+                .collect(Collectors.toList());
+    }
+
+    public static List<PeticionDto> toDto(List<Peticion> peticiones) {
+        if (peticiones == null) {
+            return new ArrayList<>();
+        }
+
+        return peticiones.stream()
+                .map(PeticionMapper::toDto)
+                .collect(Collectors.toList());
     }
 
 }

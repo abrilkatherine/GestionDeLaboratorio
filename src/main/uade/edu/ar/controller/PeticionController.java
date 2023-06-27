@@ -1,6 +1,8 @@
 package main.uade.edu.ar.controller;
 
+import main.uade.edu.ar.dao.PacienteDao;
 import main.uade.edu.ar.dao.PeticionDao;
+import main.uade.edu.ar.dto.PacienteDto;
 import main.uade.edu.ar.dto.PeticionDto;
 import main.uade.edu.ar.dto.PracticaDto;
 import main.uade.edu.ar.dto.ResultadoDto;
@@ -16,7 +18,9 @@ import java.util.stream.Collectors;
 
 public class PeticionController {
     private static PeticionController peticionController;
+    private static PacienteController pacienteController;
     private static PeticionDao peticionDao;
+    private static PacienteDao pacienteDao;
     private static List<Peticion> peticiones;
 
     private PeticionController() {
@@ -26,6 +30,7 @@ public class PeticionController {
         if (peticionController == null) {
             peticionController = new PeticionController();
             peticionDao = new PeticionDao();
+            pacienteController = PacienteController.getInstance();
             peticiones = peticionDao.getAll();
         }
 
@@ -40,11 +45,14 @@ public class PeticionController {
                 .findFirst();
     }
 
-    public void crearPeticion(PeticionDto peticionDTO) throws Exception {
+    public void crearPeticion(PeticionDto peticionDTO, int idPaciente) throws Exception {
         if (getPeticion(peticionDTO.getId()).isEmpty()) {
             Peticion peticion = PeticionMapper.toModel(peticionDTO);
             peticionDao.save(peticion);
             peticiones.add(peticion);
+
+            pacienteController.agregarPeticion(idPaciente, peticionDTO);
+
             System.out.println("Se creó la petición con id: " + peticion.getId());
         }
     }

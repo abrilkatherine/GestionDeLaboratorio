@@ -17,7 +17,8 @@ public class PacienteMapper {
                 pacienteDto.getEmail(),
                 pacienteDto.getApellido(),
                 pacienteDto.getEdad(),
-                pacienteDto.getGenero()
+                pacienteDto.getGenero(),
+                PeticionMapper.toModel(pacienteDto.getPeticiones())
         );
     }
 
@@ -30,7 +31,8 @@ public class PacienteMapper {
                 paciente.getDni(),
                 paciente.getDomicilio(),
                 paciente.getEmail(),
-                paciente.getApellido()
+                paciente.getApellido(),
+                PeticionMapper.toDto(paciente.getPeticiones())
         );
     }
 

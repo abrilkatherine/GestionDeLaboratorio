@@ -1,5 +1,7 @@
 package main.uade.edu.ar.model;
 
+import java.util.List;
+
 public abstract class Persona {
     private String nombre;
     private int dni;
