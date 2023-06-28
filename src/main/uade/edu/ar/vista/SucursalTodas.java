@@ -21,6 +21,8 @@ public class SucursalTodas {
 
     private SucursalTodas sucursalTodas;
 
+    private List<SucursalDto> sucursalDtoList;
+
     public SucursalTodas(SucursalYUsuarioController sucursalYUsuarioController) {
         this.sucursalYUsuarioController = sucursalYUsuarioController;
         this.sucursalTodas = this;
@@ -74,21 +76,15 @@ public class SucursalTodas {
 
     private JTable createTable() {
         // Crear un modelo de tabla personalizado que haga que todas las celdas sean no editables
-        DefaultTableModel model = new DefaultTableModel() {
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return false;
-            }
-        };
         tableModel.addColumn("Numero");
         tableModel.addColumn("Editar");
         tableModel.addColumn("Eliminar");
 
         // Obtener la lista de sucursales mediante el controlador
-        List<SucursalDto> sucursales = sucursalYUsuarioController.getAllSucursales();
+        sucursalDtoList = sucursalYUsuarioController.getAllSucursales();
 
         // Llenar el modelo con los datos de las sucursales
-        for (SucursalDto sucursal : sucursales) {
+        for (SucursalDto sucursal : sucursalDtoList) {
             tableModel.addRow(new Object[]{sucursal.getNumero(), "Info", "Eliminar"});
         }
 
@@ -110,7 +106,7 @@ public class SucursalTodas {
                     int numero = (int) tableModel.getValueAt(row, 0);
 
                     SucursalDto sucursal = null;
-                    for (SucursalDto s : sucursales) {
+                    for (SucursalDto s : sucursalDtoList) {
                         System.out.print(s.getNumero() + "AAAA" + numero);
                         if (s.getNumero() == numero) {
                             sucursal = s;
@@ -130,9 +126,9 @@ public class SucursalTodas {
                     int confirm = JOptionPane.showConfirmDialog(table, "¿Estás seguro?", "Confirmación", JOptionPane.YES_NO_OPTION);
                     if (confirm == JOptionPane.YES_OPTION) {
                         // Eliminar la fila correspondiente
-                        int numero = (int) model.getValueAt(row, 0);
+                        int numero = (int) tableModel.getValueAt(row, 0);
                         SucursalDto sucursal = null;
-                        for (SucursalDto s : sucursales) {
+                        for (SucursalDto s : sucursalDtoList) {
                             System.out.print(s.getNumero() + "AAAA" + numero);
                             if (s.getNumero() == numero) {
                                 sucursal = s;
@@ -161,9 +157,9 @@ public class SucursalTodas {
 
     public void actualizarTablaSucursales() {
         tableModel.setRowCount(0); // Elimina todas las filas existentes en el modelo
-        List<SucursalDto> sucursales = sucursalYUsuarioController.getAllSucursales();
+        sucursalDtoList = sucursalYUsuarioController.getAllSucursales();
         System.out.print("hola");
-        for (SucursalDto sucursal : sucursales) {
+        for (SucursalDto sucursal : sucursalDtoList) {
 
             tableModel.addRow(new Object[]{sucursal.getNumero(), "Info", "Eliminar"});
         }

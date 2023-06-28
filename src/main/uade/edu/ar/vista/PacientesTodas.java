@@ -18,6 +18,8 @@ public class PacientesTodas {
 
     private PacientesTodas pacientesTodas;
 
+    private List<PacienteDto> pacienteDtoList;
+
     public PacientesTodas(PacienteController pacienteController) {
         this.pacienteController = pacienteController;
         this.pacientesTodas = this;
@@ -77,8 +79,8 @@ public class PacientesTodas {
         tableModel.addColumn("Eliminar");
 
         // Obtener la lista de pacientes
-        List<PacienteDto> pacientes = pacienteController.getAllPacientes();
-        for (PacienteDto paciente : pacientes) {
+        pacienteDtoList = pacienteController.getAllPacientes();
+        for (PacienteDto paciente : pacienteDtoList) {
             tableModel.addRow(new Object[]{paciente.getNombre(), paciente.getDni(), "Info", "Eliminar"});
         }
 
@@ -100,7 +102,7 @@ public class PacientesTodas {
 
 
                     PacienteDto paciente = null;
-                    for (PacienteDto p : pacientes) {
+                    for (PacienteDto p : pacienteDtoList) {
                         if (p.getDni() == valorColumnaDNI) {
                             paciente = p;
                             break;
@@ -124,7 +126,7 @@ public class PacientesTodas {
 
 
                         PacienteDto paciente = null;
-                        for (PacienteDto p : pacientes) {
+                        for (PacienteDto p : pacienteDtoList) {
                             if (p.getDni() == valorColumnaDNI) {
                                 paciente = p;
                                 break;
@@ -154,9 +156,9 @@ public class PacientesTodas {
 
     public void actualizarTablaPacientes() {
         tableModel.setRowCount(0); // Elimina todas las filas existentes en el modelo
-        List<PacienteDto> pacientes = pacienteController.getAllPacientes();
-        for (PacienteDto paciente : pacientes) {
-            tableModel.addRow(new Object[]{paciente.getNombre(), paciente.getDni(), "Info", "Eliminar"});
+        pacienteDtoList = pacienteController.getAllPacientes();
+        for (PacienteDto paciente : pacienteDtoList) {
+            tableModel.addRow(new Object[]{paciente.getNombre(),  paciente.getDni(), "Info", "Eliminar"});
         }
     }
 }

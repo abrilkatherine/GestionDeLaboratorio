@@ -72,8 +72,6 @@ public class Menu {
         peticionesTodas = new PeticionesTodas(peticionController);
         JPanel peticionesTodasPanel = peticionesTodas.createPanel();
         cardPanel.add(peticionesTodasPanel, "PeticionesTodas");
-        // Mostrar el panel inicial
-        cardLayout.show(cardPanel, "SucursalTodas");
 
         // Mostrar la ventana
         frame.setSize(400, 300);

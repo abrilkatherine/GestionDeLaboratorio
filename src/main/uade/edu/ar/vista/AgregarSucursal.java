@@ -8,6 +8,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.List;
+import java.util.Random;
 
 public class AgregarSucursal extends JDialog {
     private JPanel contentPane;
@@ -151,8 +152,8 @@ public class AgregarSucursal extends JDialog {
         String direccion = direccionTextField.getText();
         String responsableText = (String) responsableComboBox.getSelectedItem();
         UsuarioDto responsable = findUsuarioByDisplayText(responsableText);
-        // CHECKEAR ESTO
-        SucursalDto nuevaSucursal = new SucursalDto(2, Integer.parseInt(numeroSucursal), direccion, responsable);
+        Random random = new Random();
+        SucursalDto nuevaSucursal = new SucursalDto(random.nextInt(), Integer.parseInt(numeroSucursal), direccion, responsable);
         try {
             sucursalYUsuarioController.crearSucursal(nuevaSucursal);
             this.sucursalTodas.actualizarTablaSucursales();

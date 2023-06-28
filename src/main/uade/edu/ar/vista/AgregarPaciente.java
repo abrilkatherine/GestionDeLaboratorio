@@ -7,6 +7,7 @@ import main.uade.edu.ar.enums.Genero;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Random;
 
 public class AgregarPaciente extends JDialog {
     private JPanel contentPane;
@@ -224,7 +225,8 @@ public class AgregarPaciente extends JDialog {
         } else {
             generoPaciente = Genero.FEMENINO;
         }
-        PacienteDto nuevoPaciente = new PacienteDto(2, Integer.parseInt(edadPaciente), generoPaciente, nombrePaciente, Integer.parseInt(dniPaciente), domicilioPaciente, emailPaciente, apellidoPaciente);
+        Random random = new Random();
+        PacienteDto nuevoPaciente = new PacienteDto(random.nextInt(), Integer.parseInt(edadPaciente), generoPaciente, nombrePaciente, Integer.parseInt(dniPaciente), domicilioPaciente, emailPaciente, apellidoPaciente);
         try {
             pacienteController.crearPaciente(nuevoPaciente);
             pacientesTodas.actualizarTablaPacientes();

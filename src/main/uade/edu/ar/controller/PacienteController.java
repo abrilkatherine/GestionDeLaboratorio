@@ -91,7 +91,7 @@ public class PacienteController {
             pacienteDao.delete(id);
             pacientes.remove(paciente);
         } else {
-            System.out.println("El paciente no cumple las condiciones para ser borrado");
+            throw  new Exception("El paciente no cumple las condiciones para ser borrado");
         }
     }
 

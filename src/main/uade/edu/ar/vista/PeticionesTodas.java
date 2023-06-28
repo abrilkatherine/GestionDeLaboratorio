@@ -9,6 +9,7 @@ import java.awt.event.MouseEvent;
 
 import main.uade.edu.ar.controller.PeticionController;
 import main.uade.edu.ar.dto.PeticionDto;
+import main.uade.edu.ar.dto.SucursalDto;
 import main.uade.edu.ar.model.Peticion;
 import java.lang.reflect.Type;
 import java.util.List;
@@ -17,9 +18,16 @@ import main.uade.edu.ar.dao.PeticionDao;
 public class PeticionesTodas {
 
     private  PeticionController peticionController;
+    private PeticionesTodas peticionesTodas;
+
+    private DefaultTableModel tableModel;
+
+    private List<PeticionDto> peticionesLista;
 
     public  PeticionesTodas(PeticionController peticionController){
         this.peticionController = peticionController;
+        this.peticionesTodas = this;
+        this.tableModel = new DefaultTableModel();
     }
 
     public JPanel createPanel() {
@@ -49,8 +57,8 @@ public class PeticionesTodas {
 
         // Agregar ActionListener al botón "Agregar"
         addButton.addActionListener(e -> {
-            //AgregarPaciente agregarPaciente = new AgregarPaciente();
-            //agregarPaciente.setVisible(true);
+            AgregarPeticion agregarPeticion = new AgregarPeticion(peticionController, this);
+            agregarPeticion.setVisible(true);
         });
 
         // Agregar el botón "Agregar" al JPanel del encabezado
@@ -69,26 +77,20 @@ public class PeticionesTodas {
 
     private JTable createTable() {
         // Crear un modelo de tabla personalizado que haga que todas las celdas sean no editables
-        DefaultTableModel model = new DefaultTableModel() {
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return false;
-            }
-        };
-        model.addColumn("ID");
-        model.addColumn("Practicas");
-        model.addColumn("Editar");
-        model.addColumn("Eliminar");
+        tableModel.addColumn("ID");
+        tableModel.addColumn("Practicas");
+        tableModel.addColumn("Editar");
+        tableModel.addColumn("Eliminar");
 
         // Agregar filas de ejemplo a la tabla
-            List<PeticionDto> peticiones = peticionController.getAllPeticiones();
+            peticionesLista = peticionController.getAllPeticiones();
 
-            for (PeticionDto peticion : peticiones) {
-                model.addRow(new Object[]{peticion.getId(),"Ver", "Info", "Eliminar"});
+            for (PeticionDto peticion : peticionesLista) {
+                tableModel.addRow(new Object[]{peticion.getId(),"Ver", "Info", "Eliminar"});
             }
 
         // Crear la tabla y configurar el modelo
-        JTable table = new JTable(model);
+        JTable table = new JTable(tableModel);
         table.getColumnModel().getColumn(2).setPreferredWidth(50); // Ancho de la columna "Editar"
         //table.getColumnModel().getColumn(3).setPreferredWidth(70); // Ancho de la columna "Eliminar"
 
@@ -101,12 +103,12 @@ public class PeticionesTodas {
 
                 // Verificar si se hizo clic en la columna "Editar"
                 if (column == 2 && row < table.getRowCount()) {
-                    int valorColumnaDNI = (int) model.getValueAt(row, 1);
+                    int valorColumnaId = (int) tableModel.getValueAt(row, 0);
 
 
                     PeticionDto peticion = null;
-                    for (PeticionDto p : peticiones) {
-                        if (p.getId() == valorColumnaDNI) {
+                    for (PeticionDto p : peticionesLista) {
+                        if (p.getId() == valorColumnaId) {
                             peticion = p;
                             break;
                         }
@@ -114,16 +116,16 @@ public class PeticionesTodas {
                     // Crear y mostrar el diálogo de editar sucursal
                     if (peticion != null) {
                         // Crear y mostrar el diálogo de editar sucursal, pasando la sucursal correspondiente
-                        //EditarPaciente editarPaciente = new EditarPaciente(peticion);
-                        //editarPaciente.setVisible(true);
+                        EditarPeticion editarPeticion = new EditarPeticion(peticion, peticionController, peticionesTodas);
+                        editarPeticion.setVisible(true);
                     }
                 }
 
                 if(column == 1 && row < table.getRowCount()){
-                    int valorColumnaId = (int) model.getValueAt(row, 0);
+                    int valorColumnaId = (int) tableModel.getValueAt(row, 0);
 
                     PeticionDto peticion = null;
-                    for (PeticionDto p : peticiones) {
+                    for (PeticionDto p : peticionesLista) {
                         if (p.getId() == valorColumnaId) {
                             peticion = p;
                             break;
@@ -143,7 +145,7 @@ public class PeticionesTodas {
                     int confirm = JOptionPane.showConfirmDialog(table, "¿Estás seguro?", "Confirmación", JOptionPane.YES_NO_OPTION);
                     if (confirm == JOptionPane.YES_OPTION) {
                         // Eliminar la fila correspondiente
-                        model.removeRow(row);
+                        tableModel.removeRow(row);
                     }
                 }
 
@@ -151,5 +153,13 @@ public class PeticionesTodas {
         });
 
         return table;
+    }
+
+    public void actualizarTablaPeticiones() {
+        tableModel.setRowCount(0); // Elimina todas las filas existentes en el modelo
+        peticionesLista = peticionController.getAllPeticiones();
+        for (PeticionDto peticion : peticionesLista) {
+            tableModel.addRow(new Object[]{peticion.getId(),"Ver", "Info", "Eliminar"});
+        }
     }
 }

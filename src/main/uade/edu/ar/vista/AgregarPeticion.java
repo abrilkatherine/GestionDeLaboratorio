@@ -1,21 +1,21 @@
 package main.uade.edu.ar.vista;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.util.List;
-
 import main.uade.edu.ar.controller.PacienteController;
 import main.uade.edu.ar.controller.PeticionController;
 import main.uade.edu.ar.controller.SucursalYUsuarioController;
 import main.uade.edu.ar.dto.PacienteDto;
 import main.uade.edu.ar.dto.PeticionDto;
 import main.uade.edu.ar.dto.SucursalDto;
-import main.uade.edu.ar.dto.UsuarioDto;
-
 import static main.uade.edu.ar.util.DateUtil.getFecha;
 
-public class EditarPeticion extends JDialog {
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import java.util.List;
+import java.util.Random;
+
+public class AgregarPeticion extends JDialog {
     private JPanel contentPane;
 
     private JTextField obraSocial;
@@ -30,32 +30,32 @@ public class EditarPeticion extends JDialog {
 
 
     private JButton guardarButton;
-    private JButton cancelarCambiosButton;
-    private PeticionDto peticionDto;
-    private List<SucursalDto> sucursales;
-    private SucursalYUsuarioController sucursalYUsuarioController;
 
-    private PacienteController pacienteController;
-
-    private List<PacienteDto> pacientes;
     private PeticionController peticionController;
+
     private PeticionesTodas peticionesTodas;
 
-    public EditarPeticion(PeticionDto peticionDto, PeticionController peticionController, PeticionesTodas peticionesTodas) {
-        this.peticionesTodas = peticionesTodas;
-        this.peticionDto = peticionDto;
+    private List<SucursalDto> sucursales;
+
+    private List<PacienteDto> pacientes;
+
+    private PacienteController pacienteController;
+    private SucursalYUsuarioController sucursalYUsuarioController;
+
+    public AgregarPeticion(PeticionController peticionController, PeticionesTodas peticionesTodas) {
         this.peticionController = peticionController;
+        this.peticionesTodas = peticionesTodas;
         try{
             this.sucursalYUsuarioController = SucursalYUsuarioController.getInstance();
             this.pacienteController = PacienteController.getInstance();
         }  catch (Exception e) {
             e.printStackTrace();
         }
+
         cargarSucursales();
         cargarPacientes();
         initializeUI();
         setListeners();
-        cargarDatos();
     }
 
     private void cargarSucursales() {
@@ -79,7 +79,7 @@ public class EditarPeticion extends JDialog {
         gbc.anchor = GridBagConstraints.WEST;
         contentPane.add(obraSocialLabel, gbc);
 
-        obraSocial = new JTextField();
+        obraSocial = createPlaceholderTextField("Ingrese la obra social");
         gbc.gridx = 1;
         gbc.gridy = 0;
         gbc.weightx = 1.0;
@@ -123,7 +123,7 @@ public class EditarPeticion extends JDialog {
         gbc.anchor = GridBagConstraints.WEST;
         contentPane.add(fechaInicio, gbc);
 
-        fechaCarga = new JTextField();
+        fechaCarga = createPlaceholderTextField("Ingrese la fecha de carga");
         gbc.gridx = 1;
         gbc.gridy = 3;
         gbc.weightx = 1.0;
@@ -135,7 +135,7 @@ public class EditarPeticion extends JDialog {
         gbc.anchor = GridBagConstraints.WEST;
         contentPane.add(fechaFin, gbc);
 
-        fechaEntrega = new JTextField();
+        fechaEntrega = createPlaceholderTextField("Ingrese la fecha de entrega");
         gbc.gridx = 1;
         gbc.gridy = 4;
         gbc.weightx = 1.0;
@@ -148,13 +148,6 @@ public class EditarPeticion extends JDialog {
         gbc.weightx = 0.0;
         gbc.anchor = GridBagConstraints.EAST;
         contentPane.add(guardarButton, gbc);
-
-        cancelarCambiosButton = new JButton("Cancelar");
-        gbc.gridx = 2;
-        gbc.gridy = 5;
-        gbc.weightx = 0.0;
-        gbc.anchor = GridBagConstraints.EAST;
-        contentPane.add(cancelarCambiosButton, gbc);
 
         setContentPane(contentPane);
         setModal(true);
@@ -176,34 +169,41 @@ public class EditarPeticion extends JDialog {
         setSize(400, 300); // Establecer el tamaño personalizado aquí
     }
 
+    private JTextField createPlaceholderTextField(String placeholderText) {
+        JTextField textField = new JTextField();
+        textField.setBorder(BorderFactory.createCompoundBorder(textField.getBorder(), BorderFactory.createEmptyBorder(5, 5, 5, 5)));
+        textField.setForeground(Color.GRAY);
+
+        textField.setText(placeholderText);
+        textField.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                if (textField.getText().equals(placeholderText)) {
+                    textField.setText("");
+                    textField.setForeground(Color.BLACK);
+                }
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                if (textField.getText().isEmpty()) {
+                    textField.setText(placeholderText);
+                    textField.setForeground(Color.GRAY);
+                }
+            }
+        });
+
+        return textField;
+    }
+
     private void setListeners() {
         guardarButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 onGuardar();
             }
         });
-
-        cancelarCambiosButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onCancel();
-            }
-        });
     }
 
-    private void cargarDatos() {
-        obraSocial.setText(peticionDto.getObraSocial());
-        fechaCarga.setText(String.valueOf(peticionDto.getFechaCarga()));
-        fechaEntrega.setText(String.valueOf(peticionDto.getFechaEntrega()));
-        sucursalComboBox.setSelectedItem(getDisplayText(peticionDto.getSucursal()));
-        pacienteComboBox.setSelectedItem(getDisplayTextPacientes(peticionDto.getPaciente()));
-    }
-
-    private String getDisplayText(SucursalDto sucursalDto) {
-        return sucursalDto.getNumero() + " - " + sucursalDto.getId();
-    }
-    private String getDisplayTextPacientes(PacienteDto pacienteDto) {
-        return pacienteDto.getNombre() + " - " + pacienteDto.getApellido();
-    }
     private void onGuardar() {
         // Acciones de guardar
         String obra = obraSocial.getText();
@@ -213,10 +213,10 @@ public class EditarPeticion extends JDialog {
         PacienteDto paciente = findPacienteByDisplayText(pacienteText);
         String fechaC = fechaCarga.getText();
         String fechaI = fechaEntrega.getText();
-
-        PeticionDto nuevaPeticion = new PeticionDto(peticionDto.getId(), obra, getFecha(fechaC), getFecha(fechaI), sucursal, paciente, peticionDto.getPracticas());
+        Random random = new Random();
+        PeticionDto nuevaPeticion = new PeticionDto(random.nextInt(), obra, getFecha(fechaC), getFecha(fechaI), sucursal, paciente);
         try {
-            peticionController.modificarPeticion(nuevaPeticion);
+            peticionController.crearPeticion(nuevaPeticion);
             peticionesTodas.actualizarTablaPeticiones();
             dispose();
         } catch (Exception e) {
@@ -250,4 +250,7 @@ public class EditarPeticion extends JDialog {
     private void onCancel() {
         dispose();
     }
+
+
 }
+
