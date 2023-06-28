@@ -1,3 +1,4 @@
 {"id":1,"numero":21,"direccion":"Av Santa Fe","responsableTecnico":{"id":1,"nombre":"Hugo15","contrasenia":"","nacimiento":"Jun 4, 1990, 12:00:00 AM","rol":"ADMINISTRADOR"}}
 {"id":2,"numero":202,"direccion":"ere","responsableTecnico":{"id":1,"nombre":"Hugo14","contrasenia":"","nacimiento":"Jun 4, 1990, 12:00:00 AM","rol":"ADMINISTRADOR"}}
 {"id":-485778296,"numero":1414,"direccion":"dgdsg","responsableTecnico":{"id":1,"nombre":"Hugo14","contrasenia":"","nacimiento":"Jun 4, 1990, 12:00:00 AM","rol":"ADMINISTRADOR"}}
+{"id":1667519751,"numero":302,"direccion":"Lima","responsableTecnico":{"id":2,"nombre":"maria","contrasenia":"maria","nacimiento":"Apr 26, 2003, 12:00:00 AM","rol":"RECEPCION"}}

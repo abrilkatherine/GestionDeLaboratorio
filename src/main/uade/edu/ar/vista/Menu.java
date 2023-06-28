@@ -79,7 +79,7 @@ public class Menu {
         cardPanel.add(usuariosTodosPanel, "UsuariosTodos");
 
         // Mostrar la ventana
-        frame.setSize(400, 300);
+        frame.setSize(800, 600);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }

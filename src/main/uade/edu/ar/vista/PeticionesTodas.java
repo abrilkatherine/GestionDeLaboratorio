@@ -104,8 +104,6 @@ public class PeticionesTodas {
                 // Verificar si se hizo clic en la columna "Editar"
                 if (column == 2 && row < table.getRowCount()) {
                     int valorColumnaId = (int) tableModel.getValueAt(row, 0);
-
-
                     PeticionDto peticion = null;
                     for (PeticionDto p : peticionesLista) {
                         if (p.getId() == valorColumnaId) {
@@ -144,8 +142,22 @@ public class PeticionesTodas {
                 if (column == 3 && row < table.getRowCount()) {
                     int confirm = JOptionPane.showConfirmDialog(table, "¿Estás seguro?", "Confirmación", JOptionPane.YES_NO_OPTION);
                     if (confirm == JOptionPane.YES_OPTION) {
-                        // Eliminar la fila correspondiente
-                        tableModel.removeRow(row);
+                        int valorColumnaId = (int) tableModel.getValueAt(row, 0);
+                        PeticionDto peticion = null;
+                        for (PeticionDto p : peticionesLista) {
+                            if (p.getId() == valorColumnaId) {
+                                peticion = p;
+                                break;
+                            }
+                        }
+                        try{
+                            peticionController.borrarPeticion(peticion.getId());
+                            tableModel.removeRow(row);
+                        }
+                        catch (Exception exception){
+                            exception.printStackTrace(); // Imprimir información de la excepción
+                            JOptionPane.showMessageDialog(null, exception.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                        }
                     }
                 }
 

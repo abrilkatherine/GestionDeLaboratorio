@@ -12,7 +12,11 @@ import static main.uade.edu.ar.util.DateUtil.getFecha;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Random;
 
 public class AgregarPeticion extends JDialog {
@@ -213,8 +217,30 @@ public class AgregarPeticion extends JDialog {
         PacienteDto paciente = findPacienteByDisplayText(pacienteText);
         String fechaC = fechaCarga.getText();
         String fechaI = fechaEntrega.getText();
+
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH);
+        Date fechaCarga = null;
+        Date fechaEntrega = null;
+
+        try {
+            fechaCarga = dateFormat.parse(fechaC);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            dispose();
+        }
+
+        try {
+            fechaEntrega = dateFormat.parse(fechaI);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            dispose();
+        }
+
         Random random = new Random();
-        PeticionDto nuevaPeticion = new PeticionDto(random.nextInt(), obra, getFecha(fechaC), getFecha(fechaI), sucursal, paciente);
+        PeticionDto nuevaPeticion = new PeticionDto(random.nextInt(), obra, fechaCarga, fechaEntrega, sucursal, paciente);
         try {
             peticionController.crearPeticion(nuevaPeticion);
             peticionesTodas.actualizarTablaPeticiones();
@@ -223,7 +249,7 @@ public class AgregarPeticion extends JDialog {
             // Manejo de la excepción
             e.printStackTrace(); // Imprimir información de la excepción
             // Opcional: Mostrar un mensaje de error al usuario
-            JOptionPane.showMessageDialog(this, "Error al crear el paciente", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 

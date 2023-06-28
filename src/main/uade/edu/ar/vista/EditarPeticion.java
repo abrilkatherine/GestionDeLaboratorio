@@ -3,7 +3,11 @@ package main.uade.edu.ar.vista;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import main.uade.edu.ar.controller.PacienteController;
 import main.uade.edu.ar.controller.PeticionController;
@@ -214,7 +218,29 @@ public class EditarPeticion extends JDialog {
         String fechaC = fechaCarga.getText();
         String fechaI = fechaEntrega.getText();
 
-        PeticionDto nuevaPeticion = new PeticionDto(peticionDto.getId(), obra, getFecha(fechaC), getFecha(fechaI), sucursal, paciente, peticionDto.getPracticas());
+        SimpleDateFormat dateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.ENGLISH);
+        Date fechaCarga = null;
+        Date fechaEntrega = null;
+
+        if (!fechaC.isEmpty() && !fechaC.equals("MMM dd, yyyy, hh:mm:ss a")) {
+            try {
+                fechaCarga = dateFormat.parse(fechaC);
+            } catch (ParseException e) {
+                e.printStackTrace();
+                JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+
+        if (!fechaI.isEmpty() && !fechaI.equals("MMM dd, yyyy, hh:mm:ss a")) {
+            try {
+                fechaEntrega = dateFormat.parse(fechaI);
+            } catch (ParseException e) {
+                e.printStackTrace();
+                JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+
+        PeticionDto nuevaPeticion = new PeticionDto(peticionDto.getId(), obra, fechaCarga, fechaEntrega, sucursal, paciente, peticionDto.getPracticas());
         try {
             peticionController.modificarPeticion(nuevaPeticion);
             peticionesTodas.actualizarTablaPeticiones();
@@ -223,7 +249,7 @@ public class EditarPeticion extends JDialog {
             // Manejo de la excepción
             e.printStackTrace(); // Imprimir información de la excepción
             // Opcional: Mostrar un mensaje de error al usuario
-            JOptionPane.showMessageDialog(this, "Error al crear el paciente", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 

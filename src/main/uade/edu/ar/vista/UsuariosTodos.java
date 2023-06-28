@@ -120,9 +120,7 @@ public class UsuariosTodos {
                     int confirm = JOptionPane.showConfirmDialog(table, "¿Estás seguro?", "Confirmación", JOptionPane.YES_NO_OPTION);
                     if (confirm == JOptionPane.YES_OPTION) {
                         // Eliminar la fila correspondiente
-                        String nombreUsuario = (String) tableModel.getValueAt(row, 1);
-
-
+                        String nombreUsuario = (String) tableModel.getValueAt(row, 0);
                         UsuarioDto usuario = null;
                         for (UsuarioDto u : usuarios) {
                             if (u.getNombre() == nombreUsuario) {
@@ -138,7 +136,7 @@ public class UsuariosTodos {
                             catch (Exception exception){
                                 exception.printStackTrace(); // Imprimir información de la excepción
                                 // Opcional: Mostrar un mensaje de error al usuario
-                                // JOptionPane.showMessageDialog(, "Error al eliminar el usuario", "Error", JOptionPane.ERROR_MESSAGE);
+                                 JOptionPane.showMessageDialog(null, exception.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                             }
 
                         }
