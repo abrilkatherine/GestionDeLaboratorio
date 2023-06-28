@@ -127,7 +127,7 @@ public class AgregarPeticion extends JDialog {
         gbc.anchor = GridBagConstraints.WEST;
         contentPane.add(fechaInicio, gbc);
 
-        fechaCarga = createPlaceholderTextField("Ingrese la fecha de carga");
+        fechaCarga = createPlaceholderTextField("MM/DD/AAAA");
         gbc.gridx = 1;
         gbc.gridy = 3;
         gbc.weightx = 1.0;
@@ -139,7 +139,7 @@ public class AgregarPeticion extends JDialog {
         gbc.anchor = GridBagConstraints.WEST;
         contentPane.add(fechaFin, gbc);
 
-        fechaEntrega = createPlaceholderTextField("Ingrese la fecha de entrega");
+        fechaEntrega = createPlaceholderTextField("MM/DD/AAAA");
         gbc.gridx = 1;
         gbc.gridy = 4;
         gbc.weightx = 1.0;
