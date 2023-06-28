@@ -32,8 +32,12 @@ public class AgregarPaciente extends JDialog {
 
     private PacienteController pacienteController;
 
-    public AgregarPaciente(PacienteController pacienteController) {
+    private PacientesTodas pacientesTodas;
+
+
+    public AgregarPaciente(PacienteController pacienteController, PacientesTodas pacientesTodas) {
         this.pacienteController = pacienteController;
+        this.pacientesTodas = pacientesTodas;
         initializeUI();
         setListeners();
     }
@@ -223,6 +227,7 @@ public class AgregarPaciente extends JDialog {
         PacienteDto nuevoPaciente = new PacienteDto(2, Integer.parseInt(edadPaciente), generoPaciente, nombrePaciente, Integer.parseInt(dniPaciente), domicilioPaciente, emailPaciente, apellidoPaciente);
         try {
             pacienteController.crearPaciente(nuevoPaciente);
+            pacientesTodas.actualizarTablaPacientes();
             dispose();
         } catch (Exception e) {
             // Manejo de la excepción
@@ -238,3 +243,4 @@ public class AgregarPaciente extends JDialog {
 
 
 }
+

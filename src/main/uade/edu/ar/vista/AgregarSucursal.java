@@ -18,7 +18,10 @@ public class AgregarSucursal extends JDialog {
     private JButton guardarButton;
     private SucursalYUsuarioController sucursalYUsuarioController;
 
-    public AgregarSucursal(SucursalYUsuarioController sucursalYUsuarioController) {
+    private SucursalTodas sucursalTodas;
+
+    public AgregarSucursal(SucursalYUsuarioController sucursalYUsuarioController, SucursalTodas sucursalTodas) {
+        this.sucursalTodas = sucursalTodas;
         this.sucursalYUsuarioController = sucursalYUsuarioController;
         cargarUsuarios();
         initializeUI();
@@ -152,6 +155,7 @@ public class AgregarSucursal extends JDialog {
         SucursalDto nuevaSucursal = new SucursalDto(2, Integer.parseInt(numeroSucursal), direccion, responsable);
         try {
             sucursalYUsuarioController.crearSucursal(nuevaSucursal);
+            this.sucursalTodas.actualizarTablaSucursales();
             dispose();
         } catch (Exception e) {
             // Manejo de la excepción

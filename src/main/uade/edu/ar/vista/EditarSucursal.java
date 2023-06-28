@@ -20,7 +20,10 @@ public class EditarSucursal extends JDialog {
     private List<UsuarioDto> usuarios;
     private SucursalYUsuarioController sucursalYUsuarioController;
 
-    public EditarSucursal(SucursalDto sucursal, SucursalYUsuarioController sucursalYUsuarioController) {
+    private SucursalTodas sucursalTodas;
+
+    public EditarSucursal(SucursalDto sucursal, SucursalYUsuarioController sucursalYUsuarioController, SucursalTodas sucursalTodas) {
+        this.sucursalTodas = sucursalTodas;
         this.sucursalYUsuarioController = sucursalYUsuarioController;
         this.sucursal = sucursal;
 
@@ -164,6 +167,7 @@ public class EditarSucursal extends JDialog {
         SucursalDto sucursalEditada = new SucursalDto(sucursal.getId(), Integer.parseInt(numeroSucursal), direccion, responsable);
         try {
             sucursalYUsuarioController.modificarSucursal(sucursalEditada);
+            this.sucursalTodas.actualizarTablaSucursales();
             dispose();
         } catch (Exception e) {
             // Manejo de la excepción

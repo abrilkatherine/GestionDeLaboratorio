@@ -9,6 +9,7 @@ import java.awt.event.MouseEvent;
 import java.util.List;
 
 import main.uade.edu.ar.controller.SucursalYUsuarioController;
+import main.uade.edu.ar.dto.PacienteDto;
 import main.uade.edu.ar.dto.SucursalDto;
 
 
@@ -16,8 +17,14 @@ public class SucursalTodas {
 
     private SucursalYUsuarioController sucursalYUsuarioController;
 
+    private DefaultTableModel tableModel;
+
+    private SucursalTodas sucursalTodas;
+
     public SucursalTodas(SucursalYUsuarioController sucursalYUsuarioController) {
         this.sucursalYUsuarioController = sucursalYUsuarioController;
+        this.sucursalTodas = this;
+        this.tableModel = new DefaultTableModel();
     }
 
     public JPanel createPanel() {
@@ -47,7 +54,7 @@ public class SucursalTodas {
 
         // Agregar ActionListener al botón "Agregar"
         addButton.addActionListener(e -> {
-            AgregarSucursal agregarSucursal = new AgregarSucursal(sucursalYUsuarioController);
+            AgregarSucursal agregarSucursal = new AgregarSucursal(sucursalYUsuarioController, this);
             agregarSucursal.setVisible(true);
         });
 
@@ -73,20 +80,20 @@ public class SucursalTodas {
                 return false;
             }
         };
-        model.addColumn("Numero");
-        model.addColumn("Editar");
-        model.addColumn("Eliminar");
+        tableModel.addColumn("Numero");
+        tableModel.addColumn("Editar");
+        tableModel.addColumn("Eliminar");
 
         // Obtener la lista de sucursales mediante el controlador
         List<SucursalDto> sucursales = sucursalYUsuarioController.getAllSucursales();
 
         // Llenar el modelo con los datos de las sucursales
         for (SucursalDto sucursal : sucursales) {
-            model.addRow(new Object[]{sucursal.getNumero(), "Info", "Eliminar"});
+            tableModel.addRow(new Object[]{sucursal.getNumero(), "Info", "Eliminar"});
         }
 
         // Crear la tabla y configurar el modelo
-        JTable table = new JTable(model);
+        JTable table = new JTable(tableModel);
         table.getColumnModel().getColumn(1).setPreferredWidth(50); // Ancho de la columna "Editar"
         table.getColumnModel().getColumn(2).setPreferredWidth(70); // Ancho de la columna "Eliminar"
 
@@ -100,7 +107,7 @@ public class SucursalTodas {
                 // Verificar si se hizo clic en la columna "Editar"
                 if (column == 1 && row < table.getRowCount()) {
                     // Obtener la información de la sucursal
-                    int numero = (int) model.getValueAt(row, 0);
+                    int numero = (int) tableModel.getValueAt(row, 0);
 
                     SucursalDto sucursal = null;
                     for (SucursalDto s : sucursales) {
@@ -113,7 +120,7 @@ public class SucursalTodas {
 
                     // Crear y mostrar el diálogo de editar sucursal
                     if (sucursal != null) {
-                        EditarSucursal editarSucursal = new EditarSucursal(sucursal, sucursalYUsuarioController);
+                        EditarSucursal editarSucursal = new EditarSucursal(sucursal, sucursalYUsuarioController, sucursalTodas);
                         editarSucursal.setVisible(true);
                     }
                 }
@@ -135,7 +142,7 @@ public class SucursalTodas {
                         if (sucursal != null) {
                             try {
                                 sucursalYUsuarioController.borrarSucursal(sucursal.getId());
-                                model.removeRow(row);
+                                tableModel.removeRow(row);
                             } catch (Exception exception){
                                 exception.printStackTrace(); // Imprimir información de la excepción
                                 // Opcional: Mostrar un mensaje de error al usuario
@@ -150,5 +157,15 @@ public class SucursalTodas {
         });
 
         return table;
+    }
+
+    public void actualizarTablaSucursales() {
+        tableModel.setRowCount(0); // Elimina todas las filas existentes en el modelo
+        List<SucursalDto> sucursales = sucursalYUsuarioController.getAllSucursales();
+        System.out.print("hola");
+        for (SucursalDto sucursal : sucursales) {
+
+            tableModel.addRow(new Object[]{sucursal.getNumero(), "Info", "Eliminar"});
+        }
     }
 }

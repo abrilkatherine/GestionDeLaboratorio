@@ -25,8 +25,11 @@ public class EditarPaciente extends JDialog {
 
     private PacienteController pacienteController;
 
-    public EditarPaciente(PacienteDto paciente,PacienteController pacienteController) {
+    private PacientesTodas pacientesTodas;
+
+    public EditarPaciente(PacienteDto paciente,PacienteController pacienteController, PacientesTodas pacientesTodas) {
         this.paciente = paciente;
+        this.pacientesTodas = pacientesTodas;
         this.pacienteController = pacienteController;
         initializeUI();
         setListeners();
@@ -214,6 +217,7 @@ public class EditarPaciente extends JDialog {
         PacienteDto pacienteEditado = new PacienteDto(paciente.getId(), Integer.parseInt(edadPaciente), generoPaciente, nombrePaciente, Integer.parseInt(dniPaciente), domicilioPaciente, emailPaciente, apellidoPaciente);
         try {
             pacienteController.modificarPaciente(pacienteEditado);
+            pacientesTodas.actualizarTablaPacientes();
             dispose();
         } catch (Exception e) {
             // Manejo de la excepción

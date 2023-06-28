@@ -6,18 +6,22 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.List;
 
 import main.uade.edu.ar.controller.PacienteController;
 import main.uade.edu.ar.dto.PacienteDto;
-import java.lang.reflect.Type;
-import java.util.List;
 
 public class PacientesTodas {
 
     private PacienteController pacienteController;
+    private DefaultTableModel tableModel;
 
-    public PacientesTodas(PacienteController pacienteController){
+    private PacientesTodas pacientesTodas;
+
+    public PacientesTodas(PacienteController pacienteController) {
         this.pacienteController = pacienteController;
+        this.pacientesTodas = this;
+        this.tableModel = new DefaultTableModel();
     }
 
     public JPanel createPanel() {
@@ -31,7 +35,7 @@ public class PacientesTodas {
         headerPanel.setBackground(Color.WHITE);
         headerPanel.setLayout(new BorderLayout());
 
-        // Crear el título "Sucursales" a la izquierda
+        // Crear el título "Pacientes" a la izquierda
         JLabel titleLabel = new JLabel("Pacientes");
         titleLabel.setHorizontalAlignment(SwingConstants.LEFT);
         titleLabel.setFont(titleLabel.getFont().deriveFont(Font.BOLD, 20));
@@ -47,7 +51,7 @@ public class PacientesTodas {
 
         // Agregar ActionListener al botón "Agregar"
         addButton.addActionListener(e -> {
-            AgregarPaciente agregarPaciente = new AgregarPaciente(pacienteController);
+            AgregarPaciente agregarPaciente = new AgregarPaciente(pacienteController, this);
             agregarPaciente.setVisible(true);
         });
 
@@ -57,7 +61,7 @@ public class PacientesTodas {
         // Agregar el JPanel del encabezado al JPanel principal
         panel.add(headerPanel, BorderLayout.NORTH);
 
-        // Crear la tabla de sucursales
+        // Crear la tabla de pacientes
         JTable table = createTable();
         JScrollPane scrollPane = new JScrollPane(table);
         panel.add(scrollPane, BorderLayout.CENTER);
@@ -66,26 +70,20 @@ public class PacientesTodas {
     }
 
     private JTable createTable() {
-        // Crear un modelo de tabla personalizado que haga que todas las celdas sean no editables
-        DefaultTableModel model = new DefaultTableModel() {
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return false;
-            }
-        };
-        model.addColumn("Nombre");
-        model.addColumn("DNI");
-        model.addColumn("Editar");
-        model.addColumn("Eliminar");
+        // Configurar el modelo de tabla
+        tableModel.addColumn("Nombre");
+        tableModel.addColumn("DNI");
+        tableModel.addColumn("Editar");
+        tableModel.addColumn("Eliminar");
 
-        // Agregar filas de ejemplo a la tabla
+        // Obtener la lista de pacientes
         List<PacienteDto> pacientes = pacienteController.getAllPacientes();
         for (PacienteDto paciente : pacientes) {
-            model.addRow(new Object[]{paciente.getNombre(),paciente.getDni(), "Info", "Eliminar"});
+            tableModel.addRow(new Object[]{paciente.getNombre(), paciente.getDni(), "Info", "Eliminar"});
         }
 
         // Crear la tabla y configurar el modelo
-        JTable table = new JTable(model);
+        JTable table = new JTable(tableModel);
         table.getColumnModel().getColumn(2).setPreferredWidth(50); // Ancho de la columna "Editar"
         table.getColumnModel().getColumn(3).setPreferredWidth(70); // Ancho de la columna "Eliminar"
 
@@ -98,7 +96,7 @@ public class PacientesTodas {
 
                 // Verificar si se hizo clic en la columna "Editar"
                 if (column == 2 && row < table.getRowCount()) {
-                    int valorColumnaDNI = (int) model.getValueAt(row, 1);
+                    int valorColumnaDNI = (int) tableModel.getValueAt(row, 1);
 
 
                     PacienteDto paciente = null;
@@ -108,10 +106,11 @@ public class PacientesTodas {
                             break;
                         }
                     }
-                    // Crear y mostrar el diálogo de editar sucursal
+                    // Crear y mostrar el diálogo de editar paciente
                     if (paciente != null) {
-                        // Crear y mostrar el diálogo de editar sucursal, pasando la sucursal correspondiente
-                        EditarPaciente editarPaciente = new EditarPaciente(paciente, pacienteController);
+                        // Crear y mostrar el diálogo de editar paciente, pasando el paciente correspondiente
+
+                        EditarPaciente editarPaciente = new EditarPaciente(paciente, pacienteController, pacientesTodas);
                         editarPaciente.setVisible(true);
                     }
                 }
@@ -121,12 +120,43 @@ public class PacientesTodas {
                     int confirm = JOptionPane.showConfirmDialog(table, "¿Estás seguro?", "Confirmación", JOptionPane.YES_NO_OPTION);
                     if (confirm == JOptionPane.YES_OPTION) {
                         // Eliminar la fila correspondiente
-                        model.removeRow(row);
+                        int valorColumnaDNI = (int) tableModel.getValueAt(row, 1);
+
+
+                        PacienteDto paciente = null;
+                        for (PacienteDto p : pacientes) {
+                            if (p.getDni() == valorColumnaDNI) {
+                                paciente = p;
+                                break;
+                            }
+                        }
+                        if (paciente != null) {
+                            try{
+                                pacienteController.borrarPaciente(paciente.getId());
+                                tableModel.removeRow(row);
+                            }
+                            catch (Exception exception){
+                                exception.printStackTrace(); // Imprimir información de la excepción
+                                // Opcional: Mostrar un mensaje de error al usuario
+                                // JOptionPane.showMessageDialog(, "Error al eliminar el paciente", "Error", JOptionPane.ERROR_MESSAGE);
+                            }
+
+                        }
                     }
                 }
             }
         });
 
+
         return table;
+    }
+
+
+    public void actualizarTablaPacientes() {
+        tableModel.setRowCount(0); // Elimina todas las filas existentes en el modelo
+        List<PacienteDto> pacientes = pacienteController.getAllPacientes();
+        for (PacienteDto paciente : pacientes) {
+            tableModel.addRow(new Object[]{paciente.getNombre(), paciente.getDni(), "Info", "Eliminar"});
+        }
     }
 }

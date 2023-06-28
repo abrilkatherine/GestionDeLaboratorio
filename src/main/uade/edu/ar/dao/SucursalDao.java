@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public class SucursalDao extends GenericDAO<Sucursal> {
 
-    private static final String fileName = "src/main/resources/sucursales.json";
+    private static final String fileName = "../src/main/resources/sucursales.json";
 
 
     public SucursalDao() throws Exception {
