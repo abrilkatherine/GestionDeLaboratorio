@@ -132,7 +132,7 @@ public class PeticionesTodas {
                     // Crear y mostrar el diálogo de editar sucursal
                     if (peticion != null) {
                         // Crear y mostrar el diálogo de editar sucursal, pasando la sucursal correspondiente
-                        PracticasXPeticion vistaPracticas = new PracticasXPeticion(peticion.getPracticas());
+                        PracticasXPeticion vistaPracticas = new PracticasXPeticion(peticion.getPracticas(), peticion.getId(), peticionController);
                         vistaPracticas.setVisible(true);
                     }
                 }
