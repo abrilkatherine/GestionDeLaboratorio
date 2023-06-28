@@ -7,6 +7,7 @@ import main.uade.edu.ar.dto.ResultadoDto;
 import main.uade.edu.ar.enums.TipoResultado;
 import main.uade.edu.ar.mappers.PeticionMapper;
 import main.uade.edu.ar.model.*;
+import main.uade.edu.ar.vista.PracticasXPeticion;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -197,8 +198,8 @@ public class PeticionController {
         crearResultado(idPractica, null);
     }
 
-    public List<Peticion> getPeticionesConResultadosCriticos() {
-        List<Peticion> peticionesConResultadosCriticos = new ArrayList<>();
+    public List<PeticionDto> getPeticionesConResultadosCriticos() {
+        List<PeticionDto> peticionesConResultadosCriticos = new ArrayList<>();
 
         for (Peticion peticion : peticiones) {
             boolean tieneResultadosCriticos = peticion.getPracticas()
@@ -206,14 +207,14 @@ public class PeticionController {
                     .anyMatch(Practica::esCritica);
 
             if (tieneResultadosCriticos) {
-                peticionesConResultadosCriticos.add(peticion);
+                peticionesConResultadosCriticos.add(PeticionMapper.toDto(peticion));
             }
         }
 
         return peticionesConResultadosCriticos;
     }
 
-    public List<Practica> getPracticasConResultadosReservados(int idPeticion) {
+    public List<PracticaDto> getPracticasConResultadosReservados(int idPeticion) {
         Peticion peticion = getPeticion(idPeticion).orElse(null);
 
         if (peticion == null) {
@@ -221,13 +222,13 @@ public class PeticionController {
             return new ArrayList<>();
         }
 
-        List<Practica> practicasConResultadosOcultos = new ArrayList<>();
+        List<PracticaDto> practicasConResultadosOcultos = new ArrayList<>();
 
         for (Practica practica : peticion.getPracticas()) {
             if (practica.getResultado() != null && practica.esReservada()) {
                 practica.ocultarResultado();
             }
-            practicasConResultadosOcultos.add(practica);
+            practicasConResultadosOcultos.add(PeticionMapper.toDto(practica));
         }
 
         return practicasConResultadosOcultos;
