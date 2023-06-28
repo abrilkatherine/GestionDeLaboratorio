@@ -21,10 +21,12 @@ public class AgregarPracticaXPeticion extends JDialog {
     private JTextField nombrePracticaTextField;
     private JTextField codigoPracticaTextField;
     private PeticionController peticionController;
+    private PracticasXPeticion practicasXPeticion;
     private int idPeticion;
-    public AgregarPracticaXPeticion(PeticionController peticionController, int idPeticion){
+    public AgregarPracticaXPeticion(PeticionController peticionController, int idPeticion, PracticasXPeticion practicasXPeticion){
         this.peticionController = peticionController;
         this.idPeticion = idPeticion;
+        this.practicasXPeticion = practicasXPeticion;
         initializeUI();
         setListeners();
     }
@@ -165,7 +167,7 @@ public class AgregarPracticaXPeticion extends JDialog {
 
         try {
             peticionController.crearPractica(idPeticion,nuevaPractica);
-            //usuariosTodos.actualizarTablaUsuarios();
+            practicasXPeticion.actualizarDatos();
             dispose();
         } catch (Exception e) {
             // Manejo de la excepción
@@ -173,7 +175,10 @@ public class AgregarPracticaXPeticion extends JDialog {
             // Opcional: Mostrar un mensaje de error al usuario
             JOptionPane.showMessageDialog(this, "Error al crear el usuario", "Error", JOptionPane.ERROR_MESSAGE);
         }
+
+
     }
+
 
     private void onCancel() {
         dispose();

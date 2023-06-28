@@ -46,6 +46,21 @@ public class PeticionController {
                 .findFirst();
     }
 
+    public List<PracticaDto> getAllPracticasDePeticion(int idPeticion) {
+        Optional<Peticion> peticionOptional = getPeticion(idPeticion);
+
+        if (peticionOptional.isPresent()) {
+            Peticion peticion = peticionOptional.get();
+
+            return peticion.getPracticas().stream()
+                    .map(PeticionMapper::toDto)
+                    .collect(Collectors.toList());
+        } else {
+            System.out.println("La petición solicitada no existe");
+            return new ArrayList<>();
+        }
+    }
+
     public void crearPeticion(PeticionDto peticionDTO) throws Exception {
         if (getPeticion(peticionDTO.getId()).isEmpty()) {
             Peticion peticion = PeticionMapper.toModel(peticionDTO);
