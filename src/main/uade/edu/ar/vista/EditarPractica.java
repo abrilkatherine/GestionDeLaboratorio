@@ -25,12 +25,15 @@ public class EditarPractica extends JDialog {
     private JTextField valorResultadoTextField;
     private JComboBox<TipoResultado> tipoResultadoComboBox;
     private PeticionController peticionController;
-    private int idPractica;
-    public EditarPractica(PeticionController peticionController, int idPractica){
+    private PracticasXPeticion practicasXPeticion;
+    private PracticaDto practica;
+    public EditarPractica(PeticionController peticionController, PracticaDto practica, PracticasXPeticion practicasXPeticion){
         this.peticionController = peticionController;
-        this.idPractica = idPractica;
+        this.practica = practica;
+        this.practicasXPeticion = practicasXPeticion;
         initializeUI();
         setListeners();
+        cargarDatos();
     }
 
     private void initializeUI() {
@@ -178,6 +181,21 @@ public class EditarPractica extends JDialog {
             }
         });
     }
+    private void cargarDatos() {
+        codigoPracticaTextField.setText(String.valueOf(practica.getCodigo()));
+        nombrePracticaTextField.setText(practica.getNombre());
+        grupoPracticaTextField.setText(String.valueOf(practica.getGrupo()));
+        horasFaltantesTextField.setText(String.valueOf(practica.getHorasFaltantes()));
+
+        ResultadoDto resultado = practica.getResultado();
+        if (resultado != null) {
+            valorResultadoTextField.setText(String.valueOf(resultado.getValor()));
+            tipoResultadoComboBox.setSelectedItem(resultado.getTipoResultado());
+        } else {
+            valorResultadoTextField.setText("");
+            tipoResultadoComboBox.setSelectedItem(null);
+        }
+    }
 
     private void onGuardar() {
         // Acciones de guardar
@@ -189,11 +207,11 @@ public class EditarPractica extends JDialog {
         TipoResultado tipoResultado = (TipoResultado) tipoResultadoComboBox.getSelectedItem();
 
         ResultadoDto nuevoresultado = new ResultadoDto(valorResultado, tipoResultado);
-        PracticaDto nuevaPractica = new PracticaDto(idPractica, Integer.parseInt(codigoPractica), nombrePractica, Integer.parseInt(grupoPractica), Float.parseFloat(horasFaltantes), nuevoresultado);
+        PracticaDto nuevaPractica = new PracticaDto(practica.getId(), Integer.parseInt(codigoPractica), nombrePractica, Integer.parseInt(grupoPractica), Float.parseFloat(horasFaltantes), nuevoresultado);
 
         try {
             peticionController.modificarPractica(nuevaPractica);
-            //usuariosTodos.actualizarTablaUsuarios();
+            practicasXPeticion.actualizarDatos();
             dispose();
         } catch (Exception e) {
             // Manejo de la excepción
