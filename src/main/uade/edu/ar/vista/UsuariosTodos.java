@@ -120,7 +120,9 @@ public class UsuariosTodos {
                     int confirm = JOptionPane.showConfirmDialog(table, "¿Estás seguro?", "Confirmación", JOptionPane.YES_NO_OPTION);
                     if (confirm == JOptionPane.YES_OPTION) {
                         // Eliminar la fila correspondiente
-                        String nombreUsuario = (String) tableModel.getValueAt(row, 0);
+
+                        String nombreUsuario = tableModel.getValueAt(row, 0).toString();
+
                         UsuarioDto usuario = null;
                         for (UsuarioDto u : usuarios) {
                             if (u.getNombre() == nombreUsuario) {
