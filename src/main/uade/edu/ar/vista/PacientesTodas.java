@@ -139,7 +139,7 @@ public class PacientesTodas {
                             catch (Exception exception){
                                 exception.printStackTrace(); // Imprimir información de la excepción
                                 // Opcional: Mostrar un mensaje de error al usuario
-                                // JOptionPane.showMessageDialog(, "Error al eliminar el paciente", "Error", JOptionPane.ERROR_MESSAGE);
+                                JOptionPane.showMessageDialog(null, exception.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                             }
 
                         }

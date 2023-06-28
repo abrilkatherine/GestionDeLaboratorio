@@ -222,8 +222,7 @@ public class EditarPaciente extends JDialog {
         } catch (Exception e) {
             // Manejo de la excepción
             e.printStackTrace(); // Imprimir información de la excepción
-            // Opcional: Mostrar un mensaje de error al usuario
-            JOptionPane.showMessageDialog(this, "Error al crear el paciente", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 

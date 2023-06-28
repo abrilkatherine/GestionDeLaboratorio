@@ -127,7 +127,6 @@ public class SucursalTodas {
                         int numero = (int) tableModel.getValueAt(row, 0);
                         SucursalDto sucursal = null;
                         for (SucursalDto s : sucursalDtoList) {
-                            System.out.print(s.getNumero() + "AAAA" + numero);
                             if (s.getNumero() == numero) {
                                 sucursal = s;
                                 break;
@@ -140,7 +139,8 @@ public class SucursalTodas {
                             } catch (Exception exception) {
                                 exception.printStackTrace(); // Imprimir información de la excepción
                                 // Opcional: Mostrar un mensaje de error al usuario
-                                // JOptionPane.showMessageDialog(, "Error al eliminar el paciente", "Error", JOptionPane.ERROR_MESSAGE);
+
+                                JOptionPane.showMessageDialog(null, exception.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                             }
 
                         }

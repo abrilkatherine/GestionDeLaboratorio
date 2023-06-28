@@ -178,7 +178,6 @@ public class AgregarUsuario extends JDialog {
 
         Random random = new Random();
         int id = random.nextInt();
-
         UsuarioDto nuevoUsuario = new UsuarioDto(id, nombreUsuario, contraseniaUsuario, fechaNacimiento, rolUsuario);
 
         try {
@@ -186,10 +185,8 @@ public class AgregarUsuario extends JDialog {
             usuariosTodos.actualizarTablaUsuarios();
             dispose();
         } catch (Exception e) {
-            // Manejo de la excepción
             e.printStackTrace(); // Imprimir información de la excepción
-            // Opcional: Mostrar un mensaje de error al usuario
-            JOptionPane.showMessageDialog(this, "Error al crear el usuario", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
