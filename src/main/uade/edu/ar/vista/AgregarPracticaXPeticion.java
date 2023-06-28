@@ -1,42 +1,32 @@
 package main.uade.edu.ar.vista;
 
-import main.uade.edu.ar.controller.SucursalYUsuarioController;
+import main.uade.edu.ar.controller.PeticionController;
+import main.uade.edu.ar.dto.PracticaDto;
 import main.uade.edu.ar.dto.UsuarioDto;
 import main.uade.edu.ar.enums.Roles;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Locale;
+import java.util.Date;
+import java.util.Random;
 
-
-public class EditarUsuario extends JDialog {
-
+public class AgregarPracticaXPeticion extends JDialog {
     private JPanel contentPane;
-
-    private JTextField nombreTextField;
-
-    private JTextField contraseniaTextField;
-
-    private JTextField fechanacimientoTextField;
-
-    private JComboBox<Roles> rolComboBox;
     private JButton guardarButton;
-    private JButton cancelarCambiosButton;
-    private UsuarioDto usuario;
-    private SucursalYUsuarioController sucursalYUsuarioController;
-    private UsuariosTodos usuariosTodos;
-
-    public EditarUsuario(UsuarioDto usuario, SucursalYUsuarioController sucursalYUsuarioController, UsuariosTodos usuariosTodos) {
-        this.usuario = usuario;
-        this.sucursalYUsuarioController = sucursalYUsuarioController;
-        this.usuariosTodos = usuariosTodos;
+    private JTextField horasFaltantesTextField;
+    private JTextField grupoPracticaTextField;
+    private JTextField nombrePracticaTextField;
+    private JTextField codigoPracticaTextField;
+    private PeticionController peticionController;
+    private int idPeticion;
+    public AgregarPracticaXPeticion(PeticionController peticionController, int idPeticion){
+        this.peticionController = peticionController;
+        this.idPeticion = idPeticion;
         initializeUI();
         setListeners();
-        cargarDatos();
     }
 
     private void initializeUI() {
@@ -48,55 +38,55 @@ public class EditarUsuario extends JDialog {
         gbc.insets = new Insets(5, 5, 5, 5);
 
         // Nombre del usuario
-        JLabel nombreUsuarioLabel = new JLabel("Nombre del usuario:");
+        JLabel codigoPracticaLabel = new JLabel("Codigo de la Práctica:");
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.anchor = GridBagConstraints.WEST;
-        contentPane.add(nombreUsuarioLabel, gbc);
+        contentPane.add(codigoPracticaLabel, gbc);
 
-        nombreTextField = createPlaceholderTextField("Ingrese el nombre del usuario");
+        codigoPracticaTextField = createPlaceholderTextField("Ingrese el código de la práctica");
         gbc.gridx = 1;
         gbc.gridy = 0;
         gbc.weightx = 1.0;
-        contentPane.add(nombreTextField, gbc);
+        contentPane.add(codigoPracticaTextField, gbc);
 
         // Apellido del usuario
-        JLabel contraseniaLabel = new JLabel("Contraseña:");
+        JLabel nombrePracticaLabel = new JLabel("Nombre de la práctica:");
         gbc.gridx = 0;
         gbc.gridy = 1;
         gbc.weightx = 0.0;
-        contentPane.add(contraseniaLabel, gbc);
+        contentPane.add(nombrePracticaLabel, gbc);
 
-        contraseniaTextField = createPlaceholderTextField("Ingrese la contraseña");
+        nombrePracticaTextField = createPlaceholderTextField("Ingrese el nombre de la práctica");
         gbc.gridx = 1;
         gbc.gridy = 1;
         gbc.weightx = 1.0;
-        contentPane.add(contraseniaTextField, gbc);
+        contentPane.add(nombrePracticaTextField, gbc);
 
         // email
-        JLabel fechanacimientoLabel = new JLabel("Fecha de nacimiento:");
+        JLabel grupoPracticaLabel = new JLabel("Grupo de la Práctica:");
         gbc.gridx = 0;
         gbc.gridy = 2;
         gbc.weightx = 0.0;
-        contentPane.add(fechanacimientoLabel, gbc);
+        contentPane.add(grupoPracticaLabel, gbc);
 
-        fechanacimientoTextField = createPlaceholderTextField("MM/DD/AAAA");
+        grupoPracticaTextField = createPlaceholderTextField("Ingrese el grupo de la práctica");
         gbc.gridx = 1;
         gbc.gridy = 2;
         gbc.weightx = 1.0;
-        contentPane.add(fechanacimientoTextField, gbc);
+        contentPane.add(grupoPracticaTextField, gbc);
 
-        JLabel rolLabel = new JLabel("Rol:");
+        JLabel horasFaltantesLabel = new JLabel("Horas Faltantes:");
         gbc.gridx = 0;
         gbc.gridy = 3;
         gbc.weightx = 0.0;
-        contentPane.add(rolLabel, gbc);
+        contentPane.add(horasFaltantesLabel, gbc);
 
-        rolComboBox = new JComboBox<>(Roles.values());
+        horasFaltantesTextField = createPlaceholderTextField("Ingrese las horas Faltantes");
         gbc.gridx = 1;
         gbc.gridy = 3;
         gbc.weightx = 1.0;
-        contentPane.add(rolComboBox, gbc);
+        contentPane.add(horasFaltantesTextField, gbc);
 
         // Botón Guardar
         guardarButton = new JButton("Guardar");
@@ -105,13 +95,6 @@ public class EditarUsuario extends JDialog {
         gbc.weightx = 0.0;
         gbc.anchor = GridBagConstraints.EAST;
         contentPane.add(guardarButton, gbc);
-
-        cancelarCambiosButton = new JButton("Cancelar Cambios");
-        gbc.gridx = 1;
-        gbc.gridy = 7;
-        gbc.weightx = 0.0;
-        gbc.anchor = GridBagConstraints.EAST;
-        contentPane.add(cancelarCambiosButton, gbc);
 
         setContentPane(contentPane);
         setModal(true);
@@ -166,44 +149,23 @@ public class EditarUsuario extends JDialog {
                 onGuardar();
             }
         });
-
-        cancelarCambiosButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onCancel();
-            }
-        });
     }
-
-    private void cargarDatos() {
-        nombreTextField.setText(usuario.getNombre());
-        contraseniaTextField.setText(usuario.getContrasenia());
-        fechanacimientoTextField.setText(String.valueOf(usuario.getNacimiento().toString()));
-        rolComboBox.setSelectedItem(usuario.getRol());
-    }
-
 
     private void onGuardar() {
         // Acciones de guardar
-        String nombreUsuario = nombreTextField.getText();
-        String contraseniaUsuario = contraseniaTextField.getText();
-        String fechanacimientoUsuario = fechanacimientoTextField.getText();
-        Roles rolUsuario = (Roles) rolComboBox.getSelectedItem();
+        String codigoPractica = codigoPracticaTextField.getText();
+        String nombrePractica = nombrePracticaTextField.getText();
+        String grupoPractica = grupoPracticaTextField.getText();
+        String horasFaltantes = horasFaltantesTextField.getText();
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.ENGLISH);
-        Date fechaNacimiento = null;
+        Random random = new Random();
+        int id = random.nextInt();
 
-        if (!fechanacimientoUsuario.isEmpty() && !fechanacimientoUsuario.equals("MMM dd, yyyy, hh:mm:ss a")) {
-            try {
-                fechaNacimiento = dateFormat.parse(fechanacimientoUsuario);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-        }
+        PracticaDto nuevaPractica = new PracticaDto(id, Integer.parseInt(codigoPractica), nombrePractica, Integer.parseInt(grupoPractica), Float.parseFloat(horasFaltantes));
 
-        UsuarioDto nuevoUsuario = new UsuarioDto(usuario.getId(), nombreUsuario, contraseniaUsuario, fechaNacimiento, rolUsuario);
         try {
-            sucursalYUsuarioController.modificarUsuario(nuevoUsuario);
-            usuariosTodos.actualizarTablaUsuarios();
+            peticionController.crearPractica(idPeticion,nuevaPractica);
+            //usuariosTodos.actualizarTablaUsuarios();
             dispose();
         } catch (Exception e) {
             // Manejo de la excepción
@@ -213,8 +175,9 @@ public class EditarUsuario extends JDialog {
         }
     }
 
-
     private void onCancel() {
         dispose();
     }
+
+
 }

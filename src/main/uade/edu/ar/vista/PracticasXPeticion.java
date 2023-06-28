@@ -7,17 +7,25 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
+import main.uade.edu.ar.controller.PeticionController;
+import main.uade.edu.ar.dto.PeticionDto;
 import main.uade.edu.ar.dto.PracticaDto;
+import main.uade.edu.ar.dto.UsuarioDto;
 
 public class PracticasXPeticion extends JDialog {
+    private DefaultTableModel tableModel;
     private JPanel contentPane;
     private JTable practicasTable;
     private JButton agregarButton;
 
     private List<PracticaDto> practicas;
+    private int idPeticion;
+    private PeticionController peticionController;
 
-    public PracticasXPeticion(List<PracticaDto> practicas) {
+    public PracticasXPeticion(List<PracticaDto> practicas, int idPeticion, PeticionController peticionController) {
         this.practicas = practicas;
+        this.idPeticion = idPeticion;
+        this.peticionController = peticionController;
         initializeUI();
         cargarDatos();
     }
@@ -45,6 +53,11 @@ public class PracticasXPeticion extends JDialog {
         buttonPanel.add(agregarButton);
         contentPane.add(buttonPanel, BorderLayout.EAST);
 
+        agregarButton.addActionListener(e ->{
+            AgregarPracticaXPeticion agregarPracticaXPeticion = new AgregarPracticaXPeticion(peticionController, idPeticion);
+            agregarPracticaXPeticion.setVisible(true);
+        });
+
         setContentPane(contentPane);
         setModal(true);
 
@@ -59,5 +72,7 @@ public class PracticasXPeticion extends JDialog {
             Object[] row = {practica.getId(), practica.getNombre(), "info", "Eliminar"};
             tableModel.addRow(row);
         }
+
     }
+
 }
