@@ -156,7 +156,7 @@ public class AgregarSucursal extends JDialog {
         SucursalDto nuevaSucursal = new SucursalDto(random.nextInt(), Integer.parseInt(numeroSucursal), direccion, responsable);
         try {
             sucursalYUsuarioController.crearSucursal(nuevaSucursal);
-            this.sucursalTodas.actualizarTablaSucursales();
+            sucursalTodas.actualizarTablaSucursales();
             dispose();
         } catch (Exception e) {
             // Manejo de la excepción

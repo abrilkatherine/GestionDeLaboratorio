@@ -82,8 +82,6 @@ public class SucursalTodas {
 
         // Obtener la lista de sucursales mediante el controlador
         sucursalDtoList = sucursalYUsuarioController.getAllSucursales();
-
-        // Llenar el modelo con los datos de las sucursales
         for (SucursalDto sucursal : sucursalDtoList) {
             tableModel.addRow(new Object[]{sucursal.getNumero(), "Info", "Eliminar"});
         }
@@ -96,7 +94,8 @@ public class SucursalTodas {
         // Agregar MouseListener a la tabla para detectar clics en las columnas "Editar" y "Eliminar"
         table.addMouseListener(new MouseAdapter() {
             @Override
-            public void mouseClicked(MouseEvent e) {;
+            public void mouseClicked(MouseEvent e) {
+                ;
                 int column = table.getColumnModel().getColumnIndexAtX(e.getX());
                 int row = e.getY() / table.getRowHeight();
 
@@ -107,7 +106,6 @@ public class SucursalTodas {
 
                     SucursalDto sucursal = null;
                     for (SucursalDto s : sucursalDtoList) {
-                        System.out.print(s.getNumero() + "AAAA" + numero);
                         if (s.getNumero() == numero) {
                             sucursal = s;
                             break;
@@ -139,7 +137,7 @@ public class SucursalTodas {
                             try {
                                 sucursalYUsuarioController.borrarSucursal(sucursal.getId());
                                 tableModel.removeRow(row);
-                            } catch (Exception exception){
+                            } catch (Exception exception) {
                                 exception.printStackTrace(); // Imprimir información de la excepción
                                 // Opcional: Mostrar un mensaje de error al usuario
                                 // JOptionPane.showMessageDialog(, "Error al eliminar el paciente", "Error", JOptionPane.ERROR_MESSAGE);
@@ -156,12 +154,12 @@ public class SucursalTodas {
     }
 
     public void actualizarTablaSucursales() {
-        tableModel.setRowCount(0); // Elimina todas las filas existentes en el modelo
+        tableModel.setRowCount(0);
+        sucursalDtoList = null;// Elimina todas las filas existentes en el modelo
         sucursalDtoList = sucursalYUsuarioController.getAllSucursales();
-        System.out.print("hola");
-        for (SucursalDto sucursal : sucursalDtoList) {
-
-            tableModel.addRow(new Object[]{sucursal.getNumero(), "Info", "Eliminar"});
+        for (SucursalDto suc : sucursalDtoList) {
+            tableModel.addRow(new Object[]{suc.getNumero(), "Info", "Eliminar"});
         }
     }
 }
+
