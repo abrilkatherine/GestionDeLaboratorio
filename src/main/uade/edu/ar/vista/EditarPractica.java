@@ -189,8 +189,12 @@ public class EditarPractica extends JDialog {
 
         ResultadoDto resultado = practica.getResultado();
         if (resultado != null) {
-            valorResultadoTextField.setText(String.valueOf(resultado.getValor()));
             tipoResultadoComboBox.setSelectedItem(resultado.getTipoResultado());
+            if(resultado.getTipoResultado() == TipoResultado.RESERVADO) {
+                valorResultadoTextField.setText("Retirar por sucursal");
+            } else {
+                valorResultadoTextField.setText(String.valueOf(resultado.getValor()));
+            }
         } else {
             valorResultadoTextField.setText("");
             tipoResultadoComboBox.setSelectedItem(null);

@@ -153,7 +153,8 @@ public class AgregarSucursal extends JDialog {
         String responsableText = (String) responsableComboBox.getSelectedItem();
         UsuarioDto responsable = findUsuarioByDisplayText(responsableText);
         Random random = new Random();
-        SucursalDto nuevaSucursal = new SucursalDto(random.nextInt(), Integer.parseInt(numeroSucursal), direccion, responsable);
+        int randomId = random.nextInt(1, 900);
+        SucursalDto nuevaSucursal = new SucursalDto(randomId, Integer.parseInt(numeroSucursal), direccion, responsable);
         try {
             sucursalYUsuarioController.crearSucursal(nuevaSucursal);
             sucursalTodas.actualizarTablaSucursales();

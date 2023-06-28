@@ -89,8 +89,8 @@ public class PeticionesTodas {
 
         // Agregar filas de ejemplo a la tabla
             peticionesLista = peticionController.getAllPeticiones();
-
             for (PeticionDto peticion : peticionesLista) {
+                System.out.print(peticion);
                 tableModel.addRow(new Object[]{peticion.getId(),"Ver", "Info", "Eliminar"});
             }
 

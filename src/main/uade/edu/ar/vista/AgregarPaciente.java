@@ -226,7 +226,8 @@ public class AgregarPaciente extends JDialog {
             generoPaciente = Genero.FEMENINO;
         }
         Random random = new Random();
-        PacienteDto nuevoPaciente = new PacienteDto(random.nextInt(), Integer.parseInt(edadPaciente), generoPaciente, nombrePaciente, Integer.parseInt(dniPaciente), domicilioPaciente, emailPaciente, apellidoPaciente);
+        int randomId = random.nextInt(1, 900);
+        PacienteDto nuevoPaciente = new PacienteDto(randomId, Integer.parseInt(edadPaciente), generoPaciente, nombrePaciente, Integer.parseInt(dniPaciente), domicilioPaciente, emailPaciente, apellidoPaciente);
         try {
             pacienteController.crearPaciente(nuevoPaciente);
             pacientesTodas.actualizarTablaPacientes();

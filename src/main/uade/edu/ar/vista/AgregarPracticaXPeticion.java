@@ -161,9 +161,8 @@ public class AgregarPracticaXPeticion extends JDialog {
         String horasFaltantes = horasFaltantesTextField.getText();
 
         Random random = new Random();
-        int id = random.nextInt();
-
-        PracticaDto nuevaPractica = new PracticaDto(id, Integer.parseInt(codigoPractica), nombrePractica, Integer.parseInt(grupoPractica), Float.parseFloat(horasFaltantes));
+        int randomId = random.nextInt(1, 900);
+        PracticaDto nuevaPractica = new PracticaDto(randomId, Integer.parseInt(codigoPractica), nombrePractica, Integer.parseInt(grupoPractica), Float.parseFloat(horasFaltantes));
 
         try {
             peticionController.crearPractica(idPeticion,nuevaPractica);

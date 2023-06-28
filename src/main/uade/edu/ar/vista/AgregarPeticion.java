@@ -240,7 +240,9 @@ public class AgregarPeticion extends JDialog {
         }
 
         Random random = new Random();
-        PeticionDto nuevaPeticion = new PeticionDto(random.nextInt(), obra, fechaCarga, fechaEntrega, sucursal, paciente);
+        int randomId = random.nextInt(1, 900);
+        PeticionDto nuevaPeticion = new PeticionDto(randomId, obra, fechaCarga, fechaEntrega, sucursal, paciente);
+
         try {
             peticionController.crearPeticion(nuevaPeticion);
             peticionesTodas.actualizarTablaPeticiones();

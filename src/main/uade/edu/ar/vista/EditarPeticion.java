@@ -93,7 +93,7 @@ public class EditarPeticion extends JDialog {
 
         sucursalComboBox = new JComboBox<>();
         for (SucursalDto sucursal : sucursales) {
-            String displayText = sucursal.getNumero() + " - " + sucursal.getId();
+            String displayText = sucursal.getNumero() + " _ " + sucursal.getId();
             sucursalComboBox.addItem(displayText);
         }
         gbc.gridx = 1;
@@ -251,7 +251,7 @@ public class EditarPeticion extends JDialog {
 
     private SucursalDto findSucursalByDisplayText(String displayText) {
         for (SucursalDto sucursal : sucursales) {
-            String sucursalDisplayText = sucursal.getNumero() + " - " + sucursal.getId();
+            String sucursalDisplayText = sucursal.getNumero() + " _ " + sucursal.getId();
             if (sucursalDisplayText.equals(displayText)) {
                 return sucursal;
             }

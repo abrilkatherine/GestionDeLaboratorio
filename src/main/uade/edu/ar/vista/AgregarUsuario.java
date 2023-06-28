@@ -177,8 +177,8 @@ public class AgregarUsuario extends JDialog {
         }
 
         Random random = new Random();
-        int id = random.nextInt();
-        UsuarioDto nuevoUsuario = new UsuarioDto(id, nombreUsuario, contraseniaUsuario, fechaNacimiento, rolUsuario);
+        int randomId = random.nextInt(1, 900);
+        UsuarioDto nuevoUsuario = new UsuarioDto(randomId, nombreUsuario, contraseniaUsuario, fechaNacimiento, rolUsuario);
 
         try {
             sucursalYUsuarioController.crearUsuario(nuevoUsuario);
