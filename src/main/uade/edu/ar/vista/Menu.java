@@ -12,7 +12,7 @@ public class Menu {
     private static BarraNavegacion barraNavegacion;
     private static SucursalTodas sucursalTodas;
     private static PacientesTodas pacienteTodas;
-
+    private static UsuariosTodos usuariosTodos;
     private static PeticionesTodas peticionesTodas;
     private static JPanel cardPanel;
     private static CardLayout cardLayout;
@@ -72,6 +72,11 @@ public class Menu {
         peticionesTodas = new PeticionesTodas(peticionController);
         JPanel peticionesTodasPanel = peticionesTodas.createPanel();
         cardPanel.add(peticionesTodasPanel, "PeticionesTodas");
+
+        // Crear una instancia de UsuariosTodos y obtener su panel
+        usuariosTodos = new UsuariosTodos(sucursalYUsuarioController);
+        JPanel usuariosTodosPanel = usuariosTodos.createPanel();
+        cardPanel.add(usuariosTodosPanel, "UsuariosTodos");
 
         // Mostrar la ventana
         frame.setSize(400, 300);
