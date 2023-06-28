@@ -63,7 +63,7 @@ public class BarraNavegacion {
         // Agregar los paneles de vistas al cardPanel
         cardPanel.add(new PacientesTodas(pacienteController).createPanel(), "pacientesTodas");
         cardPanel.add(new SucursalTodas(sucursalYUsuarioController).createPanel(), "sucursalesTodas");
-        cardPanel.add(new PeticionesTodas(peticionController).createPanel(), "peticionesTodas");
+        cardPanel.add(new PeticionesTodas(peticionController, sucursalYUsuarioController, pacienteController).createPanel(), "peticionesTodas");
         cardPanel.add(new UsuariosTodos(sucursalYUsuarioController).createPanel(), "usuariosTodos");
 
         // Agregar el panel del menú y el panel con CardLayout al panel principal

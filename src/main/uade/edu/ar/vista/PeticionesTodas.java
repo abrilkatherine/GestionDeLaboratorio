@@ -7,7 +7,9 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+import main.uade.edu.ar.controller.PacienteController;
 import main.uade.edu.ar.controller.PeticionController;
+import main.uade.edu.ar.controller.SucursalYUsuarioController;
 import main.uade.edu.ar.dto.PeticionDto;
 import main.uade.edu.ar.dto.SucursalDto;
 import main.uade.edu.ar.model.Peticion;
@@ -21,11 +23,14 @@ public class PeticionesTodas {
     private PeticionesTodas peticionesTodas;
 
     private DefaultTableModel tableModel;
-
+    private SucursalYUsuarioController sucursalYUsuarioController;
+    private PacienteController pacienteController;
     private List<PeticionDto> peticionesLista;
 
-    public  PeticionesTodas(PeticionController peticionController){
+    public  PeticionesTodas(PeticionController peticionController, SucursalYUsuarioController sucursalYUsuarioController, PacienteController pacienteController){
         this.peticionController = peticionController;
+        this.sucursalYUsuarioController = sucursalYUsuarioController;
+        this.pacienteController = pacienteController;
         this.peticionesTodas = this;
         this.tableModel = new DefaultTableModel();
     }
@@ -114,7 +119,7 @@ public class PeticionesTodas {
                     // Crear y mostrar el diálogo de editar sucursal
                     if (peticion != null) {
                         // Crear y mostrar el diálogo de editar sucursal, pasando la sucursal correspondiente
-                        EditarPeticion editarPeticion = new EditarPeticion(peticion, peticionController, peticionesTodas);
+                        EditarPeticion editarPeticion = new EditarPeticion(peticion, peticionController, peticionesTodas, sucursalYUsuarioController, pacienteController );
                         editarPeticion.setVisible(true);
                     }
                 }

@@ -69,7 +69,7 @@ public class Menu {
 
 
         // Crear una instancia de PeticionesTodas y obtener su panel
-        peticionesTodas = new PeticionesTodas(peticionController);
+        peticionesTodas = new PeticionesTodas(peticionController, sucursalYUsuarioController, pacienteController);
         JPanel peticionesTodasPanel = peticionesTodas.createPanel();
         cardPanel.add(peticionesTodasPanel, "PeticionesTodas");
 
@@ -79,7 +79,7 @@ public class Menu {
         cardPanel.add(usuariosTodosPanel, "UsuariosTodos");
 
         // Mostrar la ventana
-        frame.setSize(800, 600);
+        frame.setSize(800, 550);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }

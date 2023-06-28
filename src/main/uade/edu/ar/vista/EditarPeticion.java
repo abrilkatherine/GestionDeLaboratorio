@@ -45,16 +45,12 @@ public class EditarPeticion extends JDialog {
     private PeticionController peticionController;
     private PeticionesTodas peticionesTodas;
 
-    public EditarPeticion(PeticionDto peticionDto, PeticionController peticionController, PeticionesTodas peticionesTodas) {
+    public EditarPeticion(PeticionDto peticionDto, PeticionController peticionController, PeticionesTodas peticionesTodas,  SucursalYUsuarioController sucursalYUsuarioController, PacienteController pacienteController) {
         this.peticionesTodas = peticionesTodas;
+        this.sucursalYUsuarioController = sucursalYUsuarioController;
+        this.pacienteController = pacienteController;
         this.peticionDto = peticionDto;
         this.peticionController = peticionController;
-        try{
-            this.sucursalYUsuarioController = SucursalYUsuarioController.getInstance();
-            this.pacienteController = PacienteController.getInstance();
-        }  catch (Exception e) {
-            e.printStackTrace();
-        }
         cargarSucursales();
         cargarPacientes();
         initializeUI();
