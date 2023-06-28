@@ -164,10 +164,11 @@ public class EditarSucursal extends JDialog {
         String direccion = direccionTextField.getText();
         String responsableText = (String) responsableComboBox.getSelectedItem();
         UsuarioDto responsable = findUsuarioByDisplayText(responsableText);
+
         SucursalDto sucursalEditada = new SucursalDto(sucursal.getId(), Integer.parseInt(numeroSucursal), direccion, responsable);
         try {
             sucursalYUsuarioController.modificarSucursal(sucursalEditada);
-            this.sucursalTodas.actualizarTablaSucursales();
+            sucursalTodas.actualizarTablaSucursales();
             dispose();
         } catch (Exception e) {
             // Manejo de la excepción

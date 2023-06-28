@@ -111,7 +111,6 @@ public class PacientesTodas {
                     // Crear y mostrar el diálogo de editar paciente
                     if (paciente != null) {
                         // Crear y mostrar el diálogo de editar paciente, pasando el paciente correspondiente
-
                         EditarPaciente editarPaciente = new EditarPaciente(paciente, pacienteController, pacientesTodas);
                         editarPaciente.setVisible(true);
                     }

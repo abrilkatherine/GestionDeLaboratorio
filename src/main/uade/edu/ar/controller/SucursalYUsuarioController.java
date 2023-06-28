@@ -76,7 +76,11 @@ public class SucursalYUsuarioController {
                 .orElse(null);
 
         if (sucursalExistente != null) {
-            sucursalDao.update(toModel(sucursalDTO));
+            sucursalExistente.setDireccion(sucursalDTO.getDireccion());
+            sucursalExistente.setId(sucursalDTO.getId());
+            sucursalExistente.setNumero(sucursalDTO.getNumero());
+            sucursalExistente.setResponsableTecnico(toModel(sucursalDTO.getResponsableTecnico()));
+            sucursalDao.update(sucursalExistente);
         }
     }
 
@@ -177,6 +181,11 @@ public class SucursalYUsuarioController {
                 .orElse(null);
 
         if (usuarioExistente != null) {
+            usuarioExistente.setId(usuarioDTO.getId());
+            usuarioExistente.setNombre(usuarioDTO.getNombre());
+            usuarioExistente.setContrasenia(usuarioDTO.getContrasenia());
+            usuarioExistente.setRol(usuarioExistente.getRol());
+            usuarioExistente.setNacimiento(usuarioDTO.getNacimiento());
             usuarioDao.update(toModel(usuarioDTO));
         }
     }

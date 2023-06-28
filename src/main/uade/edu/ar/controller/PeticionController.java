@@ -65,6 +65,10 @@ public class PeticionController {
             peticion.setObraSocial(peticionDTO.getObraSocial());
             peticion.setFechaCarga(peticionDTO.getFechaCarga());
             peticion.setFechaEntrega(peticionDTO.getFechaEntrega());
+            peticion.setId(peticionDTO.getId());
+            peticion.setSucursal(peticion.getSucursal());
+            peticion.setPaciente(peticion.getPaciente());
+            peticion.setPracticas(peticion.getPracticas());
             peticionDao.update(peticion);
         }
     }
@@ -124,7 +128,6 @@ public class PeticionController {
                 practica.setGrupo(practicaDTO.getGrupo());
                 practica.setHorasFaltantes(practicaDTO.getHorasFaltantes());
                 practica.setResultado(PeticionMapper.toModel(practicaDTO.getResultado()));
-
                 peticionDao.update(peticion);
                 return;
             }
