@@ -7,6 +7,7 @@ import main.uade.edu.ar.dto.ResultadoDto;
 import main.uade.edu.ar.enums.TipoResultado;
 import main.uade.edu.ar.mappers.PeticionMapper;
 import main.uade.edu.ar.model.*;
+import main.uade.edu.ar.vista.PracticasXPeticion;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -34,10 +35,31 @@ public class PeticionController {
 
     // Peticiones
 
+    public List<PeticionDto> getAllPeticiones(){
+        return peticiones.stream()
+                .map(PeticionMapper::toDto)
+                .collect(Collectors.toList());
+    }
+
     public Optional<Peticion> getPeticion(int id) {
         return peticiones.stream()
                 .filter(p -> p.getId() == id)
                 .findFirst();
+    }
+
+    public List<PracticaDto> getAllPracticasDePeticion(int idPeticion) {
+        Optional<Peticion> peticionOptional = getPeticion(idPeticion);
+
+        if (peticionOptional.isPresent()) {
+            Peticion peticion = peticionOptional.get();
+
+            return peticion.getPracticas().stream()
+                    .map(PeticionMapper::toDto)
+                    .collect(Collectors.toList());
+        } else {
+            System.out.println("La petición solicitada no existe");
+            return new ArrayList<>();
+        }
     }
 
     public void crearPeticion(PeticionDto peticionDTO) throws Exception {
@@ -59,6 +81,10 @@ public class PeticionController {
             peticion.setObraSocial(peticionDTO.getObraSocial());
             peticion.setFechaCarga(peticionDTO.getFechaCarga());
             peticion.setFechaEntrega(peticionDTO.getFechaEntrega());
+            peticion.setId(peticionDTO.getId());
+            peticion.setSucursal(peticion.getSucursal());
+            peticion.setPaciente(peticion.getPaciente());
+            peticion.setPracticas(peticion.getPracticas());
             peticionDao.update(peticion);
         }
     }
@@ -118,7 +144,6 @@ public class PeticionController {
                 practica.setGrupo(practicaDTO.getGrupo());
                 practica.setHorasFaltantes(practicaDTO.getHorasFaltantes());
                 practica.setResultado(PeticionMapper.toModel(practicaDTO.getResultado()));
-
                 peticionDao.update(peticion);
                 return;
             }
@@ -173,8 +198,8 @@ public class PeticionController {
         crearResultado(idPractica, null);
     }
 
-    public List<Peticion> getPeticionesConResultadosCriticos() {
-        List<Peticion> peticionesConResultadosCriticos = new ArrayList<>();
+    public List<PeticionDto> getPeticionesConResultadosCriticos() {
+        List<PeticionDto> peticionesConResultadosCriticos = new ArrayList<>();
 
         for (Peticion peticion : peticiones) {
             boolean tieneResultadosCriticos = peticion.getPracticas()
@@ -182,14 +207,14 @@ public class PeticionController {
                     .anyMatch(Practica::esCritica);
 
             if (tieneResultadosCriticos) {
-                peticionesConResultadosCriticos.add(peticion);
+                peticionesConResultadosCriticos.add(PeticionMapper.toDto(peticion));
             }
         }
 
         return peticionesConResultadosCriticos;
     }
 
-    public List<Practica> getPracticasConResultadosReservados(int idPeticion) {
+    public List<PracticaDto> getPracticasConResultadosReservados(int idPeticion) {
         Peticion peticion = getPeticion(idPeticion).orElse(null);
 
         if (peticion == null) {
@@ -197,13 +222,13 @@ public class PeticionController {
             return new ArrayList<>();
         }
 
-        List<Practica> practicasConResultadosOcultos = new ArrayList<>();
+        List<PracticaDto> practicasConResultadosOcultos = new ArrayList<>();
 
         for (Practica practica : peticion.getPracticas()) {
             if (practica.getResultado() != null && practica.esReservada()) {
                 practica.ocultarResultado();
             }
-            practicasConResultadosOcultos.add(practica);
+            practicasConResultadosOcultos.add(PeticionMapper.toDto(practica));
         }
 
         return practicasConResultadosOcultos;

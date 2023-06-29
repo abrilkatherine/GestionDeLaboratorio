@@ -11,6 +11,7 @@ import main.uade.edu.ar.model.Usuario;
 
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class SucursalYUsuarioController {
 
@@ -38,6 +39,11 @@ public class SucursalYUsuarioController {
     }
 
     //Sucursal
+    public List<SucursalDto> getAllSucursales() {
+        return sucursales.stream()
+                .map(SucursalYUsuarioController::toDto)
+                .collect(Collectors.toList());
+    }
     public SucursalDto getSucursalPorId(int id) {
         return sucursales.stream()
                 .filter(s -> s.getId() == id)
@@ -70,7 +76,11 @@ public class SucursalYUsuarioController {
                 .orElse(null);
 
         if (sucursalExistente != null) {
-            sucursalDao.update(toModel(sucursalDTO));
+            sucursalExistente.setDireccion(sucursalDTO.getDireccion());
+            sucursalExistente.setId(sucursalDTO.getId());
+            sucursalExistente.setNumero(sucursalDTO.getNumero());
+            sucursalExistente.setResponsableTecnico(toModel(sucursalDTO.getResponsableTecnico()));
+            sucursalDao.update(sucursalExistente);
         }
     }
 
@@ -90,7 +100,7 @@ public class SucursalYUsuarioController {
 
             Sucursal sucursalADerivar = getSucursalRandom(id);
 
-            for(Peticion peticion : peticiones){
+            for (Peticion peticion : peticiones) {
                 peticion.setSucursal(sucursalADerivar);
                 peticionDao.update(peticion);
             }
@@ -98,7 +108,7 @@ public class SucursalYUsuarioController {
             sucursalDao.delete(id);
             sucursales.remove(sucursal);
         } else {
-            System.out.println("La sucursal no cumple las condiciones para ser borrado");
+            throw new Exception("La sucursal no cumple las condiciones para ser borrada");
         }
     }
 
@@ -149,6 +159,12 @@ public class SucursalYUsuarioController {
                 .orElse(null);
     }
 
+    public List<UsuarioDto> getAllUsuarios() {
+        return usuarios.stream()
+                .map(SucursalYUsuarioController::toDto)
+                .collect(Collectors.toList());
+    }
+
     public Usuario crearUsuario(UsuarioDto usuarioDTO) throws Exception {
         if (getUsuario(usuarioDTO.getId()) == null) {
             Usuario usuario = toModel(usuarioDTO);
@@ -165,6 +181,11 @@ public class SucursalYUsuarioController {
                 .orElse(null);
 
         if (usuarioExistente != null) {
+            usuarioExistente.setId(usuarioDTO.getId());
+            usuarioExistente.setNombre(usuarioDTO.getNombre());
+            usuarioExistente.setContrasenia(usuarioDTO.getContrasenia());
+            usuarioExistente.setRol(usuarioExistente.getRol());
+            usuarioExistente.setNacimiento(usuarioDTO.getNacimiento());
             usuarioDao.update(toModel(usuarioDTO));
         }
     }
