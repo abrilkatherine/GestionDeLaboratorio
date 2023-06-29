@@ -14,6 +14,7 @@ public class Menu {
     private static PacientesTodas pacienteTodas;
     private static UsuariosTodos usuariosTodos;
     private static PeticionesTodas peticionesTodas;
+    private static PeticionConResultadosCriticos peticionConResultadoCriticos;
     private static JPanel cardPanel;
     private static CardLayout cardLayout;
     private static SucursalYUsuarioController sucursalYUsuarioController;
@@ -73,10 +74,17 @@ public class Menu {
         JPanel peticionesTodasPanel = peticionesTodas.createPanel();
         cardPanel.add(peticionesTodasPanel, "PeticionesTodas");
 
+        // Crear una instancia de PeticionesTodas y obtener su panel
+        peticionConResultadoCriticos = new PeticionConResultadosCriticos(peticionController, sucursalYUsuarioController, pacienteController);
+        JPanel peticionConResultadoCriticosPanel = peticionConResultadoCriticos.createPanel();
+        cardPanel.add(peticionConResultadoCriticosPanel, "PeticionConResultadoCriticos");
+
         // Crear una instancia de UsuariosTodos y obtener su panel
         usuariosTodos = new UsuariosTodos(sucursalYUsuarioController);
         JPanel usuariosTodosPanel = usuariosTodos.createPanel();
         cardPanel.add(usuariosTodosPanel, "UsuariosTodos");
+
+
 
         // Mostrar la ventana
         frame.setSize(800, 550);

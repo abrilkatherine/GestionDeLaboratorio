@@ -109,29 +109,29 @@ public class Main {
         sucursalYUsuarioController.borrarSucursal(1);
     }
 
-    private static void testPeticionesConValoresCriticos(PeticionController peticionesController) throws Exception {
-        UsuarioDto responsable = new UsuarioDto(1, "Hugo", "13jfso*jd37", getFecha("1990-06-04"), Roles.ADMINISTRADOR);
-        SucursalDto sucursal = new SucursalDto(1, 100, "Av Santa Fe", responsable);
-        PracticaDto practica1 = new PracticaDto(1, 999, "Análisis de sangre", 3, 3);
-        PracticaDto practica2 = new PracticaDto(2, 999, "Análisis de sangre", 3, 3);
-        PacienteDto paciente = new PacienteDto(1, 22, Genero.MASCULINO, "Test", 12345678, "dom", "test@gmail.com", "Gomez");
-
-        // ABM Peticiones
-        peticionesController.crearPeticion(new PeticionDto(1, "Swiss Medical", getFecha("2023-06-01"), getFecha("2023-06-02"), sucursal, paciente));
-        peticionesController.crearPeticion(new PeticionDto(2, "Swiss Medical", getFecha("2023-06-01"), getFecha("2023-06-02"), sucursal, paciente, List.of(practica2)));
-
-        // ABM Prácticas
-        peticionesController.crearPractica(1, practica1);
-
-        // ABM Resultados
-        peticionesController.crearResultado(1, new ResultadoDto("40", TipoResultado.CRITICO));
-        peticionesController.crearResultado(2, new ResultadoDto("40", TipoResultado.RESERVADO));
-
-        List<Peticion> listaValoreCriticos = peticionesController.getPeticionesConResultadosCriticos();
-
-        System.out.println("Peticiones con valores críticos:");
-        listaValoreCriticos.forEach(peticion -> System.out.println(peticion.getId()));
-    }
+//    private static void testPeticionesConValoresCriticos(PeticionController peticionesController) throws Exception {
+//        UsuarioDto responsable = new UsuarioDto(1, "Hugo", "13jfso*jd37", getFecha("1990-06-04"), Roles.ADMINISTRADOR);
+//        SucursalDto sucursal = new SucursalDto(1, 100, "Av Santa Fe", responsable);
+//        PracticaDto practica1 = new PracticaDto(1, 999, "Análisis de sangre", 3, 3);
+//        PracticaDto practica2 = new PracticaDto(2, 999, "Análisis de sangre", 3, 3);
+//        PacienteDto paciente = new PacienteDto(1, 22, Genero.MASCULINO, "Test", 12345678, "dom", "test@gmail.com", "Gomez");
+//
+//        // ABM Peticiones
+//        peticionesController.crearPeticion(new PeticionDto(1, "Swiss Medical", getFecha("2023-06-01"), getFecha("2023-06-02"), sucursal, paciente));
+//        peticionesController.crearPeticion(new PeticionDto(2, "Swiss Medical", getFecha("2023-06-01"), getFecha("2023-06-02"), sucursal, paciente, List.of(practica2)));
+//
+//        // ABM Prácticas
+//        peticionesController.crearPractica(1, practica1);
+//
+//        // ABM Resultados
+//        peticionesController.crearResultado(1, new ResultadoDto("40", TipoResultado.CRITICO));
+//        peticionesController.crearResultado(2, new ResultadoDto("40", TipoResultado.RESERVADO));
+//
+//        //List<PeticionDto> listaValoreCriticos = peticionesController.getPeticionesConResultadosCriticos();
+//
+//        System.out.println("Peticiones con valores críticos:");
+//        listaValoreCriticos.forEach(peticion -> System.out.println(peticion.getId()));
+//    }
 
     private static void testPeticionesConValoresReservados(PeticionController peticionesController) throws Exception {
         UsuarioDto responsable = new UsuarioDto(1, "Hugo", "13jfso*jd37", getFecha("1990-06-04"), Roles.ADMINISTRADOR);

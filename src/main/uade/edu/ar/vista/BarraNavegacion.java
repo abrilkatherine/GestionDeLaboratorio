@@ -38,11 +38,15 @@ public class BarraNavegacion {
         buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.LINE_AXIS));
         JButton sucursalesButton = createButton("Sucursales", Color.WHITE);
         JButton peticionesButton = createButton("Peticiones", Color.WHITE);
+        JButton criticasButton = createButton("Peticiones Criticas", Color.WHITE);
         JButton usuariosButton = createButton("Usuarios", Color.WHITE);
+
         buttonPanel.add(Box.createHorizontalGlue());
         buttonPanel.add(sucursalesButton);
         buttonPanel.add(peticionesButton);
+        buttonPanel.add(criticasButton);
         buttonPanel.add(usuariosButton);
+
 
         // Agregar el panel de botones al panel del menú
         menuPanel.add(buttonPanel);
@@ -64,6 +68,7 @@ public class BarraNavegacion {
         cardPanel.add(new PacientesTodas(pacienteController).createPanel(), "pacientesTodas");
         cardPanel.add(new SucursalTodas(sucursalYUsuarioController).createPanel(), "sucursalesTodas");
         cardPanel.add(new PeticionesTodas(peticionController, sucursalYUsuarioController, pacienteController).createPanel(), "peticionesTodas");
+        cardPanel.add(new PeticionConResultadosCriticos(peticionController, sucursalYUsuarioController, pacienteController).createPanel(), "PeticionConResultadoCriticos");
         cardPanel.add(new UsuariosTodos(sucursalYUsuarioController).createPanel(), "usuariosTodos");
 
         // Agregar el panel del menú y el panel con CardLayout al panel principal
@@ -94,6 +99,8 @@ public class BarraNavegacion {
                     cardLayout.show(cardPanel, "peticionesTodas");
                 }else if (text.equals("Usuarios")) {
                     cardLayout.show(cardPanel, "usuariosTodos");
+                }else if (text.equals("Peticiones Criticas")) {
+                    cardLayout.show(cardPanel, "PeticionConResultadoCriticos");
                 }
             }
         });
